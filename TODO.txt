@@ -1,0 +1,25 @@
+-> test for symlink
+-> put full mc tests into build
+
+
+-> rename classes from camal to _
+
+
+-> change package names
+    -> split up:
+        -> deploytool.deb
+        -> orc.deb
+
+-> delete one shot stuff for now..
+
+-> no classes in root..
+
+PUPPET:
+    -> rename deploytool - javahttpservice
+    -> setup services to auto start??
+
+DONE..
+[]-> move stuff only used in tests to test folder
+[]    ->  MemoryPart
+[]-> EmbeddedJavaCom
+

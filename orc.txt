@@ -1,0 +1,62 @@
+Notes
+=====
+
+* unique identifier for an instance of an application is: {host,env,app,tag}
+* participation is not currently part of this api
+*
+
+#### Config Management:
+hiera:
+    oy/ideas-latest/
+    oy/ideas-latest/timconnect/
+    oy/ideas-latest/timconnect/blue/port=8001
+
+location "oy" {
+    environment "ideas-latest" {
+        timconnect("blue")
+    }
+}
+
+produces:
+    ideaslatest-timconnect-blue.properties
+    ideaslatest-timconnect-green.properties
+
+DeployAgent
+    status:
+        parameters: none
+        example response:
+            {
+                app: "TIMConnect",
+                tag: "blue",
+                version: "1.2.2",
+            }
+            {
+                app: "TIMConnect",
+                tag: "green",
+                version: "1.2.1",
+            }
+
+    update_to_version
+        parameters:
+        {
+            app: "TIMConnect"
+            tag: "green"
+            target_version: "1.2.3"
+        }
+
+        example response: none
+
+
+    participation: "enabled"
+    participation: "disabled"
+
+    participation
+        parameters:
+        {
+            app: "TIMConnect"
+            tag: "green"
+            value: "enabled"
+        }
+
+        example response: none
+
