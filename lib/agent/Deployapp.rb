@@ -41,7 +41,11 @@ module MCollective
           require 'deploy/host_configuration'
           setup_logger()
 
-          spec = request[:spec]
+          # N.B. Everything used to be passed in a hash inside the request called
+          # :spec - this is not awesome, as it means that you can't use mco rpc
+          # on the command line at all (as you can't input a hash from the command
+          # line), and also means that you can't validate anything in the DDL
+          spec = request[:spec] || request
           environment = spec[:environment]
           version = request[:version]
 
