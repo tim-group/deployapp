@@ -37,7 +37,8 @@ class Deploy::EmbeddedJavaCommunicator
         return IO.read(@pid_file).to_i
       end
     end
-    raise "Unable to start process in a reasonable amount of time"
+    logcontents = IO.read(@log_file)
+    raise "Unable to start process in a reasonable amount of time.\nConsole log:\n#{logcontents}"
   end
 
   def stop
