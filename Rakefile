@@ -108,6 +108,7 @@ Rake::TestTask.new { |t|
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
     t.rspec_opts = %w[--color]
 end
+task :spec => [:test]
 
 desc "Setup, package, test, and upload"
 task :build  => [:setup,:package,:test]
