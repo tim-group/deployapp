@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'deploy/namespace'
 require 'util/log'
 require 'net/ssh'
