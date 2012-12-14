@@ -112,7 +112,7 @@ describe Deploy::ApplicationInstance do
 
     expect {
         application_instance.update_to_version(5)
-    }.should raise_error Deploy::FailedToResolveArtifact
+    }.to raise_error Deploy::FailedToResolveArtifact
 
   end
 
@@ -133,7 +133,7 @@ describe Deploy::ApplicationInstance do
 
     expect {
       application_instance.update_to_version(5)
-    }.should raise_error Deploy::FailedToLaunch
+    }.to raise_error Deploy::FailedToLaunch
   end
 
   it 'test_exception_raised_when_failed_to_stop' do
@@ -151,7 +151,7 @@ describe Deploy::ApplicationInstance do
 
     expect {
            application_instance.update_to_version(5)
-    }.should raise_error (Deploy::FailedToStop)
+    }.to raise_error(Deploy::FailedToStop)
 
   end
 

@@ -56,7 +56,7 @@ describe Deploy::ApplicationCommunicator do
 
     mock_status_retriever.stub(:retrieve).with("http://localhost:").and_return(@status_present_not_stoppable)
     mock_service_wrapper.should_not_receive(:stop_service).with("myservice")
-    expect {  service_communicator.stop()}.should raise_error
+    expect {  service_communicator.stop()}.to raise_error
   end
 
 end
