@@ -79,6 +79,8 @@ module MCollective
       end
 
       action "enable_participation" do
+        spec = request[:spec] || request
+
         process_instance do |instance|
           logger.debug("recieved message to enable participation for spec #{spec}")
           instance.enable_participation()
@@ -86,6 +88,8 @@ module MCollective
       end
 
       action "disable_participation" do
+        spec = request[:spec] || request
+
         process_instance do |instance|
           logger.debug("recieved message to disable participation for spec #{spec}")
           instance.disable_participation()
