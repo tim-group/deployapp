@@ -15,7 +15,7 @@ module MCollective
   module Agent
     class Deployapp < RPC::Agent
       def process_instance(&block)
-        spec = request
+        spec = request[:spec] || request
         process_host_configuration  do |host_configuration|
           instance = host_configuration.get_application_instance(spec)
           block.call(instance)
@@ -30,7 +30,7 @@ module MCollective
           extend ::Util::Log
           config_dir_prefix = config.pluginconf["deployapp.conf_dir_prefix"] || "/opt/deploytool"
           app_dir_prefix = config.pluginconf["deployapp.app_dir_prefix"] || "/opt/apps"
-          spec = request
+          spec = request[:spec] || request
           environment = spec[:environment]
           config_dir = "#{config_dir_prefix}-#{environment}/conf.d"
           app_base_dir = "#{app_dir_prefix}-#{environment}"
@@ -57,7 +57,7 @@ module MCollective
       end
 
       action "status" do
-        spec = request
+        spec = request[:spec] || request
         process_host_configuration  do |host_configuration|
           logger.debug("requested status for spec: #{spec}")
           status = host_configuration.status(spec)
