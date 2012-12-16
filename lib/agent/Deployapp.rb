@@ -37,6 +37,7 @@ module MCollective
 
           if (not File.exists?(config_dir))
             reply.data = nil
+            return
           else
             reply.data = {}
             host_configuration = Deploy::HostConfiguration.new(
