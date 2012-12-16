@@ -5,6 +5,10 @@ class Util::CompositeLogger
     @loggers = loggers
   end
 
+  def debug(msg)
+    @loggers.each { |logger| logger.debug(msg)}
+  end
+
   def info(msg)
     @loggers.each { |logger| logger.info(msg)}
   end

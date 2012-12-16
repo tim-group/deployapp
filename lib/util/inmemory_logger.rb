@@ -2,9 +2,14 @@ require 'util/namespace'
 
 class Util::InMemoryLogger
   def initialize()
+    @debugs = []
     @infos = []
     @warns = []
     @errors = []
+  end
+
+  def debug(msg)
+    @debugs << msg
   end
 
   def info(msg)
@@ -21,6 +26,7 @@ class Util::InMemoryLogger
 
   def logs
     return {
+      :debugs=>@debugs,
       :infos=>@infos,
       :warns=>@warns,
       :errors=>@errors
