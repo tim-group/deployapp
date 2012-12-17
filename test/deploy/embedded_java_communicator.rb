@@ -94,7 +94,7 @@ class Deploy::EmbeddedJavaCommunicator
     version = properties.get( "version" )
     type = properties.get( "type" )
     runnable_jar = "#{application_name}-#{version}.#{type}"
-    start_timeout = properties.get( "start_timeout" ) || 60
+    start_timeout = properties.get( "start_timeout", 60 )
 
     return self.new(
     :runnable_jar => "build/artifacts/#{runnable_jar}",
