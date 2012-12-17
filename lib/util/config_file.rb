@@ -15,8 +15,8 @@ class Util::ConfigFile
     end
   end
 
-  def get(property, default)
-    @properties[property] || default.nil? ? raise("No #{property} property found in #{@filename}") : default
+  def get(property)
+    @properties[property] || raise("No #{property} property found in #{@filename}")
   end
 
   def port
