@@ -16,10 +16,10 @@ class Util::ConfigFile
   end
 
   def get(property)
-    @properties[property] || raise("No #{property} property found in #{@filename}")
+    return @properties[property]
   end
 
   def port
-    get('port')
+    return  @properties["port"]
   end
 end
