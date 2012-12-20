@@ -8,8 +8,9 @@ class Deploy::StatusRetriever
   def retrieve(base_url)
     begin
       status = Deploy::Status.new(true)
-      status.add("stoppable", get("#{base_url}/info/stoppable"))
-      status.add("version", get("#{base_url}/info/version"))
+      ['stoppable', 'version', 'health'].each { |n|
+        status.add(n, get("#{base_url}/info/#{n}"))
+      }
       return status
     rescue  Exception
       return Deploy::Status.new(false)

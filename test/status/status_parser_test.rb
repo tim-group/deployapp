@@ -52,6 +52,13 @@ class StatusParserTest < Test::Unit::TestCase
     }
   end
 
+  def test_retrieves_health
+    runAgainstServer({"/info/health"=>"ill"}) {
+      retriever=Deploy::StatusRetriever.new()
+      assert_equal "ill", retriever.retrieve("http://localhost:2002").health
+    }
+  end
+
   def test_stoppable_when_safe
     runAgainstServer({"/info/stoppable"=>"safe"}) {
       retriever=Deploy::StatusRetriever.new()
