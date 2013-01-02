@@ -31,7 +31,7 @@ class Deploy::ApplicationCommunicator
     if (get_status.stoppable?)
       @service_wrapper.stop_service(@service_name)
     else
-      raise "Not stopping service @service_name it is not stoppable"
+      raise "Not stopping service #{@service_name} it is not stoppable"
     end
     wait_until_stopped()
   end
