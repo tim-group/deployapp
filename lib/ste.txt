@@ -1,9 +1,0 @@
-REFACTOR:
-
-Scenarios:
-    NO PID FILE - STOP DOESN'T WORK...??
-
-
-TODO:
-    build-in one-shot apps into framework
-    logging needs to be improved
