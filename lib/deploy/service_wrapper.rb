@@ -8,5 +8,5 @@ class Deploy::ServiceWrapper
   def stop_service(service_name)
     system("service #{service_name} stop")
   end
-
 end
+

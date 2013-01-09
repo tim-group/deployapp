@@ -43,3 +43,4 @@ class Deploy::TatinParticipationService
     end
   end
 end
+

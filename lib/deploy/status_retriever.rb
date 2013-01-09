@@ -20,8 +20,8 @@ class Deploy::StatusRetriever
   def get(url)
     uri = URI.parse(url)
     Net::HTTP.start(uri.host, uri.port) do |http|
-      response = http.get(uri.request_uri)
-      return response.body
+      http.get(uri.request_uri).body
     end
   end
 end
+

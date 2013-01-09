@@ -49,42 +49,43 @@ class Deploy::HostConfiguration
 
   def application_instance(&hash)
     application_instance_config = Deploy::ApplicationInstanceConfiguration.new(
-    :app_base_dir => self.app_base_dir,
-    :run_base_dir => self.run_base_dir,
-    :log_base_dir => self.log_base_dir
+      :app_base_dir => self.app_base_dir,
+      :run_base_dir => self.run_base_dir,
+      :log_base_dir => self.log_base_dir
     )
     application_instance_config.instance_eval(&hash)
     application_instance_config.apply_convention()
 
     if (application_instance_config.type() == "none")
       application_instance = Deploy::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :participation_service => MemoryParticipationService.new)
+        :application_instance_config => application_instance_config,
+        :participation_service => MemoryParticipationService.new
+      )
     else
       artifacts_dir = application_instance_config.artifacts_dir()
       latest_jar = application_instance_config.latest_jar()
       @artifact_resolver = Deploy::ProductStoreArtifactResolver.new(
-      :artifacts_dir => artifacts_dir,
-      :latest_jar => latest_jar,
-      :ssh_key_location => application_instance_config.ssh_key_location
+        :artifacts_dir => artifacts_dir,
+        :latest_jar => latest_jar,
+        :ssh_key_location => application_instance_config.ssh_key_location
       )
 
       @app_communicator = Deploy::ApplicationCommunicator.new(
-      :service_name=>"#{@environment}-#{application_instance_config.application}-#{application_instance_config.group}",
-      :config_file=>application_instance_config.config_filename
+        :service_name=>"#{@environment}-#{application_instance_config.application}-#{application_instance_config.group}",
+        :config_file=>application_instance_config.config_filename
       )
 
       @participation_service = Deploy::TatinParticipationService.new(
-      :environment=>@environment,
-      :application=>application_instance_config.application,
-      :group=>application_instance_config.group
+        :environment=>@environment,
+        :application=>application_instance_config.application,
+        :group=>application_instance_config.group
       )
 
       application_instance = Deploy::ApplicationInstance.new(
-      :application_instance_config=>application_instance_config,
-      :application_communicator=>@app_communicator,
-      :artifact_resolver=>@artifact_resolver,
-      :participation_service=> @participation_service
+        :application_instance_config=>application_instance_config,
+        :application_communicator=>@app_communicator,
+        :artifact_resolver=>@artifact_resolver,
+        :participation_service=> @participation_service
       )
 
     end
@@ -104,6 +105,8 @@ class Deploy::HostConfiguration
         add(data)
       end
     end
+
+    self
   end
 
   def application_instances()
@@ -112,24 +115,25 @@ class Deploy::HostConfiguration
 
   def get_application_instance(spec)
     @application_instances.each do |instance|
-      if (instance.status()[:application]==spec[:application] and instance.status()[:group]==spec[:group])
+      if (instance.status[:application]==spec[:application] and instance.status[:group] == spec[:group])
         return instance
       end
     end
     raise Deploy::NoInstanceFound.new(spec)
   end
 
-  def status(spec={})
-    statuses=[]
+  def status( spec = {} )
+    statuses = []
     @application_instances.each do |instance|
-      statuses<<  instance.status()
+      statuses << instance.status()
     end
 
     if (spec[:group]!=nil)
-      statuses =  statuses.select {|status|status[:group]==spec[:group]}
+      statuses =  statuses.select { |status| status[:group]==spec[:group] }
     end
     if (spec[:application]!=nil)
-      statuses =  statuses.select {|status|status[:application]==spec[:application]
+      statuses =  statuses.select { |status|
+        status[:application]==spec[:application]
       }
 
     end

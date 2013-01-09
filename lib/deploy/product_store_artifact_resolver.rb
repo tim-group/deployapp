@@ -13,8 +13,8 @@ end
 class Deploy::ProductStoreArtifactResolver
   include Util::Log
   def initialize(args)
-    @artifacts_dir=args[:artifacts_dir]
-    @maxartifacts=5
+    @artifacts_dir = args[:artifacts_dir]
+    @maxartifacts = 5
     @ssh_key_location = args[:ssh_key_location]
     @latest_jar = args[:latest_jar]
     @ssh_address = "productstore.net.local"
@@ -57,9 +57,13 @@ class Deploy::ProductStoreArtifactResolver
 
   def cleanOldArtifacts()
     files = Dir.glob("#{@artifacts_dir}/*.jar")
-    sorted=  files.sort_by {|filename| File.mtime("#{filename}") }
+    sorted = files.sort_by {|filename| File.mtime("#{filename}") }
     if (sorted.size()>@maxartifacts)
-      sorted[0..files.size()-@maxartifacts-1].each {|f| print "removing old artifact #{f}\n"; File.delete f}
+      sorted[0..files.size()-@maxartifacts-1].each do |f|
+        print "removing old artifact #{f}\n";
+        File.delete f
+      end
     end
   end
 end
+
