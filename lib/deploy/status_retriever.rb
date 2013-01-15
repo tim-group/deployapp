@@ -20,7 +20,7 @@ class Deploy::StatusRetriever
   def get(url)
     uri = URI.parse(url)
     Net::HTTP.start(uri.host, uri.port) do |http|
-      http.get(uri.request_uri, {'User-Agent' => 'deploytool health  ↪retriever'}).body
+      http.get(uri.request_uri, {'User-Agent' => 'deploytool health retriever'}).body
     end
   end
 end
