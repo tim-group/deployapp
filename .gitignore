@@ -1,3 +1,4 @@
+Gemfile.lock
 spec/reports/*
 build/*
 app_under_test.properties
