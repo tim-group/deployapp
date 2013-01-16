@@ -1,10 +1,6 @@
 -> test for symlink
 -> put full mc tests into build
 
-
--> rename classes from camal to _
-
-
 -> change package names
     -> split up:
         -> deploytool.deb
