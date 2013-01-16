@@ -4,58 +4,61 @@ require 'optparse'
 require 'yaml'
 
 class Util::OptionParser
-  class StatusRequest
+  class Base
+    def host_configuration(options)
+      hc = Deploy::HostConfiguration.new(
+        :environment => options[:environment]
+      )
+      hc.parse("/opt/deploytool-#{options[:environment]}/conf.d/")
+      hc
+    end
+
+    def application_instance(options)
+      host_configuration(options).get_application_instance(options)
+    end
+  end
+
+  class StatusRequest < Base
     def required
       return [:environment]
     end
 
     def execute(options)
-      host_configuration = Deploy::HostConfiguration.new(:environment=>options[:environment])
-      host_configuration.parse("/opt/deploytool-#{options[:environment]}/conf.d/")
-      status = host_configuration.status(options)
-      print status.to_yaml
+      print host_configuration(options).status(options).to_yaml
     end
   end
 
-  class InstallRequest
+  class InstallRequest < Base
     def required
       return [:environment,:application,:group,:version]
     end
 
     def execute(options)
-      host_configuration = Deploy::HostConfiguration.new(:environment=>options[:environment])
-      host_configuration.parse("/opt/deploytool-#{options[:environment]}/conf.d/")
-      instance = host_configuration.get_application_instance(options)
+      instance = application_instance(options)
       instance.disable_participation()
       instance.update_to_version(options[:version])
     end
   end
 
-  class DisableParticipationRequest
+  class DisableParticipationRequest < Base
     def required
       return [:environment,:application,:group]
     end
 
     def execute(options)
       print "Disabling participation\n\n"
-      host_configuration = Deploy::HostConfiguration.new(:environment=>options[:environment])
-      host_configuration.parse("/opt/deploytool-#{options[:environment]}/conf.d/")
-      instance = host_configuration.get_application_instance(options)
-      instance.disable_participation()
+      application_instance(options).disable_participation()
     end
   end
 
-  class EnableParticipationRequest
+  class EnableParticipationRequest < Base
     def required
       return [:environment,:application,:group]
     end
 
     def execute(options)
       print "Enabling participation\n\n"
-      host_configuration = Deploy::HostConfiguration.new(:environment=>options[:environment])
-      host_configuration.parse("/opt/deploytool-#{options[:environment]}/conf.d/")
-      instance = host_configuration.get_application_instance(options)
-      instance.enable_participation()
+      application_instance(options).enable_participation()
     end
   end
 
@@ -125,3 +128,4 @@ class Util::OptionParser
     end
   end
 end
+
