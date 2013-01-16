@@ -21,3 +21,4 @@ class Util::CompositeLogger
     @loggers.each { |logger| logger.error(msg)}
   end
 end
+

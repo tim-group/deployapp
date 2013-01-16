@@ -26,11 +26,11 @@ class Util::InMemoryLogger
 
   def logs
     return {
-      :debugs=>@debugs,
-      :infos=>@infos,
-      :warns=>@warns,
-      :errors=>@errors
+      :debugs => @debugs,
+      :infos  => @infos,
+      :warns  => @warns,
+      :errors => @errors
     }
   end
-
 end
+

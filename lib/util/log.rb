@@ -11,3 +11,4 @@ module Util::Log
     return @@logger
   end
 end
+
