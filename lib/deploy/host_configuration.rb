@@ -16,7 +16,7 @@ class Deploy::HostConfiguration
 
     if (@app_base_dir == nil)
       if (@environment == "")
-        @app_base_dir = "/opt/apps#{@environment}"
+        @app_base_dir = "/opt/apps"
       else
         @app_base_dir = "/opt/apps-#{@environment}"
       end
@@ -137,5 +137,5 @@ class Deploy::HostConfiguration
     end
     return statuses
   end
-
 end
+
