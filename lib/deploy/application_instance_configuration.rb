@@ -1,14 +1,12 @@
 require 'deploy/namespace.rb'
 
 class Deploy::ApplicationInstanceConfiguration
-  attr_accessor "home"
-  attr_accessor "config_filename"
-  attr_accessor  "artifacts_dir"
-  attr_accessor  "latest_jar"
+  attr_reader :home, :config_filename, :artifacts_dir, :latest_jar
+
   def initialize(args={})
-    @app_base_dir=args[:app_base_dir]
-    @run_base_dir=args[:run_base_dir]
-    @log_base_dir=args[:log_base_dir]
+    @app_base_dir = args[:app_base_dir]
+    @run_base_dir = args[:run_base_dir]
+    @log_base_dir = args[:log_base_dir]
   end
 
   def application(application = @application)
@@ -55,3 +53,4 @@ class Deploy::ApplicationInstanceConfiguration
     end
   end
 end
+

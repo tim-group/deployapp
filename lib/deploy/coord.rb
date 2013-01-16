@@ -1,13 +1,12 @@
 require 'deploy/namespace'
+
 class Deploy::Coord
-  attr_accessor :name
-  attr_accessor :version
-  attr_accessor :type
+  attr_reader :name, :version, :type
 
   def initialize args
-    @name=args[:name]
-    @version=args[:version]
-    @type=args[:type]
+    @name    = args[:name]
+    @version = args[:version]
+    @type    = args[:type]
   end
 
   def string
@@ -18,3 +17,4 @@ class Deploy::Coord
     return other_coord.name==@name && other_coord.version==@version && other_coord.type==@type
   end
 end
+

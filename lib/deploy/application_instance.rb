@@ -5,9 +5,7 @@ require 'util/log'
 class Deploy::ApplicationInstance
   include Util::Log
 
-  attr_accessor :application_instance_config
-  attr_accessor :application_communicator
-  attr_accessor :artifact_resolver
+  attr_reader :application_instance_config, :application_communicator, :artifact_resolver
 
   def initialize(args)
     @application_instance_config = args[:application_instance_config]

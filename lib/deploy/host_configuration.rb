@@ -6,11 +6,9 @@ require 'deploy/application_communicator'
 require 'deploy/tatin_participation_service'
 
 class Deploy::HostConfiguration
-  attr_accessor :app_base_dir
-  attr_accessor :run_base_dir
-  attr_accessor :log_base_dir
-  def initialize( args = {:environment => ""} )
+  attr_reader :app_base_dir, :run_base_dir, :log_base_dir
 
+  def initialize( args = {:environment => ""} )
     @environment  = args[:environment]
     @app_base_dir = args[:app_base_dir]
     @run_base_dir = args[:run_base_dir]
