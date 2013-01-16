@@ -1,9 +1,14 @@
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
+begin # Ruby 1.8 vs 1.9 fuckery
+  require 'rake/rdoctask'
+rescue Exception
+  require 'rdoc/task'
+end
 require 'fileutils'
 require 'rspec/core/rake_task'
-#require 'ci/reporter/rake/rspec'
+require 'ci/reporter/rake/rspec'
 
 class Project
    def initialize args
@@ -104,10 +109,10 @@ Rake::TestTask.new { |t|
     t.pattern = 'test/**/*_test.rb'
 }
 
- desc "Run specs"
-#RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
-#    t.rspec_opts = %w[--color]
-#end
+desc "Run specs"
+RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
+    t.rspec_opts = %w[--color]
+end
 task :spec => [:test]
 
 desc "Setup, package, test, and upload"

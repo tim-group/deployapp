@@ -7,6 +7,8 @@ group :test do
   gem "rake"
   gem "rspec"
   gem "rdoc"
+  gem "ci_reporter"
+  gem "stomp"
   gem "net-ssh"
   gem "net-scp"
 end
