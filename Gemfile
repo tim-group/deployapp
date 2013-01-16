@@ -7,5 +7,7 @@ group :test do
   gem "rake"
   gem "rspec"
   gem "rdoc"
+  gem "net-ssh"
+  gem "net-scp"
 end
 

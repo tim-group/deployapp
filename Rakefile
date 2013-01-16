@@ -3,7 +3,7 @@ require 'rake'
 require 'rake/testtask'
 require 'fileutils'
 require 'rspec/core/rake_task'
-require 'ci/reporter/rake/rspec'
+#require 'ci/reporter/rake/rspec'
 
 class Project
    def initialize args
@@ -105,9 +105,9 @@ Rake::TestTask.new { |t|
 }
 
  desc "Run specs"
-RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
-    t.rspec_opts = %w[--color]
-end
+#RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
+#    t.rspec_opts = %w[--color]
+#end
 task :spec => [:test]
 
 desc "Setup, package, test, and upload"
