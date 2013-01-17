@@ -1,3 +1,5 @@
+Fix on ruby 1.9.3
+
 -> test for symlink
 -> put full mc tests into build
 
