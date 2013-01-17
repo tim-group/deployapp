@@ -9,6 +9,7 @@ group :test do
   gem "rdoc"
   gem "ci_reporter"
   gem "stomp"
+  gem "systemu"
   gem "net-ssh"
   gem "net-scp"
 end
