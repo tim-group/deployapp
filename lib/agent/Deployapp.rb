@@ -42,7 +42,8 @@ module MCollective
             reply.data = {}
             host_configuration = Deploy::HostConfiguration.new(
               :app_base_dir=>app_base_dir,
-              :environment=>environment)
+              :environment=>environment
+            )
             logger.debug("loading config from #{config_dir}")
             host_configuration.parse(config_dir)
             block.call(host_configuration)
@@ -64,7 +65,7 @@ module MCollective
           status = host_configuration.status(spec)
           logger.debug("found #{status.size} application instances")
           logger.debug("#{status.to_yaml}")
-          reply.data = {:statuses=>status}
+          reply.data = { :statuses => status }
         end
       end
 
@@ -98,3 +99,4 @@ module MCollective
     end
   end
 end
+
