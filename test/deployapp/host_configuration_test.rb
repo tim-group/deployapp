@@ -3,7 +3,7 @@ require 'test/unit'
 require 'fileutils'
 require 'deployapp/host_configuration'
 require 'deployapp/product_store_artifact_resolver'
-require 'deployapp/memory_participation_service'
+require 'deployapp/participation_service/memory'
 
 class HostConfigurationTest < Test::Unit::TestCase
   def test_config_definition_builds_app_instance

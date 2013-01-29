@@ -22,12 +22,12 @@ class DeployApp::ApplicationInstance
     end
 
     return {
-      :application=>@application_instance_config.application,
-      :group=>@application_instance_config.group,
-      :version=>status.version,
-      :present=>status.present?,
-      :participating=>@participation_service.participating(),
-      :health=>status.health
+      :application   => @application_instance_config.application,
+      :group         => @application_instance_config.group,
+      :version       => status.version,
+      :present       => status.present?,
+      :participating => @participation_service.participating?,
+      :health        => status.health
     }
   end
 

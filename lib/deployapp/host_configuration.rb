@@ -3,7 +3,7 @@ require 'deployapp/application_instance_configuration'
 require 'deployapp/application_instance'
 require 'deployapp/product_store_artifact_resolver'
 require 'deployapp/application_communicator'
-require 'deployapp/tatin_participation_service'
+require 'deployapp/participation_service/tatin'
 
 class DeployApp::HostConfiguration
   attr_reader :app_base_dir, :run_base_dir, :log_base_dir
@@ -57,8 +57,10 @@ class DeployApp::HostConfiguration
     if (application_instance_config.type() == "none")
       application_instance = DeployApp::ApplicationInstance.new(
         :application_instance_config => application_instance_config,
-        :participation_service       => MemoryParticipationService.new
-      )
+        :participation_service       => DeployApp::ParticipationService::Memory.new(:environment => @environment,
+        :application => application_instance_config.application,
+        :group       => application_instance_config.group
+      ))
     else
       artifacts_dir = application_instance_config.artifacts_dir()
       latest_jar = application_instance_config.latest_jar()
@@ -73,7 +75,7 @@ class DeployApp::HostConfiguration
         :config_file  => application_instance_config.config_filename
       )
 
-      @participation_service = DeployApp::TatinParticipationService.new(
+      @participation_service = DeployApp::ParticipationService::Tatin.new(
         :environment => @environment,
         :application => application_instance_config.application,
         :group       => application_instance_config.group

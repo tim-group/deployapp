@@ -3,7 +3,7 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'test/unit'
 require 'fileutils'
-require 'deployapp/memory_participation_service'
+require 'deployapp/participation_service/memory'
 require 'deployapp/application_instance_configuration'
 require 'deployapp/application_instance'
 require 'deployapp/stub/stub_artifact_resolver'
@@ -12,6 +12,14 @@ require 'deployapp/coord'
 
 describe DeployApp::ApplicationInstance do
   require 'spec/support/matchers/include_hash'
+
+  def memory_participation_service
+    DeployApp::ParticipationService::Memory.new(
+      :group => 'blue',
+      :application => 'foo',
+      :environment => 'qa'
+    )
+  end
 
   it 'test_generates_status_report_not_running' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
@@ -25,7 +33,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>DeployApp::MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
     )
 
     expected_status = {:application=>"MyArtifact",:group=>"blue",:version=>nil, :present=>false, :participating=>false}
@@ -45,7 +53,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
     )
 
     expected_status = {:application=>"MyArtifact",:group=>"blue",:version=>"21a", :present=>true,:participating=>false}
@@ -64,7 +72,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
     )
 
     application_instance.update_to_version(5)
@@ -84,7 +92,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
 
     )
 
@@ -107,7 +115,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
     )
 
     expect {
@@ -128,7 +136,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
     )
 
     expect {
@@ -146,7 +154,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
     )
 
     expect {
@@ -167,7 +175,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
     )
 
     application_instance.enable_participation()
@@ -187,7 +195,7 @@ describe DeployApp::ApplicationInstance do
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>MemoryParticipationService.new()
+    :participation_service=> memory_participation_service
 
     )
 
@@ -214,7 +222,7 @@ describe DeployApp::ApplicationInstance do
       :application_instance_config=> application_instance_config,
       :artifact_resolver=>stub_resolver,
       :application_communicator=>stub_communicator,
-      :participation_service=>MemoryParticipationService.new()
+      :participation_service=> memory_participation_service
     )
 
     application_instance.status().should include_hash({:health=>"healthy"})

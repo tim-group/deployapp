@@ -1,30 +1,30 @@
-require 'deployapp/namespace'
+require 'deployapp/participation_service'
 require 'net/http'
 
 include DeployApp
 
-class DeployApp::TatinParticipationService
+class DeployApp::ParticipationService::Tatin < DeployApp::ParticipationService
   def initialize(args)
     @tatin_server = args[:tatin_server] || "http://localhost:5643"
-    @environment = args[:environment] || "default"
-    @application = args[:application] || "default"
-    @group = args[:group] || "default"
+    super(args)
   end
 
-  def url()
-    return "#{@tatin_server}/#{@environment}/#{@application}/#{@group}"
-  end
-
-  def participating()
+  def participating?
     return "enabled"==get(url())
   end
 
-  def enable_participation()
+  def enable_participation
     put(url(),"enabled")
   end
 
-  def disable_participation()
+  def disable_participation
     put(url(),"disabled")
+  end
+
+  protected
+
+  def url()
+    return "#{@tatin_server}/#{@environment}/#{@application}/#{@group}"
   end
 
   def get(url)
