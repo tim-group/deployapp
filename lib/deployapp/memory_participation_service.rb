@@ -1,8 +1,8 @@
-require 'deploy/namespace'
+require 'deployapp/namespace'
 
-include Deploy
+include DeployApp
 
-class Deploy::MemoryParticipationService
+class DeployApp::MemoryParticipationService
   def participating()
     return     @participating==true
   end
@@ -15,3 +15,4 @@ class Deploy::MemoryParticipationService
     @participating=false
   end
 end
+

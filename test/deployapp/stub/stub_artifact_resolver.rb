@@ -1,14 +1,14 @@
-require 'deploy/stub/namespace'
+require 'deployapp/stub/namespace'
 require 'yaml'
 
-class Deploy::Stub::StubArtifactResolver
+class DeployApp::Stub::StubArtifactResolver
   def initialize(args={})
     @fail_to_resolve = args[:fail_to_resolve] or false
   end
 
   def resolve(coord)
     if (@fail_to_resolve)
-      raise Deploy::FailedToResolveArtifact
+      raise DeployApp::FailedToResolveArtifact
     end
 
     @coord=coord

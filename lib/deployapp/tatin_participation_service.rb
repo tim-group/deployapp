@@ -1,9 +1,9 @@
-require 'deploy/namespace'
+require 'deployapp/namespace'
 require 'net/http'
 
-include Deploy
+include DeployApp
 
-class Deploy::TatinParticipationService
+class DeployApp::TatinParticipationService
   def initialize(args)
     @tatin_server = args[:tatin_server] || "http://localhost:5643"
     @environment = args[:environment] || "default"

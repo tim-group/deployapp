@@ -3,31 +3,31 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'rubygems'
 require 'rspec'
-require 'deploy/application_communicator'
-require 'deploy/service_wrapper'
+require 'deployapp/application_communicator'
+require 'deployapp/service_wrapper'
 
-describe Deploy::ApplicationCommunicator do
+describe DeployApp::ApplicationCommunicator do
 
   before do
-    @status_present = Deploy::Status.new(true)
+    @status_present = DeployApp::Status.new(true)
     @status_present.add("stoppable", "safe")
     @status_present.add("version", nil)
 
-    @status_present_not_stoppable = Deploy::Status.new(true)
+    @status_present_not_stoppable = DeployApp::Status.new(true)
     @status_present_not_stoppable.add("stoppable", "unsafe")
     @status_present_not_stoppable.add("version", nil)
 
-    @status_not_present = Deploy::Status.new(false)
+    @status_not_present = DeployApp::Status.new(false)
     @status_not_present.add("stoppable", nil)
     @status_not_present.add("version", nil)
 
   end
 
   it 'stops app if stoppable' do
-    mock_status_retriever = double( Deploy::StatusRetriever.new)
+    mock_status_retriever = double( DeployApp::StatusRetriever.new)
     mock_service_wrapper = double()
 
-    service_communicator = Deploy::ApplicationCommunicator.new({
+    service_communicator = DeployApp::ApplicationCommunicator.new({
       :config_file => "f",
       :service_name => "myservice",
       :start_timeout => 1,
@@ -42,10 +42,10 @@ describe Deploy::ApplicationCommunicator do
   end
 
   it 'does not stop app if not stoppable' do
-    mock_status_retriever = double( Deploy::StatusRetriever.new)
+    mock_status_retriever = double( DeployApp::StatusRetriever.new)
     mock_service_wrapper = double()
 
-    service_communicator = Deploy::ApplicationCommunicator.new({
+    service_communicator = DeployApp::ApplicationCommunicator.new({
       :config_file => "f",
       :service_name => "myservice",
       :start_timeout => 1,
@@ -60,3 +60,4 @@ describe Deploy::ApplicationCommunicator do
   end
 
 end
+

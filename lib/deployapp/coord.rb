@@ -1,6 +1,6 @@
-require 'deploy/namespace'
+require 'deployapp/namespace'
 
-class Deploy::Coord
+class DeployApp::Coord
   attr_reader :name, :version, :type
 
   def initialize args

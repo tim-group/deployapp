@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'deploy/namespace'
+require 'deployapp/namespace'
 require 'util/log'
 require 'net/ssh'
 require 'net/scp'
@@ -10,7 +10,7 @@ end
 class ArtifactNotFound < Exception
 end
 
-class Deploy::ProductStoreArtifactResolver
+class DeployApp::ProductStoreArtifactResolver
   include Util::Log
   def initialize(args)
     @artifacts_dir = args[:artifacts_dir]

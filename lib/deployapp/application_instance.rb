@@ -1,8 +1,8 @@
-require 'deploy/namespace'
-require 'deploy/coord'
+require 'deployapp/namespace'
+require 'deployapp/coord'
 require 'util/log'
 
-class Deploy::ApplicationInstance
+class DeployApp::ApplicationInstance
   include Util::Log
 
   attr_reader :application_instance_config, :application_communicator, :artifact_resolver
@@ -32,7 +32,7 @@ class Deploy::ApplicationInstance
   end
 
   def update_to_version(version)
-    @artifact_resolver.resolve(Deploy::Coord.new(:name=>@application_instance_config.application(), :type=>"jar", :version=>version))
+    @artifact_resolver.resolve(DeployApp::Coord.new(:name=>@application_instance_config.application(), :type=>"jar", :version=>version))
 
     if (@application_communicator.get_status.present?)
       @application_communicator.stop()

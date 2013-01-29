@@ -1,6 +1,6 @@
-require 'deploy/namespace.rb'
+require 'deployapp/namespace.rb'
 
-class Deploy::ApplicationInstanceConfiguration
+class DeployApp::ApplicationInstanceConfiguration
   attr_reader :home, :config_filename, :artifacts_dir, :latest_jar
 
   def initialize(args={})

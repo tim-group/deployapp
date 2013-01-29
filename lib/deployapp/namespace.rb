@@ -1,4 +1,4 @@
-module Deploy
+module DeployApp
   class FailedToLaunch< Exception;end
 
   class FailedToStop< Exception;end
@@ -11,3 +11,4 @@ module Deploy
 
   class ParameterNotPresent< Exception; end
 end
+

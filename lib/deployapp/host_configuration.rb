@@ -1,11 +1,11 @@
-require 'deploy/namespace'
-require 'deploy/application_instance_configuration'
-require 'deploy/application_instance'
-require 'deploy/product_store_artifact_resolver'
-require 'deploy/application_communicator'
-require 'deploy/tatin_participation_service'
+require 'deployapp/namespace'
+require 'deployapp/application_instance_configuration'
+require 'deployapp/application_instance'
+require 'deployapp/product_store_artifact_resolver'
+require 'deployapp/application_communicator'
+require 'deployapp/tatin_participation_service'
 
-class Deploy::HostConfiguration
+class DeployApp::HostConfiguration
   attr_reader :app_base_dir, :run_base_dir, :log_base_dir
 
   def initialize( args = {:environment => ""} )
@@ -46,7 +46,7 @@ class Deploy::HostConfiguration
   end
 
   def application_instance(&hash)
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new(
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new(
       :app_base_dir => self.app_base_dir,
       :run_base_dir => self.run_base_dir,
       :log_base_dir => self.log_base_dir
@@ -55,31 +55,31 @@ class Deploy::HostConfiguration
     application_instance_config.apply_convention()
 
     if (application_instance_config.type() == "none")
-      application_instance = Deploy::ApplicationInstance.new(
+      application_instance = DeployApp::ApplicationInstance.new(
         :application_instance_config => application_instance_config,
         :participation_service       => MemoryParticipationService.new
       )
     else
       artifacts_dir = application_instance_config.artifacts_dir()
       latest_jar = application_instance_config.latest_jar()
-      @artifact_resolver = Deploy::ProductStoreArtifactResolver.new(
+      @artifact_resolver = DeployApp::ProductStoreArtifactResolver.new(
         :artifacts_dir    => artifacts_dir,
         :latest_jar       => latest_jar,
         :ssh_key_location => application_instance_config.ssh_key_location
       )
 
-      @app_communicator = Deploy::ApplicationCommunicator.new(
+      @app_communicator = DeployApp::ApplicationCommunicator.new(
         :service_name => "#{@environment}-#{application_instance_config.application}-#{application_instance_config.group}",
         :config_file  => application_instance_config.config_filename
       )
 
-      @participation_service = Deploy::TatinParticipationService.new(
+      @participation_service = DeployApp::TatinParticipationService.new(
         :environment => @environment,
         :application => application_instance_config.application,
         :group       => application_instance_config.group
       )
 
-      application_instance = Deploy::ApplicationInstance.new(
+      application_instance = DeployApp::ApplicationInstance.new(
         :application_instance_config => application_instance_config,
         :application_communicator    => @app_communicator,
         :artifact_resolver           => @artifact_resolver,
@@ -94,7 +94,7 @@ class Deploy::HostConfiguration
   def parse(dir="/opt/deploytool-#{@environment}/conf.d/")
 
     if (not File.exists?(dir))
-      raise Deploy::EnvironmentNotFound.new(dir)
+      raise DeployApp::EnvironmentNotFound.new(dir)
     end
 
     Dir.entries(dir).each do |file|
@@ -117,7 +117,7 @@ class Deploy::HostConfiguration
         return instance
       end
     end
-    raise Deploy::NoInstanceFound.new(spec)
+    raise DeployApp::NoInstanceFound.new(spec)
   end
 
   def status( spec = {} )

@@ -1,9 +1,9 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__), "..", "../lib")
 require 'test/unit'
 require 'fileutils'
-require 'deploy/host_configuration'
-require 'deploy/product_store_artifact_resolver'
-require 'deploy/memory_participation_service'
+require 'deployapp/host_configuration'
+require 'deployapp/product_store_artifact_resolver'
+require 'deployapp/memory_participation_service'
 
 class HostConfigurationTest < Test::Unit::TestCase
   def test_config_definition_builds_app_instance
@@ -16,7 +16,7 @@ class HostConfigurationTest < Test::Unit::TestCase
     }
     ]
 
-    host_configuration = Deploy::HostConfiguration.new
+    host_configuration = DeployApp::HostConfiguration.new
     host_configuration.add(config)
 
     assert_equal 1, host_configuration.application_instances().size()
@@ -44,13 +44,13 @@ application_instance {
       aFile.close
     end
 
-    host_configuration = Deploy::HostConfiguration.new
+    host_configuration = DeployApp::HostConfiguration.new
     host_configuration.parse("build/conf.d/")
     assert_equal 5, host_configuration.application_instances().size()
   end
 
   def test_status_shown_for_instances
-    host_configuration = Deploy::HostConfiguration.new
+    host_configuration = DeployApp::HostConfiguration.new
     for i in 0..4
       config = %[
 application_instance {
@@ -70,7 +70,7 @@ application_instance {
   end
 
   def test_key_identifies_instance
-    host_configuration = Deploy::HostConfiguration.new
+    host_configuration = DeployApp::HostConfiguration.new
     for i in 0..4
       config = %[
 application_instance {
@@ -85,7 +85,7 @@ application_instance {
   end
 
   def test_no_instance_matches_key
-    host_configuration = Deploy::HostConfiguration.new
+    host_configuration = DeployApp::HostConfiguration.new
     for i in 0..4
       config = %[
 application_instance {
@@ -96,7 +96,7 @@ type "none"
       host_configuration.add(config)
     end
 
-    assert_raise(Deploy::NoInstanceFound) do
+    assert_raise(DeployApp::NoInstanceFound) do
       host_configuration.get_application_instance({:application=>"BadApp", :group=>"blue"})
     end
   end
@@ -112,7 +112,7 @@ type "none"
        }
        ]
 
-    host_configuration = Deploy::HostConfiguration.new
+    host_configuration = DeployApp::HostConfiguration.new
     host_configuration.add(config)
 
     application_instance = host_configuration.application_instances()[0]
@@ -123,7 +123,7 @@ type "none"
   end
 
   def test_finds_services_in_group
-    host_configuration = Deploy::HostConfiguration.new
+    host_configuration = DeployApp::HostConfiguration.new
     for i in 0..4
       config = %[
 application_instance {
@@ -142,8 +142,8 @@ application_instance {
   end
 
   def test_directory_not_found
-    host_configuration = Deploy::HostConfiguration.new(:environment=>"noexist")
-    assert_raise(Deploy::EnvironmentNotFound)   {
+    host_configuration = DeployApp::HostConfiguration.new(:environment=>"noexist")
+    assert_raise(DeployApp::EnvironmentNotFound)   {
       host_configuration.parse("blah")
     }
   end

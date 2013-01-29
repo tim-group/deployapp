@@ -1,25 +1,25 @@
 require 'etc'
 require 'util/log'
-require 'deploy/namespace'
-require 'deploy/status'
-require 'deploy/status_retriever'
-require 'deploy/service_wrapper'
+require 'deployapp/namespace'
+require 'deployapp/status'
+require 'deployapp/status_retriever'
+require 'deployapp/service_wrapper'
 require 'util/config_file'
 require 'fileutils'
 
-include Deploy
+include DeployApp
 
-class Deploy::ApplicationCommunicator
+class DeployApp::ApplicationCommunicator
   include Util::Log
 
   def initialize(args)
-    @config_file = args[:config_file] or raise Deploy::ParameterNotPresent.new(:config_file)
+    @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:config_file)
     @config=Util::ConfigFile.new(@config_file)
-    @service_name = args[:service_name] or raise Deploy::ParameterNotPresent.new(:service_name)
+    @service_name = args[:service_name] or raise DeployApp::ParameterNotPresent.new(:service_name)
     @start_timeout = args[:start_timeout] || 120
     @stop_timeout = args[:stop_timeout] || 60
-    @status_retriever =  args[:status_retriever] || Deploy::StatusRetriever.new
-    @service_wrapper = args[:service_wrapper] || Deploy::ServiceWrapper.new
+    @status_retriever =  args[:status_retriever] || DeployApp::StatusRetriever.new
+    @service_wrapper = args[:service_wrapper] || DeployApp::ServiceWrapper.new
   end
 
   def start
@@ -61,3 +61,4 @@ class Deploy::ApplicationCommunicator
     raise "Gave up trying to stop instance"
   end
 end
+

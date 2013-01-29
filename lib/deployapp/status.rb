@@ -1,7 +1,7 @@
-require 'deploy/namespace'
-include Deploy
+require 'deployapp/namespace'
+include DeployApp
 
-class Deploy::Status
+class DeployApp::Status
   def initialize(present)
     @components = {}
     @present = present

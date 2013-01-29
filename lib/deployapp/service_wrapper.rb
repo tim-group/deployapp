@@ -1,6 +1,6 @@
-require 'deploy/namespace'
+require 'deployapp/namespace'
 
-class Deploy::ServiceWrapper
+class DeployApp::ServiceWrapper
   def start_service(service_name)
     system("service #{service_name} start")
   end

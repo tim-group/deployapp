@@ -1,25 +1,25 @@
 require 'etc'
 require 'util/log'
 require 'util/config_file'
-require 'deploy/namespace'
-require 'deploy/status_retriever'
+require 'deployapp/namespace'
+require 'deployapp/status_retriever'
 require 'fileutils'
 
-include Deploy
+include DeployApp
 
-class Deploy::EmbeddedJavaCommunicator
+class DeployApp::EmbeddedJavaCommunicator
   include Util::Log
   def initialize(args)
-    @runnable_jar = args[:runnable_jar] or raise Deploy::ParameterNotPresent.new(:runnable_jar)
-    @config_file = args[:config_file] or raise Deploy::ParameterNotPresent.new(:runnable_jar)
+    @runnable_jar = args[:runnable_jar] or raise DeployApp::ParameterNotPresent.new(:runnable_jar)
+    @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:runnable_jar)
     @config = Util::ConfigFile.new(@config_file)
-    @pid_file = args[:pid_file] or raise Deploy::ParameterNotPresent.new(:pid_file)
-    @log_file = args[:log_file] or raise Deploy::ParameterNotPresent.new(:log_file)
+    @pid_file = args[:pid_file] or raise DeployApp::ParameterNotPresent.new(:pid_file)
+    @log_file = args[:log_file] or raise DeployApp::ParameterNotPresent.new(:log_file)
     @start_timeout = args[:start_timeout] || 60
     @stop_timeout = args[:stop_timeout] || 60
     @jvm_args = args[:jvm_args] or ""
-    @status_retriever = Deploy::StatusRetriever.new
-    @run_as_user =  args[:run_as_user] or raise Deploy::ParameterNotPresent.new(:run_as_user)
+    @status_retriever = DeployApp::StatusRetriever.new
+    @run_as_user =  args[:run_as_user] or raise DeployApp::ParameterNotPresent.new(:run_as_user)
   end
 
   def start

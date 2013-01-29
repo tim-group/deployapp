@@ -1,7 +1,7 @@
-require 'deploy/stub/namespace'
-require 'deploy/status'
+require 'deployapp/stub/namespace'
+require 'deployapp/status'
 
-class Deploy::Stub::StubApplicationCommunicator
+class DeployApp::Stub::StubApplicationCommunicator
   attr_accessor :running
 
   def initialize(args={})
@@ -13,21 +13,21 @@ class Deploy::Stub::StubApplicationCommunicator
 
   def start()
     if (@fail_to_launch)
-      raise Deploy::FailedToLaunch
+      raise DeployApp::FailedToLaunch
     end
     @present = true
   end
 
   def stop()
     if (@fail_to_stop)
-      raise Deploy::FailedToStop
+      raise DeployApp::FailedToStop
     end
     @present = false
     @stop_called=true
   end
 
   def get_status()
-    status = Deploy::Status.new(@present)
+    status = DeployApp::Status.new(@present)
     status.add("version",@version)
     return status
   end

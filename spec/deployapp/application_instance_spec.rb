@@ -3,29 +3,29 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'test/unit'
 require 'fileutils'
-require 'deploy/memory_participation_service'
-require 'deploy/application_instance_configuration'
-require 'deploy/application_instance'
-require 'deploy/stub/stub_artifact_resolver'
-require 'deploy/stub/stub_application_communicator'
-require 'deploy/coord'
+require 'deployapp/memory_participation_service'
+require 'deployapp/application_instance_configuration'
+require 'deployapp/application_instance'
+require 'deployapp/stub/stub_artifact_resolver'
+require 'deployapp/stub/stub_application_communicator'
+require 'deployapp/coord'
 
-describe Deploy::ApplicationInstance do
+describe DeployApp::ApplicationInstance do
   require 'spec/support/matchers/include_hash'
 
   it 'test_generates_status_report_not_running' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new(:present=>false)
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:present=>false)
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
-    :participation_service=>Deploy::MemoryParticipationService.new()
+    :participation_service=>DeployApp::MemoryParticipationService.new()
     )
 
     expected_status = {:application=>"MyArtifact",:group=>"blue",:version=>nil, :present=>false, :participating=>false}
@@ -34,14 +34,14 @@ describe Deploy::ApplicationInstance do
   end
 
   it 'test_generates_status_report_when_running' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new(:present=>true, :version=>"21a")
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:present=>true, :version=>"21a")
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -53,14 +53,14 @@ describe Deploy::ApplicationInstance do
  end
 
   it 'test_can_update_to_new_version_cold' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -73,14 +73,14 @@ describe Deploy::ApplicationInstance do
   end
 
   it 'test_stops_application_before_launching' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new(:present=>true)
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:present=>true)
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -96,14 +96,14 @@ describe Deploy::ApplicationInstance do
   end
 
   it 'test_exception_raised_when_failed_to_resolve' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new(:fail_to_resolve=>true)
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new()
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new(:fail_to_resolve=>true)
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new()
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -112,19 +112,19 @@ describe Deploy::ApplicationInstance do
 
     expect {
         application_instance.update_to_version(5)
-    }.to raise_error Deploy::FailedToResolveArtifact
+    }.to raise_error DeployApp::FailedToResolveArtifact
 
   end
 
   it 'test_exception_raised_when_failed_to_launch' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new(:fail_to_launch=>true)
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:fail_to_launch=>true)
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -133,16 +133,16 @@ describe Deploy::ApplicationInstance do
 
     expect {
       application_instance.update_to_version(5)
-    }.to raise_error Deploy::FailedToLaunch
+    }.to raise_error DeployApp::FailedToLaunch
   end
 
   it 'test_exception_raised_when_failed_to_stop' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new(:fail_to_stop=>true,:present=>true)
-    application_instance = Deploy::ApplicationInstance.new(
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:fail_to_stop=>true,:present=>true)
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -151,19 +151,19 @@ describe Deploy::ApplicationInstance do
 
     expect {
            application_instance.update_to_version(5)
-    }.to raise_error(Deploy::FailedToStop)
+    }.to raise_error(DeployApp::FailedToStop)
 
   end
 
   it 'test_enable_participation' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new(:present=>true, :version=>"21a")
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:present=>true, :version=>"21a")
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -176,14 +176,14 @@ describe Deploy::ApplicationInstance do
   end
 
   it 'test_disable_participation' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
-    stub_communicator=Deploy::Stub::StubApplicationCommunicator.new(:present=>true, :version=>"21a")
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:present=>true, :version=>"21a")
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
     :artifact_resolver=>stub_resolver,
     :application_communicator=>stub_communicator,
@@ -199,18 +199,18 @@ describe Deploy::ApplicationInstance do
   end
 
   it 'reports health' do
-    application_instance_config = Deploy::ApplicationInstanceConfiguration.new()
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
-    stub_resolver=Deploy::Stub::StubArtifactResolver.new
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
     stub_communicator=double()
 
-    status = Deploy::Status.new(true)
+    status = DeployApp::Status.new(true)
     status.add("health","healthy")
     stub_communicator.stub(:get_status).with().and_return(status)
 
-    application_instance = Deploy::ApplicationInstance.new(
+    application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config=> application_instance_config,
       :artifact_resolver=>stub_resolver,
       :application_communicator=>stub_communicator,
@@ -221,3 +221,4 @@ describe Deploy::ApplicationInstance do
   end
 
 end
+

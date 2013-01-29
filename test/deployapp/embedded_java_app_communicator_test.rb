@@ -1,9 +1,9 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib","../test")
 require 'test/unit'
-require 'deploy/embedded_java_communicator'
-require 'deploy/application_instance'
+require 'deployapp/embedded_java_communicator'
+require 'deployapp/application_instance'
 
-class Deploy::EmbeddedJavaAppCommunicatorTest < Test::Unit::TestCase
+class DeployApp::EmbeddedJavaAppCommunicatorTest < Test::Unit::TestCase
   def test_reports_failure_to_launch_app
     file = File.new("build/rubbish.config","w")
     file.write("port=1111")

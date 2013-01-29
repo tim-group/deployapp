@@ -1,19 +1,19 @@
-require 'deploy/namespace'
-require 'deploy/status'
+require 'deployapp/namespace'
+require 'deployapp/status'
 require 'net/http'
 
-include Deploy
+include DeployApp
 
-class Deploy::StatusRetriever
+class DeployApp::StatusRetriever
   def retrieve(base_url)
     begin
-      status = Deploy::Status.new(true)
+      status = DeployApp::Status.new(true)
       ['stoppable', 'version', 'health'].each { |n|
         status.add(n, get("#{base_url}/info/#{n}"))
       }
       return status
     rescue  Exception
-      return Deploy::Status.new(false)
+      return DeployApp::Status.new(false)
     end
   end
 
