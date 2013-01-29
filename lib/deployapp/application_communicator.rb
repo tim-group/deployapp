@@ -1,20 +1,20 @@
 require 'etc'
-require 'util/log'
+require 'deployapp/util/log'
 require 'deployapp/namespace'
 require 'deployapp/status'
 require 'deployapp/status_retriever'
 require 'deployapp/service_wrapper'
-require 'util/config_file'
+require 'deployapp/util/config_file'
 require 'fileutils'
 
 include DeployApp
 
 class DeployApp::ApplicationCommunicator
-  include Util::Log
+  include DeployApp::Util::Log
 
   def initialize(args)
     @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:config_file)
-    @config=Util::ConfigFile.new(@config_file)
+    @config=DeployApp::Util::ConfigFile.new(@config_file)
     @service_name = args[:service_name] or raise DeployApp::ParameterNotPresent.new(:service_name)
     @start_timeout = args[:start_timeout] || 120
     @stop_timeout = args[:stop_timeout] || 60

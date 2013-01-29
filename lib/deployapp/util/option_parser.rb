@@ -1,12 +1,12 @@
-require 'util/namespace'
-require 'deploy/host_configuration'
+require 'deployapp/util/namespace'
+require 'deployapp/host_configuration'
 require 'optparse'
 require 'yaml'
 
-class Util::OptionParser
+class DeployApp::Util::OptionParser
   class Base
     def host_configuration(options)
-      hc = Deploy::HostConfiguration.new(
+      hc = DeployApp::HostConfiguration.new(
         :environment => options[:environment]
       )
       hc.parse("/opt/deploytool-#{options[:environment]}/conf.d/")

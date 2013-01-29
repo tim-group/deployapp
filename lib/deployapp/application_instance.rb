@@ -1,9 +1,9 @@
 require 'deployapp/namespace'
 require 'deployapp/coord'
-require 'util/log'
+require 'deployapp/util/log'
 
 class DeployApp::ApplicationInstance
-  include Util::Log
+  include DeployApp::Util::Log
 
   attr_reader :application_instance_config, :application_communicator, :artifact_resolver
 

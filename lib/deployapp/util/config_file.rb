@@ -1,8 +1,8 @@
-require 'util/namespace'
-require 'util/log'
+require 'deployapp/util/namespace'
+require 'deployapp/util/log'
 
-class Util::ConfigFile
-  include Util::Log
+class DeployApp::Util::ConfigFile
+  include DeployApp::Util::Log
   def initialize(filename)
     @filename = filename
     @properties = {}

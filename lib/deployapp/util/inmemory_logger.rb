@@ -1,6 +1,6 @@
-require 'util/namespace'
+require 'deployapp/util/namespace'
 
-class Util::InMemoryLogger
+class DeployApp::Util::InMemoryLogger
   def initialize()
     @debugs = []
     @infos = []

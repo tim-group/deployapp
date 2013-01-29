@@ -1,7 +1,7 @@
 require 'logger'
-require 'util/namespace'
+require 'deployapp/util/namespace'
 
-module Util::Log
+module DeployApp::Util::Log
   @@logger = Logger.new(STDOUT)
   def self.set_logger(logger)
     @@logger = logger

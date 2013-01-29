@@ -1,6 +1,6 @@
 require 'etc'
-require 'util/log'
-require 'util/config_file'
+require 'deployapp/util/log'
+require 'deployapp/util/config_file'
 require 'deployapp/namespace'
 require 'deployapp/status_retriever'
 require 'fileutils'
@@ -8,11 +8,11 @@ require 'fileutils'
 include DeployApp
 
 class DeployApp::EmbeddedJavaCommunicator
-  include Util::Log
+  include DeployApp::Util::Log
   def initialize(args)
     @runnable_jar = args[:runnable_jar] or raise DeployApp::ParameterNotPresent.new(:runnable_jar)
     @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:runnable_jar)
-    @config = Util::ConfigFile.new(@config_file)
+    @config = DeployApp::Util::ConfigFile.new(@config_file)
     @pid_file = args[:pid_file] or raise DeployApp::ParameterNotPresent.new(:pid_file)
     @log_file = args[:log_file] or raise DeployApp::ParameterNotPresent.new(:log_file)
     @start_timeout = args[:start_timeout] || 60
@@ -106,3 +106,4 @@ class DeployApp::EmbeddedJavaCommunicator
     )
   end
 end
+

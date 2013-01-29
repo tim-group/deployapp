@@ -1,6 +1,6 @@
-require 'util/namespace'
+require 'deployapp/util/namespace'
 
-class Util::CompositeLogger
+class DeployApp::Util::CompositeLogger
   def initialize(loggers)
     @loggers = loggers
   end

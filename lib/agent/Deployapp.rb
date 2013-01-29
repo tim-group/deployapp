@@ -1,14 +1,14 @@
 require 'mcollective'
-require 'deploy/namespace'
-require 'util/namespace'
+require 'deployapp/namespace'
+require 'deployapp/util/namespace'
 
-include Deploy
+include DeployApp
 
 def setup_logger
-  require 'util/composite_logger'
-  require 'util/inmemory_logger'
-  @remote_logger = Util::InMemoryLogger.new()
-  Util::Log.set_logger(Util::CompositeLogger.new([logger,@remote_logger]))
+  require 'deployapp/util/composite_logger'
+  require 'deployapp/util/inmemory_logger'
+  @remote_logger = DeployApp::Util::InMemoryLogger.new()
+  DeployApp::Util::Log.set_logger(DeployAppUtil::CompositeLogger.new([logger,@remote_logger]))
 end
 
 module MCollective
@@ -24,10 +24,10 @@ module MCollective
 
       def process_host_configuration(&block)
         begin
-          require 'deploy/host_configuration'
+          require 'deployapp/host_configuration'
           setup_logger()
-          require 'util/log'
-          extend ::Util::Log
+          require 'deployapp/util/log'
+          extend ::DeployApp::Util::Log
           config_dir_prefix = config.pluginconf["deployapp.conf_dir_prefix"] || "/opt/deploytool"
           app_dir_prefix = config.pluginconf["deployapp.app_dir_prefix"] || "/opt/apps"
           spec = request[:spec] || request
@@ -40,7 +40,7 @@ module MCollective
             return
           else
             reply.data = {}
-            host_configuration = Deploy::HostConfiguration.new(
+            host_configuration = DeployApp::HostConfiguration.new(
               :app_base_dir=>app_base_dir,
               :environment=>environment
             )
