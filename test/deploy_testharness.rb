@@ -1,1 +1,1 @@
-require 'deploy/embedded_java_communicator'
+require 'deployapp/embedded_java_communicator'

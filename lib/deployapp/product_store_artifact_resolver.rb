@@ -18,6 +18,7 @@ class DeployApp::ProductStoreArtifactResolver
     @ssh_key_location = args[:ssh_key_location]
     @latest_jar = args[:latest_jar]
     @ssh_address = "productstore.net.local"
+    @debug = false
   end
 
   def resolve(coords)
@@ -30,7 +31,8 @@ class DeployApp::ProductStoreArtifactResolver
     else
      logger.info("downloading artifact #{coords.string} from #{@ssh_address}")
      artifact=""
-      Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => :debug ) do|ssh|
+     verbose = @debug ? :debug : :error
+      Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => verbose ) do|ssh|
         cmd = "ls /opt/ProductStore/#{coords.name}/ | grep .*-#{coords.version}.*#{coords.type}"
 
         ssh.exec!(cmd) do |channel,stream,data|
@@ -39,7 +41,7 @@ class DeployApp::ProductStoreArtifactResolver
       end
 
       raise TooManyArtifacts.new("got #{artifact}") if artifact =~ /\n/
-      raise ArtifactNotFound.new("with Coords #{coords.string}") if artifact==""
+      raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if artifact==""
 
       Net::SCP.start(@ssh_address, "productstore", :keys=>[@ssh_key_location]) do |scp|
         d = scp.download("/opt/ProductStore/#{coords.name}/#{artifact}", "#{@artifacts_dir}/#{coords.string}")
