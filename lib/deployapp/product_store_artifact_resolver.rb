@@ -30,7 +30,7 @@ class DeployApp::ProductStoreArtifactResolver
     else
      logger.info("downloading artifact #{coords.string} from #{@ssh_address}")
      artifact=""
-      Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location] ) do|ssh|
+      Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => :debug ) do|ssh|
         cmd = "ls /opt/ProductStore/#{coords.name}/ | grep .*-#{coords.version}.*#{coords.type}"
 
         ssh.exec!(cmd) do |channel,stream,data|
