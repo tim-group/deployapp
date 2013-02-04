@@ -8,7 +8,7 @@ def setup_logger
   require 'deployapp/util/composite_logger'
   require 'deployapp/util/inmemory_logger'
   @remote_logger = DeployApp::Util::InMemoryLogger.new()
-  DeployApp::Util::Log.set_logger(DeployAppUtil::CompositeLogger.new([logger,@remote_logger]))
+  DeployApp::Util::Log.set_logger(DeployApp::Util::CompositeLogger.new([logger,@remote_logger]))
 end
 
 module MCollective
