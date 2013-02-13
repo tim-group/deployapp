@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 $: << File.join(File.dirname(__FILE__), "..", "lib")
 $: << '/opt/deploytool/lib'
-require 'util/option_parser'
+require 'deployapp/util/option_parser'
 
 Util::OptionParser.new.parse()
 
