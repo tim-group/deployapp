@@ -5,3 +5,4 @@ app_under_test.properties
 config/*
 .*.sw[a-z]
 *~
+.project
