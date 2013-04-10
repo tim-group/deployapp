@@ -97,12 +97,13 @@ class DeployApp::EmbeddedJavaCommunicator
     start_timeout = properties.get( "start_timeout" ) || 60
 
     return self.new(
-    :runnable_jar => "build/artifacts/#{runnable_jar}",
-    :config_file => "config/#{application_name}/config.properties",
-    :log_file => "build/console.log",
-    :pid_file => "build/tmp.pid",
-    :start_timeout => start_timeout.to_i,
-    :run_as_user => Etc.getlogin
+      :runnable_jar => "build/artifacts/#{runnable_jar}",
+      :config_file => "config/#{application_name}/config.properties",
+      :log_file => "build/console.log",
+      :pid_file => "build/tmp.pid",
+      :start_timeout => start_timeout.to_i,
+      :run_as_user => Etc.getlogin,
+      :jvm_args => properties.get("jvm_args")
     )
   end
 end
