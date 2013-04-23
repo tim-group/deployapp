@@ -41,8 +41,8 @@ module MCollective
           else
             reply.data = {}
             host_configuration = DeployApp::HostConfiguration.new(
-              :app_base_dir=>app_base_dir,
-              :environment=>environment
+              :app_base_dir => app_base_dir,
+              :environment  => environment
             )
             logger.debug("loading config from #{config_dir}")
             host_configuration.parse(config_dir)
