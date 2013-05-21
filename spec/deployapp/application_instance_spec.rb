@@ -206,13 +206,18 @@ describe DeployApp::ApplicationInstance do
     application_instance.status().should include_hash(expected_status)
   end
 
-  it 'stops' do
+  def app_present(present, communicator)
+   communicator.stub(:get_status).and_return(Status.new(present))
+  end
+
+  it 'stops when it is running' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
 
     stub_resolver=DeployApp::Stub::StubArtifactResolver.new
     communicator=double()
+    app_present(true, communicator)
     communicator.should_receive(:stop)
 
     application_instance = DeployApp::ApplicationInstance.new(
@@ -223,9 +228,27 @@ describe DeployApp::ApplicationInstance do
     )
 
     application_instance.stop()
-
  end
 
+ it 'does nothing when it is not running and it is asked to stop' do
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
+    application_instance_config.application("MyArtifact")
+    application_instance_config.group("blue")
+
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    communicator=double()
+    app_present(false, communicator)
+    communicator.should_not_receive(:stop)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config=> application_instance_config,
+      :artifact_resolver=>stub_resolver,
+      :application_communicator=>communicator,
+      :participation_service=> memory_participation_service
+    )
+
+    application_instance.stop()
+ end
 
   it 'reports health' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()

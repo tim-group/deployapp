@@ -51,7 +51,11 @@ class DeployApp::ApplicationInstance
   end
 
   def stop()
-    logger.info('stopping application')
-    @application_communicator.stop()
+    if @application_communicator.get_status().present?
+      logger.info('stopping application')
+      @application_communicator.stop()
+    else
+      logger.info("not stopping the application as it is already stopped")
+    end
   end
 end
