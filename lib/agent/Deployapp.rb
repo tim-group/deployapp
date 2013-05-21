@@ -96,6 +96,15 @@ module MCollective
           instance.disable_participation()
         end
       end
+
+      action "stop" do
+        spec = request[:spec] || request
+
+        process_instance do |instance|
+          logger.debug("recieved message to stop instance for spec #{spec}")
+          instance.stop()
+        end
+      end
     end
   end
 end

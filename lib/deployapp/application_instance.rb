@@ -49,4 +49,9 @@ class DeployApp::ApplicationInstance
     logger.info("disabling participation")
     @participation_service.disable_participation()
   end
+
+  def stop()
+    logger.info('stopping application')
+    @application_communicator.stop()
+  end
 end

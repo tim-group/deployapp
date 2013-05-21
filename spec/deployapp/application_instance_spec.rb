@@ -206,6 +206,27 @@ describe DeployApp::ApplicationInstance do
     application_instance.status().should include_hash(expected_status)
   end
 
+  it 'stops' do
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
+    application_instance_config.application("MyArtifact")
+    application_instance_config.group("blue")
+
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    communicator=double()
+    communicator.should_receive(:stop)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config=> application_instance_config,
+      :artifact_resolver=>stub_resolver,
+      :application_communicator=>communicator,
+      :participation_service=> memory_participation_service
+    )
+
+    application_instance.stop()
+
+ end
+
+
   it 'reports health' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
