@@ -61,7 +61,7 @@ class DeployApp::EmbeddedJavaCommunicator
       pid = IO.read(@pid_file).to_i
       File.delete( @pid_file )
       if File.exists?( "/proc/#{pid}" )
-        if ! system( "kill #{pid} 2>/dev/null" )
+        if ! system( "kill -9 #{pid} 2>/dev/null" )
           logger.info( "Failed to kill process #{pid}\n" )
           return
         end
