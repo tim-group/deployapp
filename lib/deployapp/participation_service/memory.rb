@@ -9,6 +9,7 @@ class DeployApp::ParticipationService::Memory < DeployApp::ParticipationService
 
   def enable_participation
     @participating=true
+    puts "<<<<<#{participating?}"
   end
 
   def disable_participation

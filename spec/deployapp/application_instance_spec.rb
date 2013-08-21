@@ -41,6 +41,29 @@ describe DeployApp::ApplicationInstance do
     application_instance.status().should include_hash(expected_status)
   end
 
+  it 'reports participation as false if the app is not running' do
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
+    application_instance_config.application("MyArtifact")
+    application_instance_config.group("blue")
+
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:present=>false)
+
+    memory_participation_service = double()
+
+    memory_participation_service.stub(:participating?).and_return(true)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config=> application_instance_config,
+      :artifact_resolver=>stub_resolver,
+      :application_communicator=>stub_communicator,
+      :participation_service=> memory_participation_service
+    )
+   expected_status = {:present=>false,:participating=>false}
+    application_instance.status().should include_hash(expected_status)
+ end
+
+
   it 'test_generates_status_report_when_running' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
@@ -50,10 +73,10 @@ describe DeployApp::ApplicationInstance do
     stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:present=>true, :version=>"21a")
 
     application_instance = DeployApp::ApplicationInstance.new(
-    :application_instance_config=> application_instance_config,
-    :artifact_resolver=>stub_resolver,
-    :application_communicator=>stub_communicator,
-    :participation_service=> memory_participation_service
+      :application_instance_config=> application_instance_config,
+      :artifact_resolver=>stub_resolver,
+      :application_communicator=>stub_communicator,
+      :participation_service=> memory_participation_service
     )
 
     expected_status = {:application=>"MyArtifact",:group=>"blue",:version=>"21a", :present=>true,:participating=>false}

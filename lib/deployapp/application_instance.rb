@@ -26,7 +26,7 @@ class DeployApp::ApplicationInstance
       :group         => @application_instance_config.group,
       :version       => status.version,
       :present       => status.present?,
-      :participating => @participation_service.participating?,
+      :participating => @participation_service.participating? && status.present?,
       :health        => status.health
     }
   end
