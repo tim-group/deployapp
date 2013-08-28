@@ -21,7 +21,7 @@ class DeployApp::ApplicationInstance
       status = Status::Status.new(false)
     end
 
-    return {
+    return_status = {
       :application   => @application_instance_config.application,
       :group         => @application_instance_config.group,
       :version       => status.version,
@@ -29,6 +29,10 @@ class DeployApp::ApplicationInstance
       :participating => @participation_service.participating? && status.present?,
       :health        => status.health
     }
+
+    logger.info(return_status)
+    return_status
+
   end
 
   def update_to_version(version)
