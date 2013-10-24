@@ -20,7 +20,6 @@ describe DeployApp::ApplicationCommunicator do
     @status_not_present = DeployApp::Status.new(false)
     @status_not_present.add("stoppable", nil)
     @status_not_present.add("version", nil)
-
   end
 
   it 'stops app if stoppable' do

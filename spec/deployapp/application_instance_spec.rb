@@ -295,5 +295,27 @@ describe DeployApp::ApplicationInstance do
     application_instance.status().should include_hash({:health=>"healthy"})
   end
 
+  it 'can separate virtualservice from artifact' do
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
+    application_instance_config.application("myvirtualservice")
+    application_instance_config.artifact("MyArtifact")
+    application_instance_config.group("blue")
+
+    stub_resolver=DeployApp::Stub::StubArtifactResolver.new
+    stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new
+
+    application_instance = DeployApp::ApplicationInstance.new(
+     :application_instance_config=> application_instance_config,
+     :artifact_resolver=>stub_resolver,
+     :application_communicator=>stub_communicator,
+     :participation_service=> memory_participation_service
+    )
+
+    application_instance.update_to_version(5)
+    stub_resolver.was_last_coord?(Coord.new(:name=>"MyArtifact",:version=>5,:type=>"jar")).should eql(true)
+    stub_communicator.get_status.present?.should eql(true)
+  end
+
+
 end
 

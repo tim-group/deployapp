@@ -10,6 +10,8 @@ require 'fileutils'
 include DeployApp
 
 class DeployApp::ApplicationCommunicator
+  attr_reader :service_name
+
   include DeployApp::Util::Log
 
   def initialize(args)

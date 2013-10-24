@@ -71,7 +71,7 @@ class DeployApp::HostConfiguration
       )
 
       @app_communicator = DeployApp::ApplicationCommunicator.new(
-        :service_name => "#{@environment}-#{application_instance_config.application}-#{application_instance_config.group}",
+        :service_name => "#{@environment}-#{application_instance_config.artifact}-#{application_instance_config.group}",
         :config_file  => application_instance_config.config_filename
       )
 

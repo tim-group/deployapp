@@ -14,6 +14,11 @@ class DeployApp::ApplicationInstanceConfiguration
     return @application
   end
 
+  def artifact(artifact = @artifact)
+    @artifact = artifact
+    return @artifact
+  end
+
   def group(group = @group)
     @group = group
     return @group
@@ -34,12 +39,15 @@ class DeployApp::ApplicationInstanceConfiguration
   end
 
   def run_as_user
-    return @application.downcase
+    return @artifact.downcase
   end
 
   def apply_convention
+    if (@artifact== nil)
+      @artifact = @application
+    end
     if (@home == nil)
-      @home = "#{@app_base_dir}/#{@application}-#{@group}"
+      @home = "#{@app_base_dir}/#{@artifact}-#{@group}"
     end
     if (@config_filename == nil)
       @config_filename = "#{@home}/config.properties"
@@ -49,7 +57,7 @@ class DeployApp::ApplicationInstanceConfiguration
     end
 
     if (@latest_jar == nil)
-      @latest_jar = "#{@artifacts_dir}/#{@application}"
+      @latest_jar = "#{@artifacts_dir}/#{@artifact}"
     end
   end
 end

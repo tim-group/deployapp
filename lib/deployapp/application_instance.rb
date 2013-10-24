@@ -36,7 +36,7 @@ class DeployApp::ApplicationInstance
   end
 
   def update_to_version(version)
-    @artifact_resolver.resolve(DeployApp::Coord.new(:name=>@application_instance_config.application(), :type=>"jar", :version=>version))
+    @artifact_resolver.resolve(DeployApp::Coord.new(:name=>@application_instance_config.artifact(), :type=>"jar", :version=>version))
 
     if (@application_communicator.get_status.present?)
       @application_communicator.stop()

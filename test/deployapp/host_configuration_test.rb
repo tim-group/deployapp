@@ -6,7 +6,7 @@ require 'deployapp/product_store_artifact_resolver'
 require 'deployapp/participation_service/memory'
 
 class HostConfigurationTest < Test::Unit::TestCase
-  def test_config_definition_builds_app_instance
+  def test_not_setting_artifact_defaults_to_virtualservice_name
     config = %[
     application_instance {
           application "App1"
@@ -16,18 +16,69 @@ class HostConfigurationTest < Test::Unit::TestCase
     }
     ]
 
+    config2 = %[
+    application_instance {
+          application "App2"
+          artifact "Artifact1"
+          group "blue"
+          additional_jvm_args "-Xms3m -Xmx5m"
+          type "none"
+    }
+    ]
+
+
     host_configuration = DeployApp::HostConfiguration.new
     host_configuration.add(config)
+    host_configuration.add(config2)
 
-    assert_equal 1, host_configuration.application_instances().size()
+    assert_equal "App1", host_configuration.application_instances()[0].application_instance_config.artifact
+    assert_equal "Artifact1", host_configuration.application_instances()[1].application_instance_config.artifact
+  end
+
+
+  def test_config_definition_builds_app_instance
+    config = %[
+    application_instance {
+          application "App1"
+          artifact "Artifact1"
+          group "blue"
+          additional_jvm_args "-Xms3m -Xmx5m"
+          type "xxx"
+    }
+    ]
+
+    config_defaulted_artifact = %[
+    application_instance {
+          application "App1"
+          group "blue"
+          additional_jvm_args "-Xms3m -Xmx5m"
+          type "xxx"
+    }
+    ]
+
+
+    host_configuration = DeployApp::HostConfiguration.new
+    host_configuration.add(config)
+    host_configuration.add(config_defaulted_artifact)
+
+    assert_equal "-Artifact1-blue", host_configuration.application_instances()[0].application_communicator.service_name
+
     assert_equal "App1", host_configuration.application_instances()[0].application_instance_config.application
+
+    assert_equal 2, host_configuration.application_instances().size()
+    assert_equal "App1", host_configuration.application_instances()[0].application_instance_config.application
+    assert_equal "Artifact1", host_configuration.application_instances()[0].application_instance_config.artifact
     assert_equal "blue", host_configuration.application_instances()[0].application_instance_config.group
     assert_equal "/root/.ssh/productstore", host_configuration.application_instances()[0].application_instance_config.ssh_key_location
 
-    assert_equal "/opt/apps/App1-blue", host_configuration.application_instances()[0].application_instance_config.home
-    assert_equal "/opt/apps/App1-blue/config.properties", host_configuration.application_instances()[0].application_instance_config.config_filename
+    assert_equal "/opt/apps/Artifact1-blue", host_configuration.application_instances()[0].application_instance_config.home
+    assert_equal "/opt/apps/Artifact1-blue/config.properties", host_configuration.application_instances()[0].application_instance_config.config_filename
 
-    assert_equal "app1", host_configuration.application_instances()[0].application_instance_config.run_as_user
+    assert_equal "/opt/apps/App1-blue/config.properties", host_configuration.application_instances()[1].application_instance_config.config_filename
+
+
+    assert_equal "artifact1", host_configuration.application_instances()[0].application_instance_config.run_as_user
+    assert_equal "/opt/apps/Artifact1-blue/artifacts/Artifact1", host_configuration.application_instances()[0].application_instance_config.latest_jar
   end
 
   def test_loading_config_files_builds_many_instances
