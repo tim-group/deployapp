@@ -27,6 +27,11 @@ class DeployApp::ApplicationCommunicator
     wait_until_started()
   end
 
+  def kill
+    @service_wrapper.stop_service(@service_name)
+    wait_until_stopped()
+  end
+
   def stop
     if (get_status.stoppable?)
       @service_wrapper.stop_service(@service_name)

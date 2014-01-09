@@ -54,6 +54,15 @@ class DeployApp::ApplicationInstance
     @participation_service.disable_participation()
   end
 
+  def kill()
+    if @application_communicator.get_status().present?
+      logger.info('hard killing application')
+      @application_communicator.kill()
+    else
+      logger.info("not hard killing the application as it is already stopped")
+    end
+  end
+
   def stop()
     if @application_communicator.get_status().present?
       logger.info('stopping application')

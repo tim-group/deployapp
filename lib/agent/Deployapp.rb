@@ -105,6 +105,16 @@ module MCollective
           instance.stop()
         end
       end
+
+      action "kill" do
+        spec = request[:spec] || request
+
+        process_instance do |instance|
+          logger.debug("recieved message to kill instance for spec #{spec}")
+          instance.kill()
+        end
+      end
+
     end
   end
 end
