@@ -14,5 +14,5 @@ matrix:
 script: "bundle exec rake spec"
 notifications:
   email:
-    - tomas.doran@timgroup.com
+    - infra@timgroup.com
 
