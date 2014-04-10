@@ -20,7 +20,7 @@ class DeployApp::Util::ConfigFile
   end
 
   def port
-    return @properties["port"].strip
+    return @properties["port"].strip if !@properties["port"].nil?
   end
 end
 
