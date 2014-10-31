@@ -3,6 +3,7 @@ require 'deployapp/namespace'
 require 'deployapp/util/log'
 require 'net/ssh'
 require 'net/scp'
+require 'time'
 
 class TooManyArtifacts < Exception
 end
@@ -43,10 +44,13 @@ class DeployApp::ProductStoreArtifactResolver
       raise TooManyArtifacts.new("got #{artifact}") if artifact =~ /\n/
       raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if artifact==""
 
+      start = Time.new()
       Net::SCP.start(@ssh_address, "productstore", :keys=>[@ssh_key_location], :config=>false, :user_known_hosts_file=>[]) do |scp|
         d = scp.download("/opt/ProductStore/#{coords.name}/#{artifact}", "#{@artifacts_dir}/#{coords.string}")
         d.wait
       end
+      elapsed_time = Time.new() - start
+      logger.info("downloaded artifact #{coords.string} #{elapsed_time} seconds")
     end
 
     self.cleanOldArtifacts
