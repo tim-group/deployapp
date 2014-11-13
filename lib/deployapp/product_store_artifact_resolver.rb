@@ -69,7 +69,7 @@ class DeployApp::ProductStoreArtifactResolver
     end
   end
 
-  def count_candidates(coords)
+  def count_artifacts(coords)
     artifact=""
     verbose = @debug ? :debug : :error
     Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => verbose, :config=>false, :user_known_hosts_file=>[])  do|ssh|
@@ -84,6 +84,6 @@ class DeployApp::ProductStoreArtifactResolver
     return 1
   end
 
-  private :count_candidates
+  private :count_artifacts
 end
 
