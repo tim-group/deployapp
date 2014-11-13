@@ -25,7 +25,7 @@ class DeployApp::ProductStoreArtifactResolver
   def can_resolve(coords)
     artifact_file="#{@artifacts_dir}/#{coords.string}"
     return true if File.exist?(artifact_file)
-    return count_artifacts(coords) > 0
+    return fetch_artifact_names(coords).length > 0
   end
 
   def resolve(coords)
@@ -37,13 +37,13 @@ class DeployApp::ProductStoreArtifactResolver
       FileUtils.touch(artifact_file)
     else
       logger.info("downloading artifact #{coords.string} from #{@ssh_address}")
-      candidate_count = count_artifacts(coords)
-      raise TooManyArtifacts.new("got #{artifact}") if candidate_count > 1
-      raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if candidate_count == 0
+      artifact_names = fetch_artifact_names(coords)
+      raise TooManyArtifacts.new("got #{artifact}") if artifact_names.length > 1
+      raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if artifact_names.empty?
 
       start = Time.new()
       Net::SCP.start(@ssh_address, "productstore", :keys=>[@ssh_key_location], :config=>false, :user_known_hosts_file=>[]) do |scp|
-        d = scp.download("/opt/ProductStore/#{coords.name}/#{artifact}", artifact_file)
+        d = scp.download("/opt/ProductStore/#{coords.name}/#{artifact_names[0]}", artifact_file)
         d.wait
       end
       elapsed_time = Time.new() - start
@@ -69,7 +69,7 @@ class DeployApp::ProductStoreArtifactResolver
     end
   end
 
-  def count_artifacts(coords)
+  def fetch_artifact_names(coords)
     artifact=""
     verbose = @debug ? :debug : :error
     Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => verbose, :config=>false, :user_known_hosts_file=>[])  do|ssh|
@@ -79,11 +79,9 @@ class DeployApp::ProductStoreArtifactResolver
       end
     end
 
-    return 2 if artifact =~ /\n/
-    return 0 if artifact == ""
-    return 1
+    return artifact.split("\n")
   end
 
-  private :count_artifacts
+  private :fetch_artifact_names
 end
 
