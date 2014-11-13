@@ -2,6 +2,7 @@ require 'deployapp/namespace'
 require 'deployapp/application_instance_configuration'
 require 'deployapp/application_instance'
 require 'deployapp/product_store_artifact_resolver'
+require 'deployapp/debian_package_artifact_resolver'
 require 'deployapp/application_communicator'
 require 'deployapp/participation_service/tatin'
 
@@ -69,6 +70,9 @@ class DeployApp::HostConfiguration
         :artifacts_dir    => artifacts_dir,
         :latest_jar       => latest_jar,
         :ssh_key_location => application_instance_config.ssh_key_location
+      )
+      @artifact_resolvers << DeployApp::DebianPackageArtifactResolver.new(
+        :latest_jar       => latest_jar
       )
 
       @app_communicator = DeployApp::ApplicationCommunicator.new(
