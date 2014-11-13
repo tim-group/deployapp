@@ -23,7 +23,9 @@ class DeployApp::ProductStoreArtifactResolver
   end
 
   def can_resolve(coords)
-    true
+    artifact_file="#{@artifacts_dir}/#{coords.string}"
+    return true if File.exist?(artifact_file)
+    return count_artifacts(coords) > 0
   end
 
   def resolve(coords)
@@ -34,23 +36,14 @@ class DeployApp::ProductStoreArtifactResolver
       logger.info("using artifact #{coords.string} from cache")
       FileUtils.touch(artifact_file)
     else
-     logger.info("downloading artifact #{coords.string} from #{@ssh_address}")
-     artifact=""
-     verbose = @debug ? :debug : :error
-      Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => verbose, :config=>false, :user_known_hosts_file=>[])  do|ssh|
-        cmd = "ls /opt/ProductStore/#{coords.name}/ | grep .*-#{coords.version}.*#{coords.type}"
-
-        ssh.exec!(cmd) do |channel,stream,data|
-          artifact << data.chomp if stream == :stdout
-        end
-      end
-
-      raise TooManyArtifacts.new("got #{artifact}") if artifact =~ /\n/
-      raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if artifact==""
+      logger.info("downloading artifact #{coords.string} from #{@ssh_address}")
+      candidate_count = count_artifacts(coords)
+      raise TooManyArtifacts.new("got #{artifact}") if candidate_count > 1
+      raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if candidate_count == 0
 
       start = Time.new()
       Net::SCP.start(@ssh_address, "productstore", :keys=>[@ssh_key_location], :config=>false, :user_known_hosts_file=>[]) do |scp|
-        d = scp.download("/opt/ProductStore/#{coords.name}/#{artifact}", "#{@artifacts_dir}/#{coords.string}")
+        d = scp.download("/opt/ProductStore/#{coords.name}/#{artifact}", artifact_file)
         d.wait
       end
       elapsed_time = Time.new() - start
@@ -75,5 +68,22 @@ class DeployApp::ProductStoreArtifactResolver
       end
     end
   end
+
+  def count_candidates(coords)
+    artifact=""
+    verbose = @debug ? :debug : :error
+    Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => verbose, :config=>false, :user_known_hosts_file=>[])  do|ssh|
+      cmd = "ls /opt/ProductStore/#{coords.name}/ | grep .*-#{coords.version}.*#{coords.type}"
+      ssh.exec!(cmd) do |channel,stream,data|
+        artifact << data.chomp if stream == :stdout
+      end
+    end
+
+    return 2 if artifact =~ /\n/
+    return 0 if artifact == ""
+    return 1
+  end
+
+  private :count_candidates
 end
 
