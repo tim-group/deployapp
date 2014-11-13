@@ -12,6 +12,10 @@ class DeployApp::DebianPackageArtifactResolver
     @latest_jar = args[:latest_jar]
   end
 
+  def can_resolve(coords)
+    true
+  end
+
   def resolve(coords)
     logger.info("resolving #{coords.string}")
 

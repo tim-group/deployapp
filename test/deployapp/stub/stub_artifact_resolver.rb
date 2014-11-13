@@ -6,6 +6,10 @@ class DeployApp::Stub::StubArtifactResolver
     @fail_to_resolve = args[:fail_to_resolve] or false
   end
 
+  def can_resolve(coord)
+    true
+  end
+
   def resolve(coord)
     if (@fail_to_resolve)
       raise DeployApp::FailedToResolveArtifact

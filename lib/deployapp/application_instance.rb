@@ -5,11 +5,11 @@ require 'deployapp/util/log'
 class DeployApp::ApplicationInstance
   include DeployApp::Util::Log
 
-  attr_reader :application_instance_config, :application_communicator, :artifact_resolver
+  attr_reader :application_instance_config, :application_communicator, :artifact_resolvers
 
   def initialize(args)
     @application_instance_config = args[:application_instance_config]
-    @artifact_resolver = args[:artifact_resolver]
+    @artifact_resolvers = args[:artifact_resolvers]
     @application_communicator = args[:application_communicator]
     @participation_service = args[:participation_service] or raise "Please provide a participation service"
   end
@@ -32,11 +32,11 @@ class DeployApp::ApplicationInstance
 
     logger.info(return_status)
     return_status
-
   end
 
   def update_to_version(version)
-    @artifact_resolver.resolve(DeployApp::Coord.new(:name=>@application_instance_config.application(), :type=>"jar", :version=>version))
+    coords = DeployApp::Coord.new(:name=>@application_instance_config.application(), :type=>"jar", :version=>version)
+    resolve(coords) or raise "unable to resolve #{coords.string}"
 
     if (@application_communicator.get_status.present?)
       @application_communicator.stop()
@@ -71,4 +71,16 @@ class DeployApp::ApplicationInstance
       logger.info("not stopping the application as it is already stopped")
     end
   end
+
+  def resolve(coords)
+    @artifact_resolvers.each do |resolver|
+      if (resolver.can_resolve(coords))
+        resolver.resolve(coords)
+        return true
+      end
+    end
+    return false
+  end
+
+  private :resolve
 end

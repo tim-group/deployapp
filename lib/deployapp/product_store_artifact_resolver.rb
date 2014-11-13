@@ -22,6 +22,10 @@ class DeployApp::ProductStoreArtifactResolver
     @debug = false
   end
 
+  def can_resolve(coords)
+    true
+  end
+
   def resolve(coords)
     logger.info("resolving #{coords.string}")
     artifact_file="#{@artifacts_dir}/#{coords.string}"

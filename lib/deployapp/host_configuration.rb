@@ -37,6 +37,7 @@ class DeployApp::HostConfiguration
       end
     end
 
+    @artifact_resolvers = []
     @application_instances = []
   end
 
@@ -64,7 +65,7 @@ class DeployApp::HostConfiguration
     else
       artifacts_dir = application_instance_config.artifacts_dir()
       latest_jar = application_instance_config.latest_jar()
-      @artifact_resolver = DeployApp::ProductStoreArtifactResolver.new(
+      @artifact_resolvers << DeployApp::ProductStoreArtifactResolver.new(
         :artifacts_dir    => artifacts_dir,
         :latest_jar       => latest_jar,
         :ssh_key_location => application_instance_config.ssh_key_location
@@ -84,7 +85,7 @@ class DeployApp::HostConfiguration
       application_instance = DeployApp::ApplicationInstance.new(
         :application_instance_config => application_instance_config,
         :application_communicator    => @app_communicator,
-        :artifact_resolver           => @artifact_resolver,
+        :artifact_resolvers          => @artifact_resolvers,
         :participation_service       => @participation_service
       )
 
