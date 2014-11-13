@@ -13,19 +13,12 @@ class DeployApp::DebianPackageArtifactResolver
   end
 
   def can_resolve(coords)
-    true
+    system("apt-get update") && system("apt-get install --dry-run #{coords.name}=#{coords.version}")
   end
 
   def resolve(coords)
-    logger.info("resolving #{coords.string}")
-
-    if system("apt-get update") && system("apt-get install --dry-run #{coords.name}=#{coords.version}")
-      logger.info("installing debian package #{coords.string}")
-      system("apt-get install #{coords.name}=#{coords.version}")
-    else
-      raise PackageNotFound.new("could not find artifact with Coords #{coords.string}")
-    end
-
+    logger.info("installing debian package #{coords.string}")
+    system("apt-get install #{coords.name}=#{coords.version}")
     FileUtils.ln_sf("/usr/share/timgroup/#{coords.name}/latest.jar",  @latest_jar, :force=>true)
   end
 
