@@ -13,7 +13,10 @@ class DeployApp::DebianPackageArtifactResolver
   end
 
   def can_resolve(coords)
-    system("apt-get update") && system("apt-get install --dry-run #{coords.name}=#{coords.version}")
+    logger.info("looking for debian package #{coords.name}=#{coords.version}...")
+    result = system("apt-get update") && system("apt-get install --dry-run #{coords.name}=#{coords.version}")
+    logger.info("...found") if result
+    result
   end
 
   def resolve(coords)

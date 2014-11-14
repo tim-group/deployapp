@@ -23,9 +23,17 @@ class DeployApp::ProductStoreArtifactResolver
   end
 
   def can_resolve(coords)
+    logger.info("looking for productstore artifact #{coords.string}...")
     artifact_file="#{@artifacts_dir}/#{coords.string}"
-    return true if File.exist?(artifact_file)
-    return fetch_artifact_names(coords).length > 0
+
+    if File.exist?(artifact_file)
+      logger.info("...found locally")
+      return true
+    end
+
+    result = fetch_artifact_names(coords).length > 0
+    logger.info("...found") if result
+    result
   end
 
   def resolve(coords)
