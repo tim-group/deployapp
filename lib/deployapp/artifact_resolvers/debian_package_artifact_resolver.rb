@@ -1,11 +1,11 @@
 require 'rubygems'
-require 'deployapp/namespace'
+require 'deployapp/artifact_resolvers/namespace'
 require 'deployapp/util/log'
 
 class PackageNotFound < Exception
 end
 
-class DeployApp::DebianPackageArtifactResolver
+class DeployApp::ArtifactResolvers::DebianPackageArtifactResolver
   include DeployApp::Util::Log
 
   def initialize(args)

@@ -1,10 +1,10 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib")
 
 require 'test/unit'
-require 'deployapp/product_store_artifact_resolver'
+require 'deployapp/artifact_resolvers/product_store_artifact_resolver'
 require 'deployapp/coord'
 
-class ProductStoreArtifactResolverTest  < Test::Unit::TestCase
+class DeployApp::ArtifactResolvers::ProductStoreArtifactResolverTest  < Test::Unit::TestCase
   def test_resolve_specific_version
     resolver =  ProductStoreArtifactResolver.new(:appHome=>"build", :artifactsDir=>"build/")
     file = resolver.resolve(Coord.new(:name=>"TIMConnect",:version=>"1918", :type=>"jar"))

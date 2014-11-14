@@ -2,7 +2,6 @@ $LOAD_PATH << File.join(File.dirname(__FILE__), "..", "../lib")
 require 'test/unit'
 require 'fileutils'
 require 'deployapp/host_configuration'
-require 'deployapp/product_store_artifact_resolver'
 require 'deployapp/participation_service/memory'
 
 class HostConfigurationTest < Test::Unit::TestCase

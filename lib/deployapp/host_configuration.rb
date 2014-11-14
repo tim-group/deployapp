@@ -1,8 +1,8 @@
 require 'deployapp/namespace'
 require 'deployapp/application_instance_configuration'
 require 'deployapp/application_instance'
-require 'deployapp/product_store_artifact_resolver'
-require 'deployapp/debian_package_artifact_resolver'
+require 'deployapp/artifact_resolvers/product_store_artifact_resolver'
+require 'deployapp/artifact_resolvers/debian_package_artifact_resolver'
 require 'deployapp/application_communicator'
 require 'deployapp/participation_service/tatin'
 
@@ -66,12 +66,12 @@ class DeployApp::HostConfiguration
     else
       artifacts_dir = application_instance_config.artifacts_dir()
       latest_jar = application_instance_config.latest_jar()
-      @artifact_resolvers << DeployApp::ProductStoreArtifactResolver.new(
+      @artifact_resolvers << DeployApp::ArtifactResolvers::ProductStoreArtifactResolver.new(
         :artifacts_dir    => artifacts_dir,
         :latest_jar       => latest_jar,
         :ssh_key_location => application_instance_config.ssh_key_location
       )
-      @artifact_resolvers << DeployApp::DebianPackageArtifactResolver.new(
+      @artifact_resolvers << DeployApp::ArtifactResolvers::DebianPackageArtifactResolver.new(
         :latest_jar       => latest_jar
       )
 
