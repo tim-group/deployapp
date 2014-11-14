@@ -5,11 +5,11 @@ require 'deployapp/util/log'
 class DeployApp::ApplicationInstance
   include DeployApp::Util::Log
 
-  attr_reader :application_instance_config, :application_communicator, :artifact_resolvers
+  attr_reader :application_instance_config, :application_communicator, :artifact_resolver
 
   def initialize(args)
     @application_instance_config = args[:application_instance_config]
-    @artifact_resolvers = args[:artifact_resolvers]
+    @artifact_resolver = args[:artifact_resolver]
     @application_communicator = args[:application_communicator]
     @participation_service = args[:participation_service] or raise "Please provide a participation service"
   end
@@ -36,7 +36,7 @@ class DeployApp::ApplicationInstance
 
   def update_to_version(version)
     coords = DeployApp::Coord.new(:name=>@application_instance_config.application(), :type=>"jar", :version=>version)
-    resolve(coords) or raise "unable to resolve #{coords.string}"
+    @artifact_resolver.resolve(coords) or raise "unable to resolve #{coords.string}"
 
     if (@application_communicator.get_status.present?)
       @application_communicator.stop()
@@ -72,15 +72,4 @@ class DeployApp::ApplicationInstance
     end
   end
 
-  def resolve(coords)
-    @artifact_resolvers.each do |resolver|
-      if (resolver.can_resolve(coords))
-        resolver.resolve(coords)
-        return true
-      end
-    end
-    return false
-  end
-
-  private :resolve
 end

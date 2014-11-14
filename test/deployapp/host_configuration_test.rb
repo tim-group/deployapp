@@ -116,7 +116,7 @@ type "none"
 
     application_instance = host_configuration.application_instances()[0]
 
-    assert_equal(2, application_instance.artifact_resolvers.length)
+    assert_not_nil application_instance.artifact_resolver
     assert_not_nil application_instance.application_communicator
   end
 

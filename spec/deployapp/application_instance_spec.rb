@@ -31,7 +31,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
     )
@@ -55,7 +55,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config=> application_instance_config,
-      :artifact_resolvers=> [stub_resolver],
+      :artifact_resolver=> stub_resolver,
       :application_communicator=>stub_communicator,
       :participation_service=> memory_participation_service
     )
@@ -74,7 +74,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config=> application_instance_config,
-      :artifact_resolvers=> [stub_resolver],
+      :artifact_resolver=> stub_resolver,
       :application_communicator=>stub_communicator,
       :participation_service=> memory_participation_service
     )
@@ -93,7 +93,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
     )
@@ -113,7 +113,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
 
@@ -136,7 +136,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
     )
@@ -157,7 +157,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
     )
@@ -175,7 +175,7 @@ describe DeployApp::ApplicationInstance do
     stub_communicator=DeployApp::Stub::StubApplicationCommunicator.new(:fail_to_stop=>true,:present=>true)
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
     )
@@ -196,7 +196,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
     )
@@ -216,7 +216,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
     :application_instance_config=> application_instance_config,
-    :artifact_resolvers=> [stub_resolver],
+    :artifact_resolver=> stub_resolver,
     :application_communicator=>stub_communicator,
     :participation_service=> memory_participation_service
 
@@ -245,7 +245,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config=> application_instance_config,
-      :artifact_resolvers=> [stub_resolver],
+      :artifact_resolver=> stub_resolver,
       :application_communicator=>communicator,
       :participation_service=> memory_participation_service
     )
@@ -265,7 +265,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config=> application_instance_config,
-      :artifact_resolvers=> [stub_resolver],
+      :artifact_resolver=> stub_resolver,
       :application_communicator=>communicator,
       :participation_service=> memory_participation_service
     )
@@ -287,7 +287,7 @@ describe DeployApp::ApplicationInstance do
 
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config=> application_instance_config,
-      :artifact_resolvers=> [stub_resolver],
+      :artifact_resolver=> stub_resolver,
       :application_communicator=>stub_communicator,
       :participation_service=> memory_participation_service
     )

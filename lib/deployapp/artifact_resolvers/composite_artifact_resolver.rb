@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'deployapp/artifact_resolvers/namespace'
+require 'deployapp/artifact_resolvers/product_store_artifact_resolver'
+require 'deployapp/artifact_resolvers/debian_package_artifact_resolver'
 require 'deployapp/util/log'
 
 class PackageNotFound < Exception
