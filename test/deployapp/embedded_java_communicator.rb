@@ -11,7 +11,7 @@ class DeployApp::EmbeddedJavaCommunicator
   include DeployApp::Util::Log
   def initialize(args)
     @runnable_jar = args[:runnable_jar] or raise DeployApp::ParameterNotPresent.new(:runnable_jar)
-    @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:runnable_jar)
+    @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:config_file)
     @config = DeployApp::Util::ConfigFile.new(@config_file)
     @pid_file = args[:pid_file] or raise DeployApp::ParameterNotPresent.new(:pid_file)
     @log_file = args[:log_file] or raise DeployApp::ParameterNotPresent.new(:log_file)
