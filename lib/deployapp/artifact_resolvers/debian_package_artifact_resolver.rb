@@ -22,7 +22,7 @@ class DeployApp::ArtifactResolvers::DebianPackageArtifactResolver
   def resolve(coords)
     logger.info("installing debian package #{coords.string}")
     system("sudo apt-get -y install #{coords.name.downcase}=#{coords.version}")
-    FileUtils.ln_sf("/usr/share/timgroup/#{coords.name.downcase}/latest.jar",  @latest_jar, :force=>true)
+    FileUtils.ln_sf("/usr/share/timgroup/#{coords.name.downcase}/latest.jar",  @latest_jar)
   end
 
 end
