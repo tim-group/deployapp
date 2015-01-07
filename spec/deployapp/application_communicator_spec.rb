@@ -36,7 +36,7 @@ describe DeployApp::ApplicationCommunicator do
       :service_wrapper => mock_service_wrapper
     })
 
-    mock_status_retriever.stub(:retrieve).with("http://localhost:").and_return(@status_present, @status_not_present, @status_not_present,@status_not_present)
+    mock_status_retriever.stub(:retrieve).with("http://127.0.0.1:").and_return(@status_present, @status_not_present, @status_not_present,@status_not_present)
     mock_service_wrapper.should_receive(:stop_service).with("myservice")
     service_communicator.stop()
   end
@@ -54,7 +54,7 @@ describe DeployApp::ApplicationCommunicator do
       :service_wrapper => mock_service_wrapper
     })
 
-    mock_status_retriever.stub(:retrieve).with("http://localhost:").and_return(@status_present_not_stoppable)
+    mock_status_retriever.stub(:retrieve).with("http://127.0.0.1:").and_return(@status_present_not_stoppable)
     mock_service_wrapper.should_not_receive(:stop_service).with("myservice")
     expect {  service_communicator.stop()}.to raise_error
   end

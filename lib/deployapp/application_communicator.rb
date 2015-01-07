@@ -42,7 +42,7 @@ class DeployApp::ApplicationCommunicator
   end
 
   def get_status
-    status =  @status_retriever.retrieve("http://localhost:#{@config.port}")
+    status =  @status_retriever.retrieve("http://127.0.0.1:#{@config.port}")
     return status
   end
 

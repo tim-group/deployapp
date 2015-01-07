@@ -5,7 +5,7 @@ include DeployApp
 
 class DeployApp::ParticipationService::Tatin < DeployApp::ParticipationService
   def initialize(args)
-    @tatin_server = args[:tatin_server] || "http://localhost:5643"
+    @tatin_server = args[:tatin_server] || "http://127.0.0.1:5643"
     super(args)
   end
 
