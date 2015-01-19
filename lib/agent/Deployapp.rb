@@ -69,6 +69,15 @@ module MCollective
         end
       end
 
+      action "get_artifact" do
+        version = request[:version]
+        logger.debug("recieved message to get artifact version #{version}")
+
+        process_instance do |instance|
+          instance.get_artifact(version)
+        end
+      end
+
       action "update_to_version" do
         version = request[:version]
         logger.debug("recieved message to update key #{request} to version #{version}")

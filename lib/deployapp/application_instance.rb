@@ -34,9 +34,13 @@ class DeployApp::ApplicationInstance
     return_status
   end
 
-  def update_to_version(version)
+  def get_artifact(version)
     coords = DeployApp::Coord.new(:name=>@application_instance_config.application(), :type=>"jar", :version=>version)
     @artifact_resolver.resolve(coords) or raise "unable to resolve #{coords.string}"
+  end
+
+  def update_to_version(version)
+    get_artifact(version)
 
     if (@application_communicator.get_status.present?)
       @application_communicator.stop()
