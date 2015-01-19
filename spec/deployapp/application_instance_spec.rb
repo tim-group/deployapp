@@ -59,9 +59,9 @@ describe DeployApp::ApplicationInstance do
       :application_communicator=>stub_communicator,
       :participation_service=> memory_participation_service
     )
-   expected_status = {:present=>false,:participating=>false}
+    expected_status = {:present=>false,:participating=>false}
     application_instance.status().should include_hash(expected_status)
- end
+  end
 
 
   it 'test_generates_status_report_when_running' do
@@ -81,7 +81,7 @@ describe DeployApp::ApplicationInstance do
 
     expected_status = {:application=>"MyArtifact",:group=>"blue",:version=>"21a", :present=>true,:participating=>false}
     application_instance.status().should include_hash(expected_status)
- end
+  end
 
   it 'test_can_update_to_new_version_cold' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
@@ -142,7 +142,7 @@ describe DeployApp::ApplicationInstance do
     )
 
     expect {
-        application_instance.update_to_version(5)
+      application_instance.update_to_version(5)
     }.to raise_error DeployApp::FailedToResolveArtifact
 
   end
@@ -181,7 +181,7 @@ describe DeployApp::ApplicationInstance do
     )
 
     expect {
-           application_instance.update_to_version(5)
+      application_instance.update_to_version(5)
     }.to raise_error(DeployApp::FailedToStop)
 
   end
@@ -230,7 +230,7 @@ describe DeployApp::ApplicationInstance do
   end
 
   def app_present(present, communicator)
-   communicator.stub(:get_status).and_return(Status.new(present))
+    communicator.stub(:get_status).and_return(Status.new(present))
   end
 
   it 'stops when it is running' do
@@ -251,9 +251,9 @@ describe DeployApp::ApplicationInstance do
     )
 
     application_instance.stop()
- end
+  end
 
- it 'does nothing when it is not running and it is asked to stop' do
+  it 'does nothing when it is not running and it is asked to stop' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
@@ -271,7 +271,7 @@ describe DeployApp::ApplicationInstance do
     )
 
     application_instance.stop()
- end
+  end
 
   it 'reports health' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new()

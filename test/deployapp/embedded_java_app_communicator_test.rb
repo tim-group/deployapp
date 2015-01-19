@@ -23,7 +23,7 @@ class DeployApp::EmbeddedJavaAppCommunicatorTest < Test::Unit::TestCase
       raise "expected unable-to-launch exception"
     rescue Exception => e
       assert_block do
-          e.message =~ /Unable to start process in a reasonable amount of time/
+        e.message =~ /Unable to start process in a reasonable amount of time/
       end
     end
   end
