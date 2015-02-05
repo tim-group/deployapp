@@ -139,6 +139,25 @@ application_instance {
     assert_equal(0, status.size())
   end
 
+  def test_finds_services_in_group
+    host_configuration = DeployApp::HostConfiguration.new
+    for i in 0..4
+      config = %[
+application_instance {
+  application "App#{i}"
+  group "blue"
+  type "none"
+}]
+      host_configuration.add(config)
+    end
+
+    status = host_configuration.status({:group=>"blue"})
+    assert_equal(5, status.size())
+
+    status = host_configuration.status({:group=>"green"})
+    assert_equal(0, status.size())
+  end
+
   def test_directory_not_found
     host_configuration = DeployApp::HostConfiguration.new(:environment=>"noexist")
     assert_raise(DeployApp::EnvironmentNotFound)   {

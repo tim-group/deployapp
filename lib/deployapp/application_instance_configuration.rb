@@ -7,6 +7,7 @@ class DeployApp::ApplicationInstanceConfiguration
     @app_base_dir = args[:app_base_dir]
     @run_base_dir = args[:run_base_dir]
     @log_base_dir = args[:log_base_dir]
+    @cluster = "default"
   end
 
   def application(application = @application)
@@ -17,6 +18,11 @@ class DeployApp::ApplicationInstanceConfiguration
   def group(group = @group)
     @group = group
     return @group
+  end
+
+  def cluster(cluster = @cluster)
+    @cluster = cluster
+    return @cluster
   end
 
   def type(type = @type)

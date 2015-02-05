@@ -24,6 +24,7 @@ class DeployApp::ApplicationInstance
     return_status = {
       :application   => @application_instance_config.application,
       :group         => @application_instance_config.group,
+      :cluster       => @application_instance_config.cluster,
       :version       => status.version,
       :present       => status.present?,
       :participating => @participation_service.participating? && status.present?,
