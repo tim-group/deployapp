@@ -62,7 +62,7 @@ application_instance {
 
     status = host_configuration.status()
     assert_equal(5, status.size())
-    assert_equal({:application=>"App4", :group=>"blue", :version=>nil,:present=>false, :participating=>false, :health=>nil}, status[4])
+    assert_equal({:application=>"App4", :group=>"blue", :version=>nil,:present=>false, :participating=>false, :health=>nil, :cluster=>"default"}, status[4])
 
     app_status = host_configuration.status(:application=>"App4")
     assert_equal(1, app_status.size())
