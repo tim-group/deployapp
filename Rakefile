@@ -115,3 +115,8 @@ task :spec => [:test]
 
 desc "Setup, package, test, and upload"
 task :build  => [:setup,:package,:test]
+
+desc "Run lint (Rubocop)"
+task :lint do
+  sh "/var/lib/gems/1.9.1/bin/rubocop"
+end
