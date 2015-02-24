@@ -26,11 +26,11 @@ describe DeployApp::ApplicationCommunicator do
     mock_service_wrapper = double
 
     service_communicator = DeployApp::ApplicationCommunicator.new(:config_file => "f",
-      :service_name => "myservice",
-      :start_timeout => 1,
-      :stop_timeout => 2,
-      :status_retriever => mock_status_retriever,
-      :service_wrapper => mock_service_wrapper)
+                                                                  :service_name => "myservice",
+                                                                  :start_timeout => 1,
+                                                                  :stop_timeout => 2,
+                                                                  :status_retriever => mock_status_retriever,
+                                                                  :service_wrapper => mock_service_wrapper)
 
     mock_status_retriever.stub(:retrieve).with("http://127.0.0.1:").and_return(@status_present,
                                                                                @status_not_present,
@@ -45,11 +45,11 @@ describe DeployApp::ApplicationCommunicator do
     mock_service_wrapper = double
 
     service_communicator = DeployApp::ApplicationCommunicator.new(:config_file => "f",
-      :service_name => "myservice",
-      :start_timeout => 1,
-      :stop_timeout => 2,
-      :status_retriever => mock_status_retriever,
-      :service_wrapper => mock_service_wrapper)
+                                                                  :service_name => "myservice",
+                                                                  :start_timeout => 1,
+                                                                  :stop_timeout => 2,
+                                                                  :status_retriever => mock_status_retriever,
+                                                                  :service_wrapper => mock_service_wrapper)
 
     mock_status_retriever.stub(:retrieve).with("http://127.0.0.1:").and_return(@status_present_not_stoppable)
     mock_service_wrapper.should_not_receive(:stop_service).with("myservice")

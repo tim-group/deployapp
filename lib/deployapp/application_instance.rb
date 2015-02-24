@@ -15,7 +15,7 @@ class DeployApp::ApplicationInstance
   end
 
   def status
-    if @application_communicator != nil
+    if !@application_communicator.nil?
       status = @application_communicator.get_status
     else
       status = Status::Status.new(false)
@@ -37,7 +37,7 @@ class DeployApp::ApplicationInstance
 
   def get_artifact(version)
     coords = DeployApp::Coord.new(:name => @application_instance_config.application, :type => "jar", :version => version)
-    @artifact_resolver.resolve(coords) or raise "unable to resolve #{coords.string}"
+    @artifact_resolver.resolve(coords) || raise("unable to resolve #{coords.string}")
   end
 
   def update_to_version(version)

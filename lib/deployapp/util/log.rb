@@ -8,6 +8,6 @@ module DeployApp::Util::Log
   end
 
   def logger
-    return @@logger
+    @@logger
   end
 end

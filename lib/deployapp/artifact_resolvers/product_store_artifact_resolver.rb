@@ -58,15 +58,15 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
       logger.info("downloaded artifact #{coords.string} #{elapsed_time} seconds")
     end
 
-    self.cleanOldArtifacts
+    self.clean_old_artifacts
     file = File.new(artifact_file)
     FileUtils.ln_sf(file.path,  @latest_jar)
 
     logger.info("#{coords.string} resolved successfully")
-    return file
+    file
   end
 
-  def cleanOldArtifacts
+  def clean_old_artifacts
     files = Dir.glob("#{@artifacts_dir}/*.jar")
     sorted = files.sort_by { |filename| File.mtime("#{filename}") }
     if sorted.size > @maxartifacts
@@ -87,7 +87,7 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
       end
     end
 
-    return artifact.split("\n")
+    artifact.split("\n")
   end
 
   private :fetch_artifact_names

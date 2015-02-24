@@ -12,22 +12,22 @@ class DeployApp::Status
   end
 
   def present?
-    return @present
+    @present
   end
 
   def stoppable?
-    return @components["stoppable"] == "safe"
+    @components["stoppable"] == "safe"
   end
 
   def version
-    return @components["version"]
+    @components["version"]
   end
 
   def available?
-    return @components["available"] == "true"
+    @components["available"] == "true"
   end
 
   def health
-    return @components["health"]
+    @components["health"]
   end
 end

@@ -58,8 +58,8 @@ class DeployApp::HostConfiguration
       application_instance = DeployApp::ApplicationInstance.new(
         :application_instance_config => application_instance_config,
         :participation_service       => DeployApp::ParticipationService::Memory.new(:environment => @environment,
-        :application => application_instance_config.application,
-        :group       => application_instance_config.group
+                                                                                    :application => application_instance_config.application,
+                                                                                    :group       => application_instance_config.group
       ))
     else
       artifacts_dir = application_instance_config.artifacts_dir
@@ -94,7 +94,7 @@ class DeployApp::HostConfiguration
   end
 
   def parse(dir = "/opt/deploytool-#{@environment}/conf.d/")
-    if not File.exists?(dir)
+    if !File.exists?(dir)
       raise DeployApp::EnvironmentNotFound.new(dir)
     end
 
@@ -108,13 +108,11 @@ class DeployApp::HostConfiguration
     self
   end
 
-  def application_instances
-    return @application_instances
-  end
+  attr_reader :application_instances
 
   def get_application_instance(spec)
     @application_instances.each do |instance|
-      if instance.status[:application] == spec[:application] and instance.status[:group] == spec[:group]
+      if instance.status[:application] == spec[:application] && instance.status[:group] == spec[:group]
         return instance
       end
     end
@@ -127,15 +125,15 @@ class DeployApp::HostConfiguration
       statuses << instance.status
     end
 
-    if (spec[:group] != nil)
+    if !spec[:group].nil?
       statuses =  statuses.select { |status| status[:group] == spec[:group] }
     end
-    if (spec[:application] != nil)
+    if !spec[:application].nil?
       statuses =  statuses.select { |status|
         status[:application] == spec[:application]
       }
 
     end
-    return statuses
+    statuses
   end
 end

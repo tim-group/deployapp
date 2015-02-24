@@ -29,10 +29,8 @@ class DeployApp::Stub::StubApplicationCommunicator
   def get_status
     status = DeployApp::Status.new(@present)
     status.add("version", @version)
-    return status
+    status
   end
 
-  def stop_called
-    return @stop_called
-  end
+  attr_reader :stop_called
 end

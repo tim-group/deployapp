@@ -9,15 +9,15 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolverTest  < Test::Un
   def test_resolve_specific_version
     resolver = DeployApp::ArtifactResolvers::ProductStoreArtifactResolver.new(:appHome => "build", :artifactsDir => "build/")
     file = resolver.resolve(Coord.new(:name => "TIMConnect", :version => "1918", :type => "jar"))
-    expectedArtifactPath = "build/TIMConnect-1918.jar"
-    assert File.exists?(expectedArtifactPath), "expected #{expectedArtifactPath} to exist"
+    expected_artifact_path = "build/TIMConnect-1918.jar"
+    assert File.exists?(expected_artifact_path), "expected #{expected_artifact_path} to exist"
   end
 
   def test_resolve_different_artifact
     resolver = DeployApp::ArtifactResolvers::ProductStoreArtifactResolver.new(:appHome => "build", :artifactsDir => "build/")
     file = resolver.resolve(Coord.new(:name => "TIM-CSN", :version => "42", :type => "jar"))
-    expectedArtifactPath = "build/TIM-CSN-42.jar"
-    assert File.exists?(expectedArtifactPath), "expected #{expectedArtifactPath} to exist"
+    expected_artifact_path = "build/TIM-CSN-42.jar"
+    assert File.exists?(expected_artifact_path), "expected #{expected_artifact_path} to exist"
   end
 
   def test_resolve_fails_if_two_matching_artifacts
@@ -52,7 +52,7 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolverTest  < Test::Un
   def test_resolves_blondin
     resolver = DeployApp::ArtifactResolvers::ProductStoreArtifactResolver.new(:appHome => "build", :artifactsDir => "build/")
     file = resolver.resolve(Coord.new(:name => "Blondin", :version => "0.0.1.50", :type => "jar"))
-    expectedArtifactPath = "build/Blondin-0.0.1.50.jar"
-    assert File.exists?(expectedArtifactPath), "expected #{expectedArtifactPath} to exist"
+    expected_artifact_path = "build/Blondin-0.0.1.50.jar"
+    assert File.exists?(expected_artifact_path), "expected #{expected_artifact_path} to exist"
   end
 end

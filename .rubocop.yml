@@ -25,6 +25,9 @@ Style/HashSyntax:
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
+Style/TrivialAccessors:
+  AllowPredicates: true
+
 # Offense count: 8
 # Cop supports --auto-correct.
 Lint/DeprecatedClassMethods:
@@ -40,10 +43,6 @@ Lint/Eval:
 
 # Offense count: 1
 Lint/HandleExceptions:
-  Enabled: false
-
-# Offense count: 1
-Lint/LiteralInCondition:
   Enabled: false
 
 # Offense count: 4
@@ -94,17 +93,6 @@ Metrics/PerceivedComplexity:
 Style/AccessorMethodName:
   Enabled: false
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/AlignArray:
-  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle, SupportedLastArgumentHashStyles.
-Style/AlignHash:
-  Enabled: false
-
 # Offense count: 17
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -149,22 +137,6 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   Enabled: false
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/IndentHash:
-  Enabled: false
-
-# Offense count: 15
-# Cop supports --auto-correct.
-Style/LeadingCommentSpace:
-  Enabled: false
-
-# Offense count: 2
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/MethodName:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/MultilineBlockLayout:
@@ -180,43 +152,10 @@ Style/NegatedIf:
 Style/NilComparison:
   Enabled: false
 
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: IncludeSemanticChanges.
-Style/NonNilCheck:
-  Enabled: false
-
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/Not:
-  Enabled: false
-
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/PerlBackrefs:
-  Enabled: false
-
 # Offense count: 11
 # Configuration parameters: SupportedStyles.
 Style/RaiseArgs:
   EnforcedStyle: compact
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Enabled: false
-
-# Offense count: 38
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Enabled: false
 
 # Offense count: 6
 # Cop supports --auto-correct.
@@ -236,11 +175,6 @@ Style/SignalException:
 # Offense count: 13
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:
-  Enabled: false
-
-# Offense count: 4
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/VariableName:
   Enabled: false
 
 # Offense count: 1

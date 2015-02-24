@@ -29,6 +29,6 @@ class DeployApp::ArtifactResolvers::CompositeArtifactResolver
         return true
       end
     end
-    return false
+    false
   end
 end

@@ -12,35 +12,35 @@ class DeployApp::ApplicationInstanceConfiguration
 
   def application(application = @application)
     @application = application
-    return @application
+    @application
   end
 
   def group(group = @group)
     @group = group
-    return @group
+    @group
   end
 
   def cluster(cluster = @cluster)
     @cluster = cluster
-    return @cluster
+    @cluster
   end
 
   def type(type = @type)
     @type = type
-    return @type
+    @type
   end
 
   def additional_jvm_args(additional_jvm_args = @additional_jvm_args)
     @additional_jvm_args = additional_jvm_args
-    return @additional_jvm_args
+    @additional_jvm_args
   end
 
   def ssh_key_location
-    return  "/root/.ssh/productstore"
+    "/root/.ssh/productstore"
   end
 
   def run_as_user
-    return @application.downcase
+    @application.downcase
   end
 
   def apply_convention

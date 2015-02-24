@@ -20,7 +20,7 @@ class DeployApp::Util::OptionParser
 
   class StatusRequest < Base
     def required
-      return [:environment]
+      [:environment]
     end
 
     def execute(options)
@@ -30,7 +30,7 @@ class DeployApp::Util::OptionParser
 
   class InstallRequest < Base
     def required
-      return [:environment, :application, :group, :version]
+      [:environment, :application, :group, :version]
     end
 
     def execute(options)
@@ -42,7 +42,7 @@ class DeployApp::Util::OptionParser
 
   class DisableParticipationRequest < Base
     def required
-      return [:environment, :application, :group]
+      [:environment, :application, :group]
     end
 
     def execute(options)
@@ -53,7 +53,7 @@ class DeployApp::Util::OptionParser
 
   class EnableParticipationRequest < Base
     def required
-      return [:environment, :application, :group]
+      [:environment, :application, :group]
     end
 
     def execute(options)

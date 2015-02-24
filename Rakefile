@@ -17,17 +17,11 @@ class Project
     @version = args[:version]
   end
 
-  def name
-    return @name
-  end
+  attr_reader :name
 
-  def description
-    return @description
-  end
+  attr_reader :description
 
-  def version
-    return @version
-  end
+  attr_reader :version
 end
 
 @project = Project.new(

@@ -46,7 +46,7 @@ class DeployApp::EmbeddedJavaCommunicator
       if !get_status.present?
         return
       end
-      if get_status.present? and get_status.stoppable?
+      if get_status.present? && get_status.stoppable?
         clean_up
       end
       sleep 1
@@ -77,7 +77,7 @@ class DeployApp::EmbeddedJavaCommunicator
   end
 
   def get_status
-    return @status_retriever.retrieve("http://localhost:#{@config.port}")
+    @status_retriever.retrieve("http://localhost:#{@config.port}")
   end
 
   def as_user(user, &block)
@@ -95,7 +95,7 @@ class DeployApp::EmbeddedJavaCommunicator
     type = properties.get("type")
     start_timeout = properties.get("start_timeout") || 60
 
-    return self.new(
+    self.new(
       :runnable_jar => "build/latest.jar",
       :config_file => "config/#{application_name}/config.properties",
       :log_file => "build/console.log",

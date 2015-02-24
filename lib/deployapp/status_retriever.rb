@@ -6,15 +6,13 @@ include DeployApp
 
 class DeployApp::StatusRetriever
   def retrieve(base_url)
-    begin
-      status = DeployApp::Status.new(true)
-      %w(stoppable version health).each { |n|
-        status.add(n, get("#{base_url}/info/#{n}"))
-      }
-      return status
-    rescue  Exception
-      return DeployApp::Status.new(false)
-    end
+    status = DeployApp::Status.new(true)
+    %w(stoppable version health).each { |n|
+      status.add(n, get("#{base_url}/info/#{n}"))
+    }
+    return status
+  rescue  Exception
+    return DeployApp::Status.new(false)
   end
 
   def get(url)

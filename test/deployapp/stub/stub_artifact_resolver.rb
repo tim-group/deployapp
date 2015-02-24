@@ -15,6 +15,6 @@ class DeployApp::Stub::StubArtifactResolver
   end
 
   def was_last_coord?(coord)
-    return @coord.equal_to(coord)
+    @coord.equal_to(coord)
   end
 end

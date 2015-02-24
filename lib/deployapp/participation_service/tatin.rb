@@ -10,7 +10,7 @@ class DeployApp::ParticipationService::Tatin < DeployApp::ParticipationService
   end
 
   def participating?
-    return "enabled" == get(url)
+    "enabled" == get(url)
   end
 
   def enable_participation
@@ -24,7 +24,7 @@ class DeployApp::ParticipationService::Tatin < DeployApp::ParticipationService
   protected
 
   def url
-    return "#{@tatin_server}/#{@environment}/#{@application}/#{@group}"
+    "#{@tatin_server}/#{@environment}/#{@application}/#{@group}"
   end
 
   def get(url)

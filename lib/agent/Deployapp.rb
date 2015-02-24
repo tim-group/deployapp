@@ -23,39 +23,37 @@ module MCollective
       end
 
       def process_host_configuration(&block)
-        begin
-          require 'deployapp/host_configuration'
-          setup_logger
-          require 'deployapp/util/log'
-          extend ::DeployApp::Util::Log
-          config_dir_prefix = config.pluginconf["deployapp.conf_dir_prefix"] || "/opt/deploytool"
-          app_dir_prefix = config.pluginconf["deployapp.app_dir_prefix"] || "/opt/apps"
-          spec = request[:spec] || request
-          environment = spec[:environment]
-          config_dir = "#{config_dir_prefix}-#{environment}/conf.d"
-          app_base_dir = "#{app_dir_prefix}-#{environment}"
+        require 'deployapp/host_configuration'
+        setup_logger
+        require 'deployapp/util/log'
+        extend ::DeployApp::Util::Log
+        config_dir_prefix = config.pluginconf["deployapp.conf_dir_prefix"] || "/opt/deploytool"
+        app_dir_prefix = config.pluginconf["deployapp.app_dir_prefix"] || "/opt/apps"
+        spec = request[:spec] || request
+        environment = spec[:environment]
+        config_dir = "#{config_dir_prefix}-#{environment}/conf.d"
+        app_base_dir = "#{app_dir_prefix}-#{environment}"
 
-          if not File.exists?(config_dir)
-            reply.data = nil
-            return
-          else
-            reply.data = {}
-            host_configuration = DeployApp::HostConfiguration.new(
-              :app_base_dir => app_base_dir,
-              :environment  => environment
-            )
-            logger.debug("loading config from #{config_dir}")
-            host_configuration.parse(config_dir)
-            block.call(host_configuration)
-          end
-          reply.data[:successful] = true
-        rescue Exception => e
-          logger.error("AN ERROR OCCURED: #{e.inspect}")
-          logger.debug(e.backtrace)
-          reply.data[:successful] = false
-        ensure
-          reply.data[:logs] = @remote_logger.logs
+        if !File.exists?(config_dir)
+          reply.data = nil
+          return
+        else
+          reply.data = {}
+          host_configuration = DeployApp::HostConfiguration.new(
+            :app_base_dir => app_base_dir,
+            :environment  => environment
+          )
+          logger.debug("loading config from #{config_dir}")
+          host_configuration.parse(config_dir)
+          block.call(host_configuration)
         end
+        reply.data[:successful] = true
+      rescue Exception => e
+        logger.error("AN ERROR OCCURED: #{e.inspect}")
+        logger.debug(e.backtrace)
+        reply.data[:successful] = false
+      ensure
+        reply.data[:logs] = @remote_logger.logs
       end
 
       action "status" do

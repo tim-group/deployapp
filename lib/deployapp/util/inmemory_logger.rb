@@ -25,7 +25,7 @@ class DeployApp::Util::InMemoryLogger
   end
 
   def logs
-    return {
+    {
       :debugs => @debugs,
       :infos  => @infos,
       :warns  => @warns,

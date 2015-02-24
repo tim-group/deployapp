@@ -43,7 +43,7 @@ class DeployApp::ApplicationCommunicator
 
   def get_status
     status =  @status_retriever.retrieve("http://127.0.0.1:#{@config.port}")
-    return status
+    status
   end
 
   def wait_until_started

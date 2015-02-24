@@ -8,7 +8,7 @@ class DeployApp::Util::ConfigFile
     @properties = {}
     begin
       IO.foreach(filename) do |line|
-        @properties[$1.strip] = $2 if line =~ /([^=]*)=(.*)\/\/(.*)/ || line =~ /([^=]*)=(.*)/
+        @properties[Regexp.last_match(1).strip] = Regexp.last_match(2) if line =~ /([^=]*)=(.*)\/\/(.*)/ || line =~ /([^=]*)=(.*)/
       end
     rescue
       logger.error("ERROR Reading file #{filename} \n")
@@ -16,7 +16,7 @@ class DeployApp::Util::ConfigFile
   end
 
   def get(property)
-    return @properties[property]
+    @properties[property]
   end
 
   def port
