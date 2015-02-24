@@ -9,4 +9,3 @@ class DeployApp::ServiceWrapper
     system("service #{service_name} stop")
   end
 end
-

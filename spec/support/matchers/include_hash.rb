@@ -1,8 +1,8 @@
 RSpec::Matchers.define :include_hash do |expected|
   match do |actual|
     result = true
-    expected.each_pair { |key,value|
-      if actual[key]!=value
+    expected.each_pair { |key, value|
+      if actual[key] != value
         result = false
       end
     }
@@ -10,4 +10,3 @@ RSpec::Matchers.define :include_hash do |expected|
     result
   end
 end
-

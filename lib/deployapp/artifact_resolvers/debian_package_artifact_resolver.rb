@@ -24,6 +24,4 @@ class DeployApp::ArtifactResolvers::DebianPackageArtifactResolver
     system("sudo apt-get -y install #{coords.name.downcase}=#{coords.version}")
     FileUtils.ln_sf("/usr/share/timgroup/#{coords.name.downcase}/latest.jar",  @latest_jar)
   end
-
 end
-

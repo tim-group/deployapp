@@ -3,5 +3,4 @@ $: << File.join(File.dirname(__FILE__), "..", "lib")
 $: << '/opt/deploytool/lib'
 require 'deployapp/util/option_parser'
 
-Util::OptionParser.new.parse()
-
+Util::OptionParser.new.parse

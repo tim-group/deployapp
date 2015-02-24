@@ -11,4 +11,3 @@ module DeployApp::Util::Log
     return @@logger
   end
 end
-

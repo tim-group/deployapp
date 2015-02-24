@@ -15,16 +15,16 @@ application_instance {
 }]
     host_configuration.add(config)
 
-    status = host_configuration.status()
+    status = host_configuration.status
 
     status.should eq(
-      [{:present=>false,
-        :group=>"blue",
-        :cluster=>"default",
-        :participating=>false,
-        :application=>"App",
-        :version=>nil,
-        :health=>nil}])
+      [{ :present => false,
+        :group => "blue",
+        :cluster => "default",
+        :participating => false,
+        :application => "App",
+        :version => nil,
+        :health => nil }])
   end
 
   it 'allows us to configure clustername per instance' do
@@ -38,15 +38,15 @@ application_instance {
 }]
     host_configuration.add(config)
 
-    status = host_configuration.status()
+    status = host_configuration.status
 
     status.should eq(
-      [{:present=>false,
-        :group=>"blue",
-        :cluster=>"A",
-        :participating=>false,
-        :application=>"App",
-        :version=>nil,
-        :health=>nil}])
+      [{ :present => false,
+        :group => "blue",
+        :cluster => "A",
+        :participating => false,
+        :application => "App",
+        :version => nil,
+        :health => nil }])
   end
 end

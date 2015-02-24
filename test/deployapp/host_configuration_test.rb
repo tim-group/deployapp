@@ -18,15 +18,15 @@ class HostConfigurationTest < Test::Unit::TestCase
     host_configuration = DeployApp::HostConfiguration.new
     host_configuration.add(config)
 
-    assert_equal 1, host_configuration.application_instances().size()
-    assert_equal "App1", host_configuration.application_instances()[0].application_instance_config.application
-    assert_equal "blue", host_configuration.application_instances()[0].application_instance_config.group
-    assert_equal "/root/.ssh/productstore", host_configuration.application_instances()[0].application_instance_config.ssh_key_location
+    assert_equal 1, host_configuration.application_instances.size
+    assert_equal "App1", host_configuration.application_instances[0].application_instance_config.application
+    assert_equal "blue", host_configuration.application_instances[0].application_instance_config.group
+    assert_equal "/root/.ssh/productstore", host_configuration.application_instances[0].application_instance_config.ssh_key_location
 
-    assert_equal "/opt/apps/App1-blue", host_configuration.application_instances()[0].application_instance_config.home
-    assert_equal "/opt/apps/App1-blue/config.properties", host_configuration.application_instances()[0].application_instance_config.config_filename
+    assert_equal "/opt/apps/App1-blue", host_configuration.application_instances[0].application_instance_config.home
+    assert_equal "/opt/apps/App1-blue/config.properties", host_configuration.application_instances[0].application_instance_config.config_filename
 
-    assert_equal "app1", host_configuration.application_instances()[0].application_instance_config.run_as_user
+    assert_equal "app1", host_configuration.application_instances[0].application_instance_config.run_as_user
   end
 
   def test_loading_config_files_builds_many_instances
@@ -45,7 +45,7 @@ application_instance {
 
     host_configuration = DeployApp::HostConfiguration.new
     host_configuration.parse("build/conf.d/")
-    assert_equal 5, host_configuration.application_instances().size()
+    assert_equal 5, host_configuration.application_instances.size
   end
 
   def test_status_shown_for_instances
@@ -60,12 +60,13 @@ application_instance {
       host_configuration.add(config)
     end
 
-    status = host_configuration.status()
-    assert_equal(5, status.size())
-    assert_equal({:application=>"App4", :group=>"blue", :version=>nil,:present=>false, :participating=>false, :health=>nil, :cluster=>"default"}, status[4])
+    status = host_configuration.status
+    assert_equal(5, status.size)
+    assert_equal({ :application => "App4", :group => "blue", :version => nil, :present => false,
+                 :participating => false, :health => nil, :cluster => "default" }, status[4])
 
-    app_status = host_configuration.status(:application=>"App4")
-    assert_equal(1, app_status.size())
+    app_status = host_configuration.status(:application => "App4")
+    assert_equal(1, app_status.size)
   end
 
   def test_key_identifies_instance
@@ -79,8 +80,8 @@ application_instance {
 }]
       host_configuration.add(config)
     end
-    instance = host_configuration.get_application_instance(:application=>"App4", :group=>"blue")
-    assert  !instance.nil?
+    instance = host_configuration.get_application_instance(:application => "App4", :group => "blue")
+    assert !instance.nil?
   end
 
   def test_no_instance_matches_key
@@ -96,12 +97,11 @@ type "none"
     end
 
     assert_raise(DeployApp::NoInstanceFound) do
-      host_configuration.get_application_instance({:application=>"BadApp", :group=>"blue"})
+      host_configuration.get_application_instance(:application => "BadApp", :group => "blue")
     end
   end
 
   def test_application_instance_should_have_wired_resolver
-
     config = %[
        application_instance {
              application "App1"
@@ -114,7 +114,7 @@ type "none"
     host_configuration = DeployApp::HostConfiguration.new
     host_configuration.add(config)
 
-    application_instance = host_configuration.application_instances()[0]
+    application_instance = host_configuration.application_instances[0]
 
     assert_not_nil application_instance.artifact_resolver
     assert_not_nil application_instance.application_communicator
@@ -132,11 +132,11 @@ application_instance {
       host_configuration.add(config)
     end
 
-    status = host_configuration.status({:group=>"blue"})
-    assert_equal(5, status.size())
+    status = host_configuration.status(:group => "blue")
+    assert_equal(5, status.size)
 
-    status = host_configuration.status({:group=>"green"})
-    assert_equal(0, status.size())
+    status = host_configuration.status(:group => "green")
+    assert_equal(0, status.size)
   end
 
   def test_finds_services_in_group
@@ -151,18 +151,17 @@ application_instance {
       host_configuration.add(config)
     end
 
-    status = host_configuration.status({:group=>"blue"})
-    assert_equal(5, status.size())
+    status = host_configuration.status(:group => "blue")
+    assert_equal(5, status.size)
 
-    status = host_configuration.status({:group=>"green"})
-    assert_equal(0, status.size())
+    status = host_configuration.status(:group => "green")
+    assert_equal(0, status.size)
   end
 
   def test_directory_not_found
-    host_configuration = DeployApp::HostConfiguration.new(:environment=>"noexist")
-    assert_raise(DeployApp::EnvironmentNotFound)   {
+    host_configuration = DeployApp::HostConfiguration.new(:environment => "noexist")
+    assert_raise(DeployApp::EnvironmentNotFound) {
       host_configuration.parse("blah")
     }
   end
-
 end

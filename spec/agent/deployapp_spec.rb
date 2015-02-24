@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'deployapp' do
-
   before do
     agent_file = File.join([File.dirname(__FILE__)], '../../lib/agent/Deployapp.rb')
     #@agent = MCollective::Test::LocalAgentTest.new("deployapp", :agent_file=> agent_file).plugin
@@ -25,5 +24,4 @@ describe 'deployapp' do
     #result[:data][:logs][:errors].size.should be >0
     #result[:data][:successful].should eql(false)
   end
-
 end

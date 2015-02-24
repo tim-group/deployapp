@@ -12,4 +12,3 @@ group :test do
   gem "net-ssh", "2.9.1"
   gem "net-scp"
 end
-

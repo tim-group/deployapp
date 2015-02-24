@@ -7,8 +7,8 @@ include DeployApp
 def setup_logger
   require 'deployapp/util/composite_logger'
   require 'deployapp/util/inmemory_logger'
-  @remote_logger = DeployApp::Util::InMemoryLogger.new()
-  DeployApp::Util::Log.set_logger(DeployApp::Util::CompositeLogger.new([logger,@remote_logger]))
+  @remote_logger = DeployApp::Util::InMemoryLogger.new
+  DeployApp::Util::Log.set_logger(DeployApp::Util::CompositeLogger.new([logger, @remote_logger]))
 end
 
 module MCollective
@@ -25,7 +25,7 @@ module MCollective
       def process_host_configuration(&block)
         begin
           require 'deployapp/host_configuration'
-          setup_logger()
+          setup_logger
           require 'deployapp/util/log'
           extend ::DeployApp::Util::Log
           config_dir_prefix = config.pluginconf["deployapp.conf_dir_prefix"] || "/opt/deploytool"
@@ -35,7 +35,7 @@ module MCollective
           config_dir = "#{config_dir_prefix}-#{environment}/conf.d"
           app_base_dir = "#{app_dir_prefix}-#{environment}"
 
-          if (not File.exists?(config_dir))
+          if not File.exists?(config_dir)
             reply.data = nil
             return
           else
@@ -54,7 +54,7 @@ module MCollective
           logger.debug(e.backtrace)
           reply.data[:successful] = false
         ensure
-          reply.data[:logs] = @remote_logger.logs()
+          reply.data[:logs] = @remote_logger.logs
         end
       end
 
@@ -83,7 +83,7 @@ module MCollective
         logger.debug("recieved message to update key #{request} to version #{version}")
 
         process_instance do |instance|
-          instance.disable_participation()
+          instance.disable_participation
           instance.update_to_version(version)
         end
       end
@@ -93,7 +93,7 @@ module MCollective
 
         process_instance do |instance|
           logger.debug("recieved message to enable participation for spec #{spec}")
-          instance.enable_participation()
+          instance.enable_participation
         end
       end
 
@@ -102,7 +102,7 @@ module MCollective
 
         process_instance do |instance|
           logger.debug("recieved message to disable participation for spec #{spec}")
-          instance.disable_participation()
+          instance.disable_participation
         end
       end
 
@@ -111,7 +111,7 @@ module MCollective
 
         process_instance do |instance|
           logger.debug("recieved message to stop instance for spec #{spec}")
-          instance.stop()
+          instance.stop
         end
       end
 
@@ -120,11 +120,9 @@ module MCollective
 
         process_instance do |instance|
           logger.debug("recieved message to kill instance for spec #{spec}")
-          instance.kill()
+          instance.kill
         end
       end
-
     end
   end
 end
-

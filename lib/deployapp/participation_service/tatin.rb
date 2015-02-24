@@ -10,20 +10,20 @@ class DeployApp::ParticipationService::Tatin < DeployApp::ParticipationService
   end
 
   def participating?
-    return "enabled"==get(url())
+    return "enabled" == get(url)
   end
 
   def enable_participation
-    put(url(),"enabled")
+    put(url, "enabled")
   end
 
   def disable_participation
-    put(url(),"disabled")
+    put(url, "disabled")
   end
 
   protected
 
-  def url()
+  def url
     return "#{@tatin_server}/#{@environment}/#{@application}/#{@group}"
   end
 
@@ -35,7 +35,7 @@ class DeployApp::ParticipationService::Tatin < DeployApp::ParticipationService
     end
   end
 
-  def put(url,string)
+  def put(url, string)
     uri = URI.parse(url)
     Net::HTTP.start(uri.host, uri.port) do |http|
       response = http.put(uri.request_uri, string)
@@ -43,4 +43,3 @@ class DeployApp::ParticipationService::Tatin < DeployApp::ParticipationService
     end
   end
 end
-

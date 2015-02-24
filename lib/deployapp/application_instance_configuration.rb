@@ -3,7 +3,7 @@ require 'deployapp/namespace.rb'
 class DeployApp::ApplicationInstanceConfiguration
   attr_reader :home, :config_filename, :artifacts_dir, :latest_jar
 
-  def initialize(args={})
+  def initialize(args = {})
     @app_base_dir = args[:app_base_dir]
     @run_base_dir = args[:run_base_dir]
     @log_base_dir = args[:log_base_dir]
@@ -31,7 +31,7 @@ class DeployApp::ApplicationInstanceConfiguration
   end
 
   def additional_jvm_args(additional_jvm_args = @additional_jvm_args)
-    @additional_jvm_args=additional_jvm_args
+    @additional_jvm_args = additional_jvm_args
     return @additional_jvm_args
   end
 
@@ -51,7 +51,7 @@ class DeployApp::ApplicationInstanceConfiguration
       @config_filename = "#{@home}/config.properties"
     end
     if (@artifacts_dir == nil)
-      @artifacts_dir= "#{@home}/artifacts"
+      @artifacts_dir = "#{@home}/artifacts"
     end
 
     if (@latest_jar == nil)
@@ -59,4 +59,3 @@ class DeployApp::ApplicationInstanceConfiguration
     end
   end
 end
-

@@ -7,19 +7,19 @@ require 'net/http'
 require 'test/unit'
 
 class StatusParserTest < Test::Unit::TestCase
-  def runAgainstServer responses, &block
+  def runAgainstServer(responses, &block)
     server = TCPServer.new(2002)
     @serverthread =  Thread.new {
-      while(true)
+      loop do
         client = server.accept
         begin
           req = client.recv(100)
           regex = Regexp.new(/GET (.+) HTTP/)
           resp = "nodata"
-          urimatch= regex.match(req)
+          urimatch = regex.match(req)
           if  urimatch
             uri = urimatch[1]
-            if (not responses[uri].nil?)
+            if not responses[uri].nil?
               resp = responses[uri]
             end
           end
@@ -38,7 +38,7 @@ class StatusParserTest < Test::Unit::TestCase
       end
     }
     begin
-      block.call()
+      block.call
     ensure
       server.close
       @serverthread.kill
@@ -46,31 +46,30 @@ class StatusParserTest < Test::Unit::TestCase
   end
 
   def test_retrieves_version
-    runAgainstServer({"/info/version"=>"0.0.1.65"}) {
-      retriever=DeployApp::StatusRetriever.new()
+    runAgainstServer("/info/version" => "0.0.1.65") {
+      retriever = DeployApp::StatusRetriever.new
       assert_equal "0.0.1.65", retriever.retrieve("http://localhost:2002").version
     }
   end
 
   def test_retrieves_health
-    runAgainstServer({"/info/health"=>"ill"}) {
-      retriever=DeployApp::StatusRetriever.new()
+    runAgainstServer("/info/health" => "ill") {
+      retriever = DeployApp::StatusRetriever.new
       assert_equal "ill", retriever.retrieve("http://localhost:2002").health
     }
   end
 
   def test_stoppable_when_safe
-    runAgainstServer({"/info/stoppable"=>"safe"}) {
-      retriever=DeployApp::StatusRetriever.new()
+    runAgainstServer("/info/stoppable" => "safe") {
+      retriever = DeployApp::StatusRetriever.new
       assert retriever.retrieve("http://localhost:2002").stoppable?
     }
   end
 
   def test_not_stoppable_when_unwise
-    runAgainstServer({"/info/stoppable"=>"unwise"}) {
-      retriever=DeployApp::StatusRetriever.new()
-      assert ! retriever.retrieve("http://localhost:2002").stoppable?
+    runAgainstServer("/info/stoppable" => "unwise") {
+      retriever = DeployApp::StatusRetriever.new
+      assert !retriever.retrieve("http://localhost:2002").stoppable?
     }
   end
-
 end

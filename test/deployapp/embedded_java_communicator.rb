@@ -25,10 +25,10 @@ class DeployApp::EmbeddedJavaCommunicator
   def start
     ensure_stopped
 
-    logger.debug( "launching application as #{@run_as_user}" )
+    logger.debug("launching application as #{@run_as_user}")
 
-    as_user( @run_as_user ) do
-      system( "java #{@jvm_args} -jar #{@runnable_jar} #{@config_file} >#{@log_file} 2>&1 & echo $! >#{@pid_file}" )
+    as_user(@run_as_user) do
+      system("java #{@jvm_args} -jar #{@runnable_jar} #{@config_file} >#{@log_file} 2>&1 & echo $! >#{@pid_file}")
     end
 
     for i in 1..@start_timeout
@@ -46,7 +46,7 @@ class DeployApp::EmbeddedJavaCommunicator
       if !get_status.present?
         return
       end
-      if ( get_status.present? and get_status.stoppable? )
+      if get_status.present? and get_status.stoppable?
         clean_up
       end
       sleep 1
@@ -57,18 +57,18 @@ class DeployApp::EmbeddedJavaCommunicator
   def ensure_stopped
     return true if @pid_file.nil?
 
-    if File.exists?( @pid_file )
+    if File.exists?(@pid_file)
       pid = IO.read(@pid_file).to_i
-      File.delete( @pid_file )
-      if File.exists?( "/proc/#{pid}" )
-        if ! system( "kill -9 #{pid} 2>/dev/null" )
-          logger.info( "Failed to kill process #{pid}\n" )
+      File.delete(@pid_file)
+      if File.exists?("/proc/#{pid}")
+        if !system("kill -9 #{pid} 2>/dev/null")
+          logger.info("Failed to kill process #{pid}\n")
           return
         end
         for i in 1..@stop_timeout
           sleep 1
-          if ! get_status.present?
-            logger.debug( "Killed process #{pid}\n" )
+          if !get_status.present?
+            logger.debug("Killed process #{pid}\n")
             return
           end
         end
@@ -77,23 +77,23 @@ class DeployApp::EmbeddedJavaCommunicator
   end
 
   def get_status
-    return @status_retriever.retrieve( "http://localhost:#{@config.port}" )
+    return @status_retriever.retrieve("http://localhost:#{@config.port}")
   end
 
-  def as_user( user, &block )
+  def as_user(user, &block)
     u = (user.is_a? Integer) ? Etc.getpwuid(user) : Etc.getpwnam(user)
     Process.fork do
-      Process::UID.change_privilege( u.uid )
-      block.call( user )
+      Process::UID.change_privilege(u.uid)
+      block.call(user)
     end
   end
 
-  def self.to_app_described_by( properties_file )
-    properties = Util::ConfigFile.new( properties_file )
-    application_name = properties.get( "application" )
-    version = properties.get( "version" )
-    type = properties.get( "type" )
-    start_timeout = properties.get( "start_timeout" ) || 60
+  def self.to_app_described_by(properties_file)
+    properties = Util::ConfigFile.new(properties_file)
+    application_name = properties.get("application")
+    version = properties.get("version")
+    type = properties.get("type")
+    start_timeout = properties.get("start_timeout") || 60
 
     return self.new(
       :runnable_jar => "build/latest.jar",
@@ -106,4 +106,3 @@ class DeployApp::EmbeddedJavaCommunicator
     )
   end
 end
-

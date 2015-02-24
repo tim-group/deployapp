@@ -1,7 +1,7 @@
 require 'deployapp/util/namespace'
 
 class DeployApp::Util::InMemoryLogger
-  def initialize()
+  def initialize
     @debugs = []
     @infos = []
     @warns = []
@@ -33,4 +33,3 @@ class DeployApp::Util::InMemoryLogger
     }
   end
 end
-

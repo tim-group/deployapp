@@ -17,8 +17,7 @@ class DeployApp::ParticipationService
     raise("Implement in subclass")
   end
 
-  def disable_participation()
+  def disable_participation
     raise("Implement in subclass")
   end
 end
-

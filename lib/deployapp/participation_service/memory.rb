@@ -4,16 +4,15 @@ include DeployApp
 
 class DeployApp::ParticipationService::Memory < DeployApp::ParticipationService
   def participating?
-    return @participating==true
+    return @participating == true
   end
 
   def enable_participation
-    @participating=true
+    @participating = true
     puts "<<<<<#{participating?}"
   end
 
   def disable_participation
-    @participating=false
+    @participating = false
   end
 end
-

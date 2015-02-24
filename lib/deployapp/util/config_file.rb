@@ -23,4 +23,3 @@ class DeployApp::Util::ConfigFile
     return @properties["port"].strip if !@properties["port"].nil?
   end
 end
-

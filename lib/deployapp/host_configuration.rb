@@ -8,7 +8,7 @@ require 'deployapp/participation_service/tatin'
 class DeployApp::HostConfiguration
   attr_reader :app_base_dir, :run_base_dir, :log_base_dir
 
-  def initialize( args = {:environment => ""} )
+  def initialize(args = { :environment => "" })
     @environment  = args[:environment]
     @app_base_dir = args[:app_base_dir]
     @run_base_dir = args[:run_base_dir]
@@ -52,9 +52,9 @@ class DeployApp::HostConfiguration
       :log_base_dir => self.log_base_dir
     )
     application_instance_config.instance_eval(&hash)
-    application_instance_config.apply_convention()
+    application_instance_config.apply_convention
 
-    if (application_instance_config.type() == "none")
+    if (application_instance_config.type == "none")
       application_instance = DeployApp::ApplicationInstance.new(
         :application_instance_config => application_instance_config,
         :participation_service       => DeployApp::ParticipationService::Memory.new(:environment => @environment,
@@ -62,8 +62,8 @@ class DeployApp::HostConfiguration
         :group       => application_instance_config.group
       ))
     else
-      artifacts_dir = application_instance_config.artifacts_dir()
-      latest_jar = application_instance_config.latest_jar()
+      artifacts_dir = application_instance_config.artifacts_dir
+      latest_jar = application_instance_config.latest_jar
       @artifact_resolver = DeployApp::ArtifactResolvers::CompositeArtifactResolver.new(
         :artifacts_dir    => artifacts_dir,
         :latest_jar       => latest_jar,
@@ -93,14 +93,13 @@ class DeployApp::HostConfiguration
     @application_instances << application_instance
   end
 
-  def parse(dir="/opt/deploytool-#{@environment}/conf.d/")
-
-    if (not File.exists?(dir))
+  def parse(dir = "/opt/deploytool-#{@environment}/conf.d/")
+    if not File.exists?(dir)
       raise DeployApp::EnvironmentNotFound.new(dir)
     end
 
     Dir.entries(dir).each do |file|
-      if (file =~ /.cfg$/)
+      if file =~ /.cfg$/
         data = File.read("#{dir}/#{file}")
         add(data)
       end
@@ -109,35 +108,34 @@ class DeployApp::HostConfiguration
     self
   end
 
-  def application_instances()
+  def application_instances
     return @application_instances
   end
 
   def get_application_instance(spec)
     @application_instances.each do |instance|
-      if (instance.status[:application]==spec[:application] and instance.status[:group] == spec[:group])
+      if instance.status[:application] == spec[:application] and instance.status[:group] == spec[:group]
         return instance
       end
     end
     raise DeployApp::NoInstanceFound.new(spec)
   end
 
-  def status( spec = {} )
+  def status(spec = {})
     statuses = []
     @application_instances.each do |instance|
-      statuses << instance.status()
+      statuses << instance.status
     end
 
-    if (spec[:group]!=nil)
-      statuses =  statuses.select { |status| status[:group]==spec[:group] }
+    if (spec[:group] != nil)
+      statuses =  statuses.select { |status| status[:group] == spec[:group] }
     end
-    if (spec[:application]!=nil)
+    if (spec[:application] != nil)
       statuses =  statuses.select { |status|
-        status[:application]==spec[:application]
+        status[:application] == spec[:application]
       }
 
     end
     return statuses
   end
 end
-

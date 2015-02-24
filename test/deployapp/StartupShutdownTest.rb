@@ -10,8 +10,8 @@ require 'compatibility/namespace'
 
 class Compatibility::StartupShutdownTest < Test::Unit::TestCase
   def setup
-    File.open( "build/javahttp.config.properties", "w" ) do |f|
-      f.write( "port=2003\n" )
+    File.open("build/javahttp.config.properties", "w") do |f|
+      f.write("port=2003\n")
     end
   end
 
@@ -31,7 +31,7 @@ class Compatibility::StartupShutdownTest < Test::Unit::TestCase
     while @communicator.get_status.present? do
       sleep(1)
       i += 1
-      if (i > 5)
+      if i > 5
         throw "Unable to kill application under test"
       end
     end
@@ -44,15 +44,15 @@ class Compatibility::StartupShutdownTest < Test::Unit::TestCase
     @communicator = Deploy::EmbeddedJavaCommunicator.new(
       :runnable_jar => "build/javahttp.jar",
       :config_file => "build/javahttp.config.properties",
-      :pid_file=>"build/tmp.pid",
+      :pid_file => "build/tmp.pid",
       :log_file => "build/console.log",
       :start_timeout => 5,
-      :run_as_user => Etc.getlogin()
+      :run_as_user => Etc.getlogin
     )
-    @pid = @communicator.start()
+    @pid = @communicator.start
 
     begin
-      second_pid = @communicator.start()
+      second_pid = @communicator.start
     ensure
       kill(second_pid)
     end
@@ -67,7 +67,7 @@ class Compatibility::StartupShutdownTest < Test::Unit::TestCase
       :pid_file => "build/tmp.pid",
       :log_file => "build/console.log",
       :start_timeout => 5,
-      :run_as_user => Etc.getlogin()
+      :run_as_user => Etc.getlogin
     )
 
     assert ! @communicator.get_status.present?
@@ -80,9 +80,9 @@ class Compatibility::StartupShutdownTest < Test::Unit::TestCase
       :pid_file => "build/tmp.pid",
       :log_file => "build/console.log",
       :start_timeout => 5,
-      :run_as_user => Etc.getlogin()
+      :run_as_user => Etc.getlogin
     )
-    @pid = @communicator.start()
+    @pid = @communicator.start
 
     assert @communicator.get_status.present?
   end
@@ -94,13 +94,12 @@ class Compatibility::StartupShutdownTest < Test::Unit::TestCase
       :pid_file => "build/tmp.pid",
       :log_file => "build/console.log",
       :start_timeout => 5,
-      :run_as_user => Etc.getlogin()
+      :run_as_user => Etc.getlogin
     )
-    @pid = @communicator.start()
+    @pid = @communicator.start
 
     @communicator.stop
 
     assert ! @communicator.get_status.present?
   end
-
 end

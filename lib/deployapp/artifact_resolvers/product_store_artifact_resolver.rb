@@ -24,7 +24,7 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
 
   def can_resolve(coords)
     logger.info("looking for productstore artifact #{coords.string}...")
-    artifact_file="#{@artifacts_dir}/#{coords.string}"
+    artifact_file = "#{@artifacts_dir}/#{coords.string}"
 
     if File.exist?(artifact_file)
       logger.info("...found locally")
@@ -38,7 +38,7 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
 
   def resolve(coords)
     logger.info("resolving #{coords.string}")
-    artifact_file="#{@artifacts_dir}/#{coords.string}"
+    artifact_file = "#{@artifacts_dir}/#{coords.string}"
 
     if File.exist?(artifact_file)
       logger.info("using artifact #{coords.string} from cache")
@@ -49,12 +49,12 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
       raise TooManyArtifacts.new("got #{artifact_names}") if artifact_names.length > 1
       raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if artifact_names.empty?
 
-      start = Time.new()
-      Net::SCP.start(@ssh_address, "productstore", :keys=>[@ssh_key_location], :config=>false, :user_known_hosts_file=>[]) do |scp|
+      start = Time.new
+      Net::SCP.start(@ssh_address, "productstore", :keys => [@ssh_key_location], :config => false, :user_known_hosts_file => []) do |scp|
         d = scp.download("/opt/ProductStore/#{coords.name}/#{artifact_names[0]}", artifact_file)
         d.wait
       end
-      elapsed_time = Time.new() - start
+      elapsed_time = Time.new - start
       logger.info("downloaded artifact #{coords.string} #{elapsed_time} seconds")
     end
 
@@ -66,23 +66,23 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
     return file
   end
 
-  def cleanOldArtifacts()
+  def cleanOldArtifacts
     files = Dir.glob("#{@artifacts_dir}/*.jar")
-    sorted = files.sort_by {|filename| File.mtime("#{filename}") }
-    if (sorted.size()>@maxartifacts)
-      sorted[0..files.size()-@maxartifacts-1].each do |f|
-        print "removing old artifact #{f}\n";
+    sorted = files.sort_by { |filename| File.mtime("#{filename}") }
+    if sorted.size > @maxartifacts
+      sorted[0..files.size - @maxartifacts - 1].each do |f|
+        print "removing old artifact #{f}\n"
         File.delete f
       end
     end
   end
 
   def fetch_artifact_names(coords)
-    artifact=""
+    artifact = ""
     verbose = @debug ? :debug : :error
-    Net::SSH.start( @ssh_address, "productstore", :keys=>[@ssh_key_location], :verbose => verbose, :config=>false, :user_known_hosts_file=>[])  do|ssh|
+    Net::SSH.start(@ssh_address, "productstore", :keys => [@ssh_key_location], :verbose => verbose, :config => false, :user_known_hosts_file => [])  do|ssh|
       cmd = "ls /opt/ProductStore/#{coords.name}/ | grep .*-#{coords.version}.*#{coords.type}"
-      ssh.exec!(cmd) do |channel,stream,data|
+      ssh.exec!(cmd) do |channel, stream, data|
         artifact << data.chomp if stream == :stdout
       end
     end
@@ -92,4 +92,3 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
 
   private :fetch_artifact_names
 end
-

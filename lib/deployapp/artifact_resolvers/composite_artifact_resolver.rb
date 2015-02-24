@@ -24,13 +24,11 @@ class DeployApp::ArtifactResolvers::CompositeArtifactResolver
 
   def resolve(coords)
     @artifact_resolvers.each do |resolver|
-      if (resolver.can_resolve(coords))
+      if resolver.can_resolve(coords)
         resolver.resolve(coords)
         return true
       end
     end
     return false
   end
-
 end
-

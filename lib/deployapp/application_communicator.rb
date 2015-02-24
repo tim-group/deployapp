@@ -14,7 +14,7 @@ class DeployApp::ApplicationCommunicator
 
   def initialize(args)
     @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:config_file)
-    @config=DeployApp::Util::ConfigFile.new(@config_file)
+    @config = DeployApp::Util::ConfigFile.new(@config_file)
     @service_name = args[:service_name] or raise DeployApp::ParameterNotPresent.new(:service_name)
     @start_timeout = args[:start_timeout] || 120
     @stop_timeout = args[:stop_timeout] || 60
@@ -24,21 +24,21 @@ class DeployApp::ApplicationCommunicator
 
   def start
     @service_wrapper.start_service(@service_name)
-    wait_until_started()
+    wait_until_started
   end
 
   def kill
     @service_wrapper.stop_service(@service_name)
-    wait_until_stopped()
+    wait_until_stopped
   end
 
   def stop
-    if (get_status.stoppable?)
+    if get_status.stoppable?
       @service_wrapper.stop_service(@service_name)
     else
       raise "Not stopping service #{@service_name} it is not stoppable"
     end
-    wait_until_stopped()
+    wait_until_stopped
   end
 
   def get_status
@@ -66,4 +66,3 @@ class DeployApp::ApplicationCommunicator
     raise "Gave up trying to stop instance"
   end
 end
-

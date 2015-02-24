@@ -8,7 +8,7 @@ class DeployApp::StatusRetriever
   def retrieve(base_url)
     begin
       status = DeployApp::Status.new(true)
-      ['stoppable', 'version', 'health'].each { |n|
+      %w(stoppable version health).each { |n|
         status.add(n, get("#{base_url}/info/#{n}"))
       }
       return status
@@ -20,8 +20,7 @@ class DeployApp::StatusRetriever
   def get(url)
     uri = URI.parse(url)
     Net::HTTP.start(uri.host, uri.port) do |http|
-      http.get(uri.request_uri, {'User-Agent' => 'deploytool health retriever'}).body
+      http.get(uri.request_uri, 'User-Agent' => 'deploytool health retriever').body
     end
   end
 end
-

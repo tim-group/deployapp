@@ -31,4 +31,3 @@ class DeployApp::Status
     return @components["health"]
   end
 end
-
