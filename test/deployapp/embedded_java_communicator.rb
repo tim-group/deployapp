@@ -10,16 +10,16 @@ include DeployApp
 class DeployApp::EmbeddedJavaCommunicator
   include DeployApp::Util::Log
   def initialize(args)
-    @runnable_jar = args[:runnable_jar] or raise DeployApp::ParameterNotPresent.new(:runnable_jar)
-    @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:config_file)
+    @runnable_jar = args[:runnable_jar] or fail DeployApp::ParameterNotPresent.new(:runnable_jar)
+    @config_file = args[:config_file] or fail DeployApp::ParameterNotPresent.new(:config_file)
     @config = DeployApp::Util::ConfigFile.new(@config_file)
-    @pid_file = args[:pid_file] or raise DeployApp::ParameterNotPresent.new(:pid_file)
-    @log_file = args[:log_file] or raise DeployApp::ParameterNotPresent.new(:log_file)
+    @pid_file = args[:pid_file] or fail DeployApp::ParameterNotPresent.new(:pid_file)
+    @log_file = args[:log_file] or fail DeployApp::ParameterNotPresent.new(:log_file)
     @start_timeout = args[:start_timeout] || 60
     @stop_timeout = args[:stop_timeout] || 60
     @jvm_args = args[:jvm_args] or ""
     @status_retriever = DeployApp::StatusRetriever.new
-    @run_as_user =  args[:run_as_user] or raise DeployApp::ParameterNotPresent.new(:run_as_user)
+    @run_as_user =  args[:run_as_user] or fail DeployApp::ParameterNotPresent.new(:run_as_user)
   end
 
   def start
@@ -38,7 +38,7 @@ class DeployApp::EmbeddedJavaCommunicator
       end
     end
     logcontents = IO.read(@log_file)
-    raise "Unable to start process in a reasonable amount of time.\nConsole log:\n#{logcontents}"
+    fail "Unable to start process in a reasonable amount of time.\nConsole log:\n#{logcontents}"
   end
 
   def stop
@@ -51,7 +51,7 @@ class DeployApp::EmbeddedJavaCommunicator
       end
       sleep 1
     end
-    raise "Gave up trying to stop instance"
+    fail "Gave up trying to stop instance"
   end
 
   def ensure_stopped

@@ -28,7 +28,7 @@ class Compatibility::StartupShutdownTest < Test::Unit::TestCase
     kill(@pid)
 
     i = 0
-    while @communicator.get_status.present? do
+    while @communicator.get_status.present?
       sleep(1)
       i += 1
       if i > 5

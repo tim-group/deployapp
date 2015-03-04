@@ -13,14 +13,14 @@ class DeployApp::Stub::StubApplicationCommunicator
 
   def start
     if @fail_to_launch
-      raise DeployApp::FailedToLaunch
+      fail DeployApp::FailedToLaunch
     end
     @present = true
   end
 
   def stop
     if @fail_to_stop
-      raise DeployApp::FailedToStop
+      fail DeployApp::FailedToStop
     end
     @present = false
     @stop_called = true

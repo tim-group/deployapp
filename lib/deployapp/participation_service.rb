@@ -4,20 +4,20 @@ include DeployApp
 
 class DeployApp::ParticipationService
   def initialize(args)
-    @environment = args[:environment] || raise("Need :environment")
-    @application = args[:application] || raise("Need :application")
-    @group = args[:group] || raise("Need :group")
+    @environment = args[:environment] || fail("Need :environment")
+    @application = args[:application] || fail("Need :application")
+    @group = args[:group] || fail("Need :group")
   end
 
   def participating?
-    raise("Implement in subclass")
+    fail("Implement in subclass")
   end
 
   def enable_participation
-    raise("Implement in subclass")
+    fail("Implement in subclass")
   end
 
   def disable_participation
-    raise("Implement in subclass")
+    fail("Implement in subclass")
   end
 end

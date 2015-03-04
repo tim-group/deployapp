@@ -46,8 +46,8 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
     else
       logger.info("downloading artifact #{coords.string} from #{@ssh_address}")
       artifact_names = fetch_artifact_names(coords)
-      raise TooManyArtifacts.new("got #{artifact_names}") if artifact_names.length > 1
-      raise ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if artifact_names.empty?
+      fail TooManyArtifacts.new("got #{artifact_names}") if artifact_names.length > 1
+      fail ArtifactNotFound.new("could not find artifact with Coords #{coords.string}") if artifact_names.empty?
 
       start = Time.new
       Net::SCP.start(@ssh_address, "productstore", :keys => [@ssh_key_location], :config => false, :user_known_hosts_file => []) do |scp|

@@ -75,8 +75,7 @@ class DeployApp::Util::OptionParser
 
         "
 
-      opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do
-        |env|
+      opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
         @options[:environment] = env
       end
       opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do    |app|

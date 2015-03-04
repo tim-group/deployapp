@@ -11,7 +11,7 @@ class DeployApp::ApplicationInstance
     @application_instance_config = args[:application_instance_config]
     @artifact_resolver = args[:artifact_resolver]
     @application_communicator = args[:application_communicator]
-    @participation_service = args[:participation_service] or raise "Please provide a participation service"
+    @participation_service = args[:participation_service] or fail "Please provide a participation service"
   end
 
   def status
@@ -37,7 +37,7 @@ class DeployApp::ApplicationInstance
 
   def get_artifact(version)
     coords = DeployApp::Coord.new(:name => @application_instance_config.application, :type => "jar", :version => version)
-    @artifact_resolver.resolve(coords) || raise("unable to resolve #{coords.string}")
+    @artifact_resolver.resolve(coords) || fail("unable to resolve #{coords.string}")
   end
 
   def update_to_version(version)

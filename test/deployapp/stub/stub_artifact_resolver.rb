@@ -8,7 +8,7 @@ class DeployApp::Stub::StubArtifactResolver
 
   def resolve(coord)
     if @fail_to_resolve
-      raise DeployApp::FailedToResolveArtifact
+      fail DeployApp::FailedToResolveArtifact
     end
 
     @coord = coord

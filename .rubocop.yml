@@ -69,7 +69,7 @@ Metrics/BlockNesting:
 # Offense count: 2
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 136
+  Max: 142
 
 # Offense count: 4
 Metrics/CyclomaticComplexity:
@@ -83,7 +83,7 @@ Metrics/LineLength:
 # Offense count: 24
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
-  Max: 39
+  Max: 41
 
 # Offense count: 2
 Metrics/PerceivedComplexity:
@@ -137,19 +137,9 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/MultilineBlockLayout:
-  Enabled: false
-
 # Offense count: 7
 # Cop supports --auto-correct.
 Style/NegatedIf:
-  Enabled: false
-
-# Offense count: 7
-# Cop supports --auto-correct.
-Style/NilComparison:
   Enabled: false
 
 # Offense count: 11
@@ -166,18 +156,7 @@ Style/RedundantSelf:
 Style/RegexpLiteral:
   MaxSlashes: 2
 
-# Offense count: 29
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/SignalException:
-  Enabled: false
-
 # Offense count: 13
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/WhileUntilDo:
   Enabled: false

@@ -94,7 +94,7 @@ task :package do
     "-C", 'build/package'
   ]
 
-  raise "problem creating debian package " unless FPM::Program.new.run(arguments) == 0
+  fail "problem creating debian package " unless FPM::Program.new.run(arguments) == 0
 end
 
 task :test => [:setup]

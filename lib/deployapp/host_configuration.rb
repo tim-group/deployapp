@@ -14,14 +14,14 @@ class DeployApp::HostConfiguration
     @run_base_dir = args[:run_base_dir]
     @log_base_dir = args[:log_base_dir]
 
-    if (@app_base_dir == nil)
+    if @app_base_dir.nil?
       if (@environment == "")
         @app_base_dir = "/opt/apps"
       else
         @app_base_dir = "/opt/apps-#{@environment}"
       end
     end
-    if (@run_base_dir == nil)
+    if @run_base_dir.nil?
       if (@environment == "")
         @run_base_dir = "/var/run"
       else
@@ -29,7 +29,7 @@ class DeployApp::HostConfiguration
       end
     end
 
-    if (@log_base_dir == nil)
+    if @log_base_dir.nil?
       if (@environment == "")
         @log_base_dir = "/var/log"
       else
@@ -57,10 +57,12 @@ class DeployApp::HostConfiguration
     if (application_instance_config.type == "none")
       application_instance = DeployApp::ApplicationInstance.new(
         :application_instance_config => application_instance_config,
-        :participation_service       => DeployApp::ParticipationService::Memory.new(:environment => @environment,
-                                                                                    :application => application_instance_config.application,
-                                                                                    :group       => application_instance_config.group
-      ))
+        :participation_service       => DeployApp::ParticipationService::Memory.new(
+          :environment => @environment,
+          :application => application_instance_config.application,
+          :group       => application_instance_config.group
+        )
+      )
     else
       artifacts_dir = application_instance_config.artifacts_dir
       latest_jar = application_instance_config.latest_jar
@@ -95,7 +97,7 @@ class DeployApp::HostConfiguration
 
   def parse(dir = "/opt/deploytool-#{@environment}/conf.d/")
     if !File.exists?(dir)
-      raise DeployApp::EnvironmentNotFound.new(dir)
+      fail DeployApp::EnvironmentNotFound.new(dir)
     end
 
     Dir.entries(dir).each do |file|
@@ -116,7 +118,7 @@ class DeployApp::HostConfiguration
         return instance
       end
     end
-    raise DeployApp::NoInstanceFound.new(spec)
+    fail DeployApp::NoInstanceFound.new(spec)
   end
 
   def status(spec = {})

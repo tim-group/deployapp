@@ -36,7 +36,13 @@ describe DeployApp::ApplicationInstance do
       :participation_service => memory_participation_service
     )
 
-    expected_status = { :application => "MyArtifact", :group => "blue", :version => nil, :present => false, :participating => false }
+    expected_status = {
+      :application => "MyArtifact",
+      :group => "blue",
+      :version => nil,
+      :present => false,
+      :participating => false
+    }
 
     application_instance.status.should include_hash(expected_status)
   end
@@ -69,7 +75,10 @@ describe DeployApp::ApplicationInstance do
     application_instance_config.group("blue")
 
     stub_resolver = DeployApp::Stub::StubArtifactResolver.new
-    stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => true, :version => "21a")
+    stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(
+      :present => true,
+      :version => "21a"
+    )
 
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config => application_instance_config,
@@ -78,7 +87,13 @@ describe DeployApp::ApplicationInstance do
       :participation_service => memory_participation_service
     )
 
-    expected_status = { :application => "MyArtifact", :group => "blue", :version => "21a", :present => true, :participating => false }
+    expected_status = {
+      :application => "MyArtifact",
+      :group => "blue",
+      :version => "21a",
+      :present => true,
+      :participating => false
+    }
     application_instance.status.should include_hash(expected_status)
   end
 
@@ -199,7 +214,13 @@ describe DeployApp::ApplicationInstance do
     )
 
     application_instance.enable_participation
-    expected_status = { :application => "MyArtifact", :group => "blue", :version => "21a", :present => true, :participating => true }
+    expected_status = {
+      :application => "MyArtifact",
+      :group => "blue",
+      :version => "21a",
+      :present => true,
+      :participating => true
+    }
     application_instance.status.should include_hash(expected_status)
   end
 
@@ -222,7 +243,13 @@ describe DeployApp::ApplicationInstance do
     application_instance.enable_participation
     application_instance.disable_participation
 
-    expected_status = { :application => "MyArtifact", :group => "blue", :version => "21a", :present => true, :participating => false }
+    expected_status = {
+      :application => "MyArtifact",
+      :group => "blue",
+      :version => "21a",
+      :present => true,
+      :participating => false
+    }
     application_instance.status.should include_hash(expected_status)
   end
 

@@ -13,9 +13,9 @@ class DeployApp::ApplicationCommunicator
   include DeployApp::Util::Log
 
   def initialize(args)
-    @config_file = args[:config_file] or raise DeployApp::ParameterNotPresent.new(:config_file)
+    @config_file = args[:config_file] or fail DeployApp::ParameterNotPresent.new(:config_file)
     @config = DeployApp::Util::ConfigFile.new(@config_file)
-    @service_name = args[:service_name] or raise DeployApp::ParameterNotPresent.new(:service_name)
+    @service_name = args[:service_name] or fail DeployApp::ParameterNotPresent.new(:service_name)
     @start_timeout = args[:start_timeout] || 120
     @stop_timeout = args[:stop_timeout] || 60
     @status_retriever =  args[:status_retriever] || DeployApp::StatusRetriever.new
@@ -36,7 +36,7 @@ class DeployApp::ApplicationCommunicator
     if get_status.stoppable?
       @service_wrapper.stop_service(@service_name)
     else
-      raise "Not stopping service #{@service_name} it is not stoppable"
+      fail "Not stopping service #{@service_name} it is not stoppable"
     end
     wait_until_stopped
   end
@@ -53,7 +53,7 @@ class DeployApp::ApplicationCommunicator
         return
       end
     end
-    raise "Unable to start process in a reasonable amount of time"
+    fail "Unable to start process in a reasonable amount of time"
   end
 
   def wait_until_stopped
@@ -63,6 +63,6 @@ class DeployApp::ApplicationCommunicator
       end
       sleep 1
     end
-    raise "Gave up trying to stop instance"
+    fail "Gave up trying to stop instance"
   end
 end
