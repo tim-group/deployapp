@@ -28,7 +28,7 @@ class DeployApp::EmbeddedJavaCommunicator
     logger.debug("launching application as #{@run_as_user}")
 
     as_user(@run_as_user) do
-      system("java #{@jvm_args} -jar #{@runnable_jar} #{@config_file} >#{@log_file} 2>&1 & echo $! >#{@pid_file}")
+      system("deployapp/launch \"#{@jvm_args}\" \"#{@runnable_jar}\" \"#{@config_file}\" \"#{@log_file}\" \"#{@pid_file}\"")
     end
 
     for i in 1..@start_timeout
