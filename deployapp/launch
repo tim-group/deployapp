@@ -1,0 +1,21 @@
+#!/bin/sh
+# this is a ridiculous duplication of the standard launch script, making a shambles of the tests that use it
+
+JVM_ARGS="${1}"
+JAR_FILE="${2}"
+CONFIG_FILE="${3}"
+LOG_FILE="${4}"
+PID_FILE="${5}"
+
+JAVA_VER="$(/usr/bin/unzip -p "$JAR_FILE" META-INF/MANIFEST.MF | /bin/egrep '^X-Java-Version: ' | /usr/bin/cut -d ' ' -f 2 | /usr/bin/tr -d '\r')"
+
+JAVA='/usr/bin/java'
+if [ "$JAVA_VER" = "7" ]; then
+    JAVA='/usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java'
+fi
+if [ "$JAVA_VER" = "8" ]; then
+    JAVA='/usr/lib/jvm/zulu-8-amd64/jre/bin/java'
+fi
+
+$JAVA ${JVM_ARGS} -jar ${JAR_FILE} ${CONFIG_FILE} >${LOG_FILE} 2>&1 & echo $! >${PID_FILE}
+
