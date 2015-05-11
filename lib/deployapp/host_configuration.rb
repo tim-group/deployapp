@@ -42,7 +42,7 @@ class DeployApp::HostConfiguration
 
   def add(config)
     block = eval("lambda {#{config}}")
-    self.instance_eval(&block)
+    self.instance_exec(&block)
   end
 
   def application_instance(&hash)
