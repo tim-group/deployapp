@@ -80,7 +80,8 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
   def fetch_artifact_names(coords)
     artifact = ""
     verbose = @debug ? :debug : :error
-    Net::SSH.start(@ssh_address, "productstore", :keys => [@ssh_key_location], :verbose => verbose, :config => false, :user_known_hosts_file => [])  do|ssh|
+    Net::SSH.start(@ssh_address, "productstore", :keys => [@ssh_key_location], :verbose => verbose, :config => false,
+                                                 :user_known_hosts_file => []) do |ssh|
       cmd = "ls /opt/ProductStore/#{coords.name}/ | grep .*-#{coords.version}.*#{coords.type}"
       ssh.exec!(cmd) do |channel, stream, data|
         artifact << data.chomp if stream == :stdout
