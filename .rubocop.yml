@@ -99,11 +99,6 @@ Style/AccessorMethodName:
 Style/AndOr:
   Enabled: false
 
-# Offense count: 13
-# Cop supports --auto-correct.
-Style/Blocks:
-  Enabled: false
-
 # Offense count: 28
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/ClassAndModuleChildren:
@@ -159,4 +154,22 @@ Style/RegexpLiteral:
 # Offense count: 13
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:
+  Enabled: false
+
+# Offense count: 13
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles, ProceduralMethods, FunctionalMethods, IgnoredMethods.
+Style/BlockDelimiters:
+  Enabled: false
+
+# Offense count: 1
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles, AllowInnerSlashes.
+Style/RegexpLiteral:
+  Enabled: false
+
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: MultiSpaceAllowedForOperators.
+Style/SpaceAroundOperators:
   Enabled: false
