@@ -78,13 +78,13 @@ class DeployApp::Util::OptionParser
       opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
         @options[:environment] = env
       end
-      opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do    |app|
+      opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do |app|
         @options[:application] = app
       end
-      opts.on("-g", "--group GROUP", "specify the group to execute the plan for") do    |app|
+      opts.on("-g", "--group GROUP", "specify the group to execute the plan for") do |app|
         @options[:group] = app
       end
-      opts.on("-v", "--version VERSION", "specify the version to deploy") do    |app|
+      opts.on("-v", "--version VERSION", "specify the version to deploy") do |app|
         @options[:version] = app
       end
       opts.on("-s", "--show-status", "displays the status for instances on this host") do
