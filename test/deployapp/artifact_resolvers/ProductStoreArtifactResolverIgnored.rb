@@ -5,7 +5,7 @@ require 'deployapp/artifact_resolvers/namespace'
 require 'deployapp/artifact_resolvers/product_store_artifact_resolver'
 require 'deployapp/coord'
 
-class DeployApp::ArtifactResolvers::ProductStoreArtifactResolverTest  < Test::Unit::TestCase
+class DeployApp::ArtifactResolvers::ProductStoreArtifactResolverTest < Test::Unit::TestCase
   def test_resolve_specific_version
     resolver = DeployApp::ArtifactResolvers::ProductStoreArtifactResolver.new(
       :appHome => "build",

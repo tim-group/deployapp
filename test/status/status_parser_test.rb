@@ -19,9 +19,7 @@ class StatusParserTest < Test::Unit::TestCase
           urimatch = regex.match(req)
           if  urimatch
             uri = urimatch[1]
-            if !responses[uri].nil?
-              resp = responses[uri]
-            end
+            resp = responses[uri] if !responses[uri].nil?
           end
 
           headers = ["HTTP/1.1 200 OK",

@@ -42,14 +42,14 @@ class DeployApp::HostConfiguration
 
   def add(config)
     block = eval("lambda {#{config}}")
-    self.instance_exec(&block)
+    instance_exec(&block)
   end
 
   def application_instance(&hash)
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new(
-      :app_base_dir => self.app_base_dir,
-      :run_base_dir => self.run_base_dir,
-      :log_base_dir => self.log_base_dir
+      :app_base_dir => app_base_dir,
+      :run_base_dir => run_base_dir,
+      :log_base_dir => log_base_dir
     )
     application_instance_config.instance_eval(&hash)
     application_instance_config.apply_convention
@@ -96,9 +96,7 @@ class DeployApp::HostConfiguration
   end
 
   def parse(dir = "/opt/deploytool-#{@environment}/conf.d/")
-    if !File.exists?(dir)
-      fail DeployApp::EnvironmentNotFound.new(dir)
-    end
+    fail DeployApp::EnvironmentNotFound.new(dir) if !File.exists?(dir)
 
     Dir.entries(dir).each do |file|
       if file =~ /.cfg$/

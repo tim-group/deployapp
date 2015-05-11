@@ -58,7 +58,7 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
       logger.info("downloaded artifact #{coords.string} #{elapsed_time} seconds")
     end
 
-    self.clean_old_artifacts
+    clean_old_artifacts
     file = File.new(artifact_file)
     FileUtils.ln_sf(file.path,  @latest_jar)
 
@@ -83,7 +83,7 @@ class DeployApp::ArtifactResolvers::ProductStoreArtifactResolver
     Net::SSH.start(@ssh_address, "productstore", :keys => [@ssh_key_location], :verbose => verbose, :config => false,
                                                  :user_known_hosts_file => []) do |ssh|
       cmd = "ls /opt/ProductStore/#{coords.name}/ | grep .*-#{coords.version}.*#{coords.type}"
-      ssh.exec!(cmd) do |channel, stream, data|
+      ssh.exec!(cmd) do |_channel, stream, data|
         artifact << data.chomp if stream == :stdout
       end
     end

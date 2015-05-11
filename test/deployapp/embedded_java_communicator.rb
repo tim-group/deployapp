@@ -33,9 +33,7 @@ class DeployApp::EmbeddedJavaCommunicator
 
     for i in 1..@start_timeout
       sleep 1
-      if get_status.present?
-        return IO.read(@pid_file).to_i
-      end
+      return IO.read(@pid_file).to_i if get_status.present?
     end
     logcontents = IO.read(@log_file)
     fail "Unable to start process in a reasonable amount of time.\nConsole log:\n#{logcontents}"
@@ -43,12 +41,8 @@ class DeployApp::EmbeddedJavaCommunicator
 
   def stop
     for i in (1..@stop_timeout)
-      if !get_status.present?
-        return
-      end
-      if get_status.present? && get_status.stoppable?
-        clean_up
-      end
+      return if !get_status.present?
+      clean_up if get_status.present? && get_status.stoppable?
       sleep 1
     end
     fail "Gave up trying to stop instance"
@@ -95,7 +89,7 @@ class DeployApp::EmbeddedJavaCommunicator
     type = properties.get("type")
     start_timeout = properties.get("start_timeout") || 60
 
-    self.new(
+    new(
       :runnable_jar => "build/latest.jar",
       :config_file => "config/#{application_name}/config.properties",
       :log_file => "build/console.log",

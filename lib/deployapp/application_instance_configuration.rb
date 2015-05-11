@@ -44,18 +44,10 @@ class DeployApp::ApplicationInstanceConfiguration
   end
 
   def apply_convention
-    if @home.nil?
-      @home = "#{@app_base_dir}/#{@application}-#{@group}"
-    end
-    if @config_filename.nil?
-      @config_filename = "#{@home}/config.properties"
-    end
-    if @artifacts_dir.nil?
-      @artifacts_dir = "#{@home}/artifacts"
-    end
+    @home = "#{@app_base_dir}/#{@application}-#{@group}" if @home.nil?
+    @config_filename = "#{@home}/config.properties" if @config_filename.nil?
+    @artifacts_dir = "#{@home}/artifacts" if @artifacts_dir.nil?
 
-    if @latest_jar.nil?
-      @latest_jar = "#{@artifacts_dir}/#{@application}"
-    end
+    @latest_jar = "#{@artifacts_dir}/#{@application}" if @latest_jar.nil?
   end
 end

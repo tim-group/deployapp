@@ -31,9 +31,7 @@ class Compatibility::StartupShutdownTest < Test::Unit::TestCase
     while @communicator.get_status.present?
       sleep(1)
       i += 1
-      if i > 5
-        throw "Unable to kill application under test"
-      end
+      throw "Unable to kill application under test" if i > 5
     end
   end
 

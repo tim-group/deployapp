@@ -103,7 +103,7 @@ Rake::TestTask.new { |t|
 }
 
 desc "Run specs"
-RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
+RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |_t|
 end
 task :spec => [:test]
 
