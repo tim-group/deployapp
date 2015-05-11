@@ -11,7 +11,7 @@ require 'deployapp/stub/stub_application_communicator'
 require 'deployapp/coord'
 
 describe DeployApp::ApplicationInstance do
-  require 'spec/support/matchers/include_hash'
+  require 'support/matchers/include_hash'
 
   def memory_participation_service
     DeployApp::ParticipationService::Memory.new(
