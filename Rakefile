@@ -98,9 +98,9 @@ task :package do
 end
 
 task :test => [:setup]
-Rake::TestTask.new { |t|
+Rake::TestTask.new do |t|
   t.pattern = 'test/**/*_test.rb'
-}
+end
 
 desc "Run specs"
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |_t|

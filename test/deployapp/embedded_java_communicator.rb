@@ -31,7 +31,7 @@ class DeployApp::EmbeddedJavaCommunicator
       system("deployapp/launch \"#{@jvm_args}\" \"#{@runnable_jar}\" \"#{@config_file}\" \"#{@log_file}\" \"#{@pid_file}\"")
     end
 
-    for i in 1..@start_timeout
+    @start_timeout.times do
       sleep 1
       return IO.read(@pid_file).to_i if get_status.present?
     end
@@ -40,7 +40,7 @@ class DeployApp::EmbeddedJavaCommunicator
   end
 
   def stop
-    for i in (1..@stop_timeout)
+    @stop_timeout.times do
       return if !get_status.present?
       clean_up if get_status.present? && get_status.stoppable?
       sleep 1
@@ -59,7 +59,7 @@ class DeployApp::EmbeddedJavaCommunicator
           logger.info("Failed to kill process #{pid}\n")
           return
         end
-        for i in 1..@stop_timeout
+        @stop_timeout.times do
           sleep 1
           if !get_status.present?
             logger.debug("Killed process #{pid}\n")

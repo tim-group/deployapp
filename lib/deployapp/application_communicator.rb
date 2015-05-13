@@ -47,7 +47,7 @@ class DeployApp::ApplicationCommunicator
   end
 
   def wait_until_started
-    for i in (1..@start_timeout)
+    @start_timeout.times do
       sleep 1
       return if get_status.present?
     end
@@ -55,7 +55,7 @@ class DeployApp::ApplicationCommunicator
   end
 
   def wait_until_stopped
-    for i in (1..@stop_timeout)
+    @stop_timeout.times do
       return if !get_status.present?
       sleep 1
     end
