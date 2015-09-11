@@ -86,6 +86,8 @@ module MCollective
         end
       end
 
+
+
       action "enable_participation" do
         spec = request[:spec] || request
 
