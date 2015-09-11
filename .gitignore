@@ -7,3 +7,4 @@ config/*
 .*.sw[a-z]
 *~
 .project
+.idea
