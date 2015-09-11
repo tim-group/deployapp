@@ -121,6 +121,15 @@ module MCollective
           instance.kill
         end
       end
+
+      action "restart" do
+        spec = request[:spec] || request
+
+        process_instance do |instance|
+          logger.debug("recieved message to restart instance for spec #{spec}")
+          instance.restart
+        end
+      end
     end
   end
 end
