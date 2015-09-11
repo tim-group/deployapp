@@ -21,17 +21,23 @@ describe DeployApp::ApplicationInstance do
     )
   end
 
-  it 'test_generates_status_report_not_running' do
+  def default_app_instance_config
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
     application_instance_config.application("MyArtifact")
     application_instance_config.group("blue")
+    application_instance_config
+  end
 
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
+  def default_stub_resolver
+    DeployApp::Stub::StubArtifactResolver.new
+  end
+
+  it 'test_generates_status_report_not_running' do
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => false)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
@@ -48,11 +54,6 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'reports participation as false if the app is not running' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => false)
 
     memory_participation_service = double
@@ -60,8 +61,8 @@ describe DeployApp::ApplicationInstance do
     memory_participation_service.stub(:participating?).and_return(true)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
@@ -70,19 +71,14 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_generates_status_report_when_running' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(
       :present => true,
       :version => "21a"
     )
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
@@ -98,15 +94,11 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_can_update_to_new_version_cold' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
+    stub_resolver = default_stub_resolver
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
+      :application_instance_config => default_app_instance_config,
       :artifact_resolver => stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
@@ -118,15 +110,11 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_stops_application_before_launching' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
+    stub_resolver = default_stub_resolver
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => true)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
+      :application_instance_config => default_app_instance_config,
       :artifact_resolver => stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
@@ -141,16 +129,11 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_exception_raised_when_failed_to_resolve' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new(:fail_to_resolve => true)
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => DeployApp::Stub::StubArtifactResolver.new(:fail_to_resolve => true),
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
@@ -161,16 +144,11 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_exception_raised_when_failed_to_launch' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:fail_to_launch => true)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
@@ -181,14 +159,10 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_exception_raised_when_failed_to_stop' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:fail_to_stop => true, :present => true)
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
@@ -199,16 +173,11 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_enable_participation' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => true, :version => "21a")
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
@@ -225,16 +194,11 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'test_disable_participation' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => true, :version => "21a")
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
 
@@ -258,18 +222,13 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'stops when it is running' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     communicator = double
     app_present(true, communicator)
     communicator.should_receive(:stop)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => communicator,
       :participation_service => memory_participation_service
     )
@@ -278,18 +237,13 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'does nothing when it is not running and it is asked to stop' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     communicator = double
     app_present(false, communicator)
     communicator.should_not_receive(:stop)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => communicator,
       :participation_service => memory_participation_service
     )
@@ -298,19 +252,14 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'restarts a running instance' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     communicator = double
     app_present(true, communicator)
     communicator.should_receive(:stop)
     communicator.should_receive(:start)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => communicator,
       :participation_service => memory_participation_service
     )
@@ -319,11 +268,6 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'does not attempt to stop an already stopped instance when restarting' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     communicator = double
 
     communicator.stub(:get_status).and_return(app_present(false, communicator))
@@ -331,8 +275,8 @@ describe DeployApp::ApplicationInstance do
     communicator.should_receive(:start)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => communicator,
       :participation_service => memory_participation_service
     )
@@ -341,11 +285,6 @@ describe DeployApp::ApplicationInstance do
   end
 
   it 'reports health' do
-    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
-    application_instance_config.application("MyArtifact")
-    application_instance_config.group("blue")
-
-    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
     stub_communicator = double
 
     status = DeployApp::Status.new(true)
@@ -353,8 +292,8 @@ describe DeployApp::ApplicationInstance do
     stub_communicator.stub(:get_status).with.and_return(status)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => application_instance_config,
-      :artifact_resolver => stub_resolver,
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
       :application_communicator => stub_communicator,
       :participation_service => memory_participation_service
     )
