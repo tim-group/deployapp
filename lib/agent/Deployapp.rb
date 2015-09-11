@@ -56,6 +56,11 @@ module MCollective
         reply.data[:logs] = @remote_logger.logs
       end
 
+
+
+
+
+      
       action "status" do
         spec = request[:spec] || request
         process_host_configuration  do |host_configuration|
