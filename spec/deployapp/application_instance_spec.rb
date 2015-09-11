@@ -297,6 +297,49 @@ describe DeployApp::ApplicationInstance do
     application_instance.stop
   end
 
+  it 'restarts a running instance' do
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
+    application_instance_config.application("MyArtifact")
+    application_instance_config.group("blue")
+
+    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
+    communicator = double
+    app_present(true, communicator)
+    communicator.should_receive(:stop)
+    communicator.should_receive(:start)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config => application_instance_config,
+      :artifact_resolver => stub_resolver,
+      :application_communicator => communicator,
+      :participation_service => memory_participation_service
+    )
+
+    application_instance.restart
+  end
+
+  it 'does not attempt to stop an already stopped instance when restarting' do
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
+    application_instance_config.application("MyArtifact")
+    application_instance_config.group("blue")
+
+    stub_resolver = DeployApp::Stub::StubArtifactResolver.new
+    communicator = double
+
+    communicator.stub(:get_status).and_return(app_present(false, communicator))
+    communicator.should_not_receive(:stop)
+    communicator.should_receive(:start)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config => application_instance_config,
+      :artifact_resolver => stub_resolver,
+      :application_communicator => communicator,
+      :participation_service => memory_participation_service
+    )
+
+    application_instance.restart
+  end
+
   it 'reports health' do
     application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
     application_instance_config.application("MyArtifact")

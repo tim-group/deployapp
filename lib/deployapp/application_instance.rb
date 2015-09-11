@@ -42,11 +42,7 @@ class DeployApp::ApplicationInstance
 
   def update_to_version(version)
     get_artifact(version)
-
-    if @application_communicator.get_status.present?
-      @application_communicator.stop
-    end
-    @application_communicator.start
+    restart
   end
 
   def enable_participation
@@ -75,5 +71,12 @@ class DeployApp::ApplicationInstance
     else
       logger.info("not stopping the application as it is already stopped")
     end
+  end
+
+  def restart
+    if @application_communicator.get_status.present?
+      @application_communicator.stop
+    end
+    @application_communicator.start
   end
 end
