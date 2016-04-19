@@ -120,10 +120,75 @@ application_instance {
           application "App#{i}"
           group "blue"
           type "none"
-        })
+        }
+      )
       host_configuration.add(config)
     end
     instance = host_configuration.get_application_instance(:application => "App4", :group => "blue")
     instance.should_not be_nil
+  end
+
+  it 'raises error when no instance found by key' do
+    host_configuration = DeployApp::HostConfiguration.new
+    for i in 0..4
+      config = %(
+        application_instance {
+        application "App#{i}"
+        group "blue"
+        type "none"
+      })
+      host_configuration.add(config)
+    end
+
+   expect {
+      host_configuration.get_application_instance(:application => "BadApp", :group => "blue")
+    }.to raise_error(DeployApp::NoInstanceFound)
+  end
+
+  it 'should have wired resolver' do
+    config = %(
+       application_instance {
+             application "App1"
+             group "blue"
+             additional_jvm_args "-Xms3m -Xmx5m"
+             type "embedded-jar"
+       }
+              )
+
+    host_configuration = DeployApp::HostConfiguration.new
+    host_configuration.add(config)
+
+    application_instance = host_configuration.application_instances[0]
+
+    application_instance.artifact_resolver.should_not be_nil
+    application_instance.application_communicator.should_not be_nil
+  end
+
+
+  it 'finds services in group' do
+    host_configuration = DeployApp::HostConfiguration.new
+    for i in 0..4
+      config = %(
+application_instance {
+  application "App#{i}"
+  group "blue"
+  type "none"
+})
+      host_configuration.add(config)
+    end
+
+    status = host_configuration.status(:group => "blue")
+    status.size.should eq(5)
+
+    status = host_configuration.status(:group => "green")
+    status.size.should eq(0)
+  end
+
+  it 'raises environment not found error when directory does not exist' do
+    host_configuration = DeployApp::HostConfiguration.new(:environment => "noexist")
+
+    expect {
+      host_configuration.parse("blah")
+    }.to raise_error(DeployApp::EnvironmentNotFound)
   end
 end
