@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'rake'
-require 'rake/testtask'
 begin # Ruby 1.8 vs 1.9 fuckery
   require 'rake/rdoctask'
 rescue Exception
@@ -87,18 +86,13 @@ task :package do
   fail "problem creating debian package " unless FPM::Program.new.run(arguments) == 0
 end
 
-task :test => [:setup]
-Rake::TestTask.new do |t|
-  t.pattern = 'test/**/*_test.rb'
-end
-
 desc "Run specs"
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |_t|
 end
-task :spec => [:test]
+task :spec => [:setup]
 
 desc "Setup, package, test, and upload"
-task :build  => [:setup, :package, :test]
+task :build  => [:setup, :package, :spec]
 
 desc "Run lint (Rubocop)"
 task :lint do
