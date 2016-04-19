@@ -89,6 +89,7 @@ task :package do
     "-a", 'all',
     "-t", 'deb',
     "-s", 'dir',
+    "--post-install", 'postinst.sh',
     "--description", "#{@project.description}",
     "--url", 'http://seleniumhq.org',
     "-C", 'build/package'
