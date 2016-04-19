@@ -59,17 +59,6 @@ task :setup do
   end
 end
 
-desc "Deploys the debian package to the test environment"
-task :deploy_package => [:package] do
-  `scp build/#{@project.name}.deb root@stag-dep-002.stag.net.local:`
-  `ssh root@stag-dep-002.stag.net.local dpkg -i #{@project.name}.deb`
-  `ssh root@stag-dep-002.stag.net.local service mcollective restart`
-
-  `scp build/#{@project.name}.deb root@stag-dep-001.stag.net.local:`
-  `ssh root@stag-dep-001.stag.net.local dpkg -i #{@project.name}.deb`
-  `ssh root@stag-dep-001.stag.net.local service mcollective restart`
-end
-
 desc "Create Debian package"
 task :package do
   require 'rubygems'
