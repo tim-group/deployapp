@@ -7,11 +7,11 @@ describe DeployApp::HostConfiguration do
   it 'provides the default clustername per instance when none is specified' do
     host_configuration = DeployApp::HostConfiguration.new
     config = %(
-application_instance {
-    application 'App'
-    group 'blue'
-    type 'none'
-})
+      application_instance {
+          application 'App'
+          group 'blue'
+          type 'none'
+      })
     host_configuration.add(config)
 
     status = host_configuration.status
@@ -30,12 +30,12 @@ application_instance {
   it 'allows us to configure clustername per instance' do
     host_configuration = DeployApp::HostConfiguration.new
     config = %(
-application_instance {
-    application 'App'
-    group 'blue'
-    cluster 'A'
-    type 'none'
-})
+      application_instance {
+          application 'App'
+          group 'blue'
+          cluster 'A'
+          type 'none'
+      })
     host_configuration.add(config)
 
     status = host_configuration.status
@@ -54,12 +54,12 @@ application_instance {
   it 'builds an app instance' do
     host_configuration = DeployApp::HostConfiguration.new
     config = %(
-    application_instance {
-          application "App1"
-          group "blue"
-          additional_jvm_args "-Xms3m -Xmx5m"
-          type "none"
-    }
+      application_instance {
+            application 'App1'
+            group 'blue'
+            additional_jvm_args '-Xms3m -Xmx5m'
+            type 'none'
+      }
     )
     host_configuration.add(config)
 
@@ -75,13 +75,13 @@ application_instance {
   it 'builds many app instances if loading many config files' do
     for i in 0..4
       config = %(
-application_instance {
-      application "App#{i}"
-      group "blue"
-      type "none"
-})
+        application_instance {
+              application "App#{i}"
+              group 'blue'
+              type 'none'
+        })
       FileUtils.mkdir_p 'build/conf.d'
-      a_file = File.new("build/conf.d/config#{i}.cfg", "w")
+      a_file = File.new("build/conf.d/config#{i}.cfg", 'w')
       a_file.write(config)
       a_file.close
     end
@@ -95,20 +95,20 @@ application_instance {
     host_configuration = DeployApp::HostConfiguration.new
     for i in 0..4
       config = %(
-application_instance {
-    application "App#{i}"
-    group "blue"
-    type "none"
-})
+        application_instance {
+            application "App#{i}"
+            group 'blue'
+            type 'none'
+        })
       host_configuration.add(config)
     end
 
     status = host_configuration.status
     status.size.should eq(5)
-    status[4].should eq({ :application => "App4", :group => "blue", :version => nil, :present => false,
-                   :participating => false, :health => nil, :cluster => "default", :stoppable => false })
+    status[4].should eq({ :application => 'App4', :group => 'blue', :version => nil, :present => false,
+                   :participating => false, :health => nil, :cluster => 'default', :stoppable => false })
 
-    app_status = host_configuration.status(:application => "App4")
+    app_status = host_configuration.status(:application => 'App4')
     app_status.size.should eq(1)
   end
 
@@ -118,13 +118,13 @@ application_instance {
       config = %(
         application_instance {
           application "App#{i}"
-          group "blue"
-          type "none"
+          group 'blue'
+          type 'none'
         }
       )
       host_configuration.add(config)
     end
-    instance = host_configuration.get_application_instance(:application => "App4", :group => "blue")
+    instance = host_configuration.get_application_instance(:application => 'App4', :group => 'blue')
     instance.should_not be_nil
   end
 
@@ -134,24 +134,24 @@ application_instance {
       config = %(
         application_instance {
         application "App#{i}"
-        group "blue"
-        type "none"
+        group 'blue'
+        type 'none'
       })
       host_configuration.add(config)
     end
 
    expect {
-      host_configuration.get_application_instance(:application => "BadApp", :group => "blue")
+      host_configuration.get_application_instance(:application => 'BadApp', :group => 'blue')
     }.to raise_error(DeployApp::NoInstanceFound)
   end
 
   it 'should have wired resolver' do
     config = %(
        application_instance {
-             application "App1"
-             group "blue"
-             additional_jvm_args "-Xms3m -Xmx5m"
-             type "embedded-jar"
+             application 'App1'
+             group 'blue'
+             additional_jvm_args '-Xms3m -Xmx5m'
+             type 'embedded-jar'
        }
               )
 
@@ -169,26 +169,26 @@ application_instance {
     host_configuration = DeployApp::HostConfiguration.new
     for i in 0..4
       config = %(
-application_instance {
-  application "App#{i}"
-  group "blue"
-  type "none"
-})
+        application_instance {
+          application 'App#{i}'
+          group 'blue'
+          type 'none'
+        })
       host_configuration.add(config)
     end
 
-    status = host_configuration.status(:group => "blue")
+    status = host_configuration.status(:group => 'blue')
     status.size.should eq(5)
 
-    status = host_configuration.status(:group => "green")
+    status = host_configuration.status(:group => 'green')
     status.size.should eq(0)
   end
 
   it 'raises environment not found error when directory does not exist' do
-    host_configuration = DeployApp::HostConfiguration.new(:environment => "noexist")
+    host_configuration = DeployApp::HostConfiguration.new(:environment => 'noexist')
 
     expect {
-      host_configuration.parse("blah")
+      host_configuration.parse('blah')
     }.to raise_error(DeployApp::EnvironmentNotFound)
   end
 end
