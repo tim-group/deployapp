@@ -105,8 +105,8 @@ describe DeployApp::HostConfiguration do
 
     status = host_configuration.status
     status.size.should eq(5)
-    status[4].should eq({ :application => 'App4', :group => 'blue', :version => nil, :present => false,
-                   :participating => false, :health => nil, :cluster => 'default', :stoppable => false })
+    status[4].should eq(:application => 'App4', :group => 'blue', :version => nil, :present => false,
+                        :participating => false, :health => nil, :cluster => 'default', :stoppable => false)
 
     app_status = host_configuration.status(:application => 'App4')
     app_status.size.should eq(1)
@@ -140,7 +140,7 @@ describe DeployApp::HostConfiguration do
       host_configuration.add(config)
     end
 
-   expect {
+    expect {
       host_configuration.get_application_instance(:application => 'BadApp', :group => 'blue')
     }.to raise_error(DeployApp::NoInstanceFound)
   end
@@ -163,7 +163,6 @@ describe DeployApp::HostConfiguration do
     application_instance.artifact_resolver.should_not be_nil
     application_instance.application_communicator.should_not be_nil
   end
-
 
   it 'finds services in group' do
     host_configuration = DeployApp::HostConfiguration.new
