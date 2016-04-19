@@ -49,24 +49,24 @@ describe DeployApp::StatusRetriever do
     }
   end
 
-  def test_retrieves_health
+  it 'retrieves_health' do
     run_against_server('/info/health' => 'ill') {
       retriever = DeployApp::StatusRetriever.new
-      assert_equal 'ill', retriever.retrieve('http://localhost:2002').health
+      retriever.retrieve('http://localhost:2002').health.should eq('ill')
     }
   end
 
-  def test_stoppable_when_safe
+  it 'stoppable_when_safe' do
     run_against_server('/info/stoppable' => 'safe') {
       retriever = DeployApp::StatusRetriever.new
-      assert retriever.retrieve('http://localhost:2002').stoppable?
+      retriever.retrieve('http://localhost:2002').stoppable?.should be_true
     }
   end
 
-  def test_not_stoppable_when_unwise
+  it 'not_stoppable_when_unwise' do
     run_against_server('/info/stoppable' => 'unwise') {
       retriever = DeployApp::StatusRetriever.new
-      assert !retriever.retrieve('http://localhost:2002').stoppable?
+      retriever.retrieve('http://localhost:2002').stoppable?.should be_false
     }
   end
 end
