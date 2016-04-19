@@ -1,17 +1,16 @@
-$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "../lib")
-require 'test/unit'
+$LOAD_PATH << File.join(File.dirname(__FILE__), '..', '../lib')
 require 'fileutils'
 require 'deployapp/host_configuration'
 require 'deployapp/participation_service/memory'
 
 describe DeployApp::HostConfiguration do
-  it 'allows provides the default clustername per instance when none is specified' do
+  it 'provides the default clustername per instance when none is specified' do
     host_configuration = DeployApp::HostConfiguration.new
     config = %(
 application_instance {
-    application "App"
-    group "blue"
-    type "none"
+    application 'App'
+    group 'blue'
+    type 'none'
 })
     host_configuration.add(config)
 
@@ -19,10 +18,11 @@ application_instance {
 
     status.should eq(
       [{ :present => false,
-         :group => "blue",
-         :cluster => "default",
+         :group => 'blue',
+         :stoppable => false,
+         :cluster => 'default',
          :participating => false,
-         :application => "App",
+         :application => 'App',
          :version => nil,
          :health => nil }])
   end
@@ -31,10 +31,10 @@ application_instance {
     host_configuration = DeployApp::HostConfiguration.new
     config = %(
 application_instance {
-    application "App"
-    group "blue"
-    cluster "A"
-    type "none"
+    application 'App'
+    group 'blue'
+    cluster 'A'
+    type 'none'
 })
     host_configuration.add(config)
 
@@ -42,10 +42,11 @@ application_instance {
 
     status.should eq(
       [{ :present => false,
-         :group => "blue",
-         :cluster => "A",
+         :group => 'blue',
+         :stoppable => false,
+         :cluster => 'A',
          :participating => false,
-         :application => "App",
+         :application => 'App',
          :version => nil,
          :health => nil }])
   end
