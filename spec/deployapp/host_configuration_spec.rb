@@ -71,4 +71,59 @@ application_instance {
     host_configuration.application_instances[0].application_instance_config.config_filename.should eq('/opt/apps/App1-blue/config.properties')
     host_configuration.application_instances[0].application_instance_config.run_as_user.should eq('app1')
   end
+
+  it 'builds many app instances if loading many config files' do
+    for i in 0..4
+      config = %(
+application_instance {
+      application "App#{i}"
+      group "blue"
+      type "none"
+})
+      FileUtils.mkdir_p 'build/conf.d'
+      a_file = File.new("build/conf.d/config#{i}.cfg", "w")
+      a_file.write(config)
+      a_file.close
+    end
+
+    host_configuration = DeployApp::HostConfiguration.new
+    host_configuration.parse('build/conf.d/')
+    host_configuration.application_instances.size.should eq(5)
+  end
+
+  it 'retrieves status for instance' do
+    host_configuration = DeployApp::HostConfiguration.new
+    for i in 0..4
+      config = %(
+application_instance {
+    application "App#{i}"
+    group "blue"
+    type "none"
+})
+      host_configuration.add(config)
+    end
+
+    status = host_configuration.status
+    status.size.should eq(5)
+    status[4].should eq({ :application => "App4", :group => "blue", :version => nil, :present => false,
+                   :participating => false, :health => nil, :cluster => "default", :stoppable => false })
+
+    app_status = host_configuration.status(:application => "App4")
+    app_status.size.should eq(1)
+  end
+
+  it 'identifies instances by key' do
+    host_configuration = DeployApp::HostConfiguration.new
+    for i in 0..4
+      config = %(
+        application_instance {
+          application "App#{i}"
+          group "blue"
+          type "none"
+        })
+      host_configuration.add(config)
+    end
+    instance = host_configuration.get_application_instance(:application => "App4", :group => "blue")
+    instance.should_not be_nil
+  end
 end
