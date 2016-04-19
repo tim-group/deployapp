@@ -28,7 +28,8 @@ class DeployApp::ApplicationInstance
       :version       => status.version,
       :present       => status.present?,
       :participating => @participation_service.participating? && status.present?,
-      :health        => status.health
+      :health        => status.health,
+      :stoppable     => status.stoppable?
     }
 
     logger.info(return_status)
