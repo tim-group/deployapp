@@ -68,7 +68,7 @@ class DeployApp::Util::OptionParser
     @option_parser = OptionParser.new do |opts|
       opts.banner =
         "Usage:
-            manage --environment=staging --show-status
+            manage --environment=staging --application=JavaHttpRef --group=blue --show-status
             manage --environment=staging --application=JavaHttpRef --group=blue --enable-participation
             manage --environment=staging --application=JavaHttpRef --group=blue --disable-participation
             manage --environment=staging --application=JavaHttpRef --group=blue --versio=2.21.0 --install
