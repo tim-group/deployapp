@@ -71,7 +71,7 @@ class DeployApp::Util::OptionParser
             manage --environment=staging --application=JavaHttpRef --group=blue --show-status
             manage --environment=staging --application=JavaHttpRef --group=blue --enable-participation
             manage --environment=staging --application=JavaHttpRef --group=blue --disable-participation
-            manage --environment=staging --application=JavaHttpRef --group=blue --versio=2.21.0 --install
+            manage --environment=staging --application=JavaHttpRef --group=blue --version=2.21.0 --install
 
         "
 
