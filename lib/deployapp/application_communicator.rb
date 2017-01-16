@@ -6,6 +6,7 @@ require 'deployapp/status_retriever'
 require 'deployapp/service_wrapper'
 require 'deployapp/util/config_file'
 require 'fileutils'
+require 'facter'
 
 include DeployApp
 
@@ -42,7 +43,10 @@ class DeployApp::ApplicationCommunicator
   end
 
   def get_status
-    status =  @status_retriever.retrieve("http://127.0.0.1:#{@config.port}")
+    ip = '127.0.0.1'
+    prod_ip = Facter.value('ipaddress_prod')
+    ip = prod_ip unless prod_ip.nil?
+    status =  @status_retriever.retrieve("http://#{ip}:#{@config.port}")
     status
   end
 
