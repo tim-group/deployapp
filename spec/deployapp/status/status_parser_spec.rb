@@ -45,28 +45,28 @@ describe DeployApp::StatusRetriever do
   it 'retrieves_version' do
     run_against_server('/info/version' => '0.0.1.65') {
       retriever = DeployApp::StatusRetriever.new
-      retriever.retrieve('http://localhost:2002').version.should eq('0.0.1.65')
+      expect(retriever.retrieve('http://localhost:2002').version).to eql '0.0.1.65'
     }
   end
 
   it 'retrieves_health' do
     run_against_server('/info/health' => 'ill') {
       retriever = DeployApp::StatusRetriever.new
-      retriever.retrieve('http://localhost:2002').health.should eq('ill')
+      expect(retriever.retrieve('http://localhost:2002').health).to eql 'ill'
     }
   end
 
   it 'stoppable_when_safe' do
     run_against_server('/info/stoppable' => 'safe') {
       retriever = DeployApp::StatusRetriever.new
-      retriever.retrieve('http://localhost:2002').stoppable?.should be_true
+      expect(retriever.retrieve('http://localhost:2002').stoppable?).to eql true
     }
   end
 
   it 'not_stoppable_when_unwise' do
     run_against_server('/info/stoppable' => 'unwise') {
       retriever = DeployApp::StatusRetriever.new
-      retriever.retrieve('http://localhost:2002').stoppable?.should be_false
+      expect(retriever.retrieve('http://localhost:2002').stoppable?).to eql false
     }
   end
 end
