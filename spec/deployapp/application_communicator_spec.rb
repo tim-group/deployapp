@@ -55,4 +55,24 @@ describe DeployApp::ApplicationCommunicator do
     mock_service_wrapper.should_not_receive(:stop_service).with("myservice")
     expect {  service_communicator.stop }.to raise_error
   end
+
+  it 'can perform a restart' do
+    mock_status_retriever = double(DeployApp::StatusRetriever.new)
+    mock_service_wrapper = double
+
+    application_communicator = DeployApp::ApplicationCommunicator.new(:config_file => "f",
+                                                                  :service_name => "myservice",
+                                                                  :start_timeout => 1,
+                                                                  :stop_timeout => 1,
+                                                                  :status_retriever => mock_status_retriever,
+                                                                  :service_wrapper => mock_service_wrapper)
+
+    allow(mock_status_retriever).to receive(:retrieve).with("http://127.0.0.1:").and_return(@status_present,@status_not_present,@status_present)
+    # first in stop() get_status.stoppable?
+    # second in wait_until_stopped() !get_status.present?
+    # third in start() get_status.present?
+    expect(mock_service_wrapper).to receive(:stop_service).with("myservice")
+    expect(mock_service_wrapper).to receive(:start_service).with("myservice")
+    application_communicator.restart
+  end
 end

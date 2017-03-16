@@ -42,6 +42,11 @@ class DeployApp::ApplicationCommunicator
     wait_until_stopped
   end
 
+  def restart
+    stop
+    start
+  end
+
   def get_status
     ip = '127.0.0.1'
     prod_ip = Facter.value('ipaddress_prod')
