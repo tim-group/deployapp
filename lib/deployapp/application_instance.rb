@@ -80,4 +80,10 @@ class DeployApp::ApplicationInstance
     end
     @application_communicator.start
   end
+
+  def rolling_restart
+    disable_participation
+    restart
+    enable_participation
+  end
 end

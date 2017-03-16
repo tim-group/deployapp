@@ -267,6 +267,23 @@ describe DeployApp::ApplicationInstance do
     application_instance.restart
   end
 
+  it 'rolling restarts a running instance safely' do
+    communicator = double
+    app_present(true, communicator)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
+      :application_communicator => communicator,
+      :participation_service => memory_participation_service
+    )
+    application_instance.should_receive(:disable_participation)
+    application_instance.should_receive(:restart)
+    application_instance.should_receive(:enable_participation)
+
+    application_instance.rolling_restart
+  end
+
   it 'does not attempt to stop an already stopped instance when restarting' do
     communicator = double
 
