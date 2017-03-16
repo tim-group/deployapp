@@ -107,7 +107,7 @@ describe DeployApp::HostConfiguration do
     status = host_configuration.status
     expect(status.size).to eql 5
     expect(status[4]).to eql(:application => 'App4', :group => 'blue', :version => nil, :present => false,
-                        :participating => false, :health => nil, :cluster => 'default', :stoppable => false)
+                             :participating => false, :health => nil, :cluster => 'default', :stoppable => false)
 
     app_status = host_configuration.status(:application => 'App4')
     expect(app_status.size).to eql 1

@@ -7,4 +7,3 @@ require 'rspec/mocks'
 require 'tempfile'
 
 ENV['RACK_ENV'] = 'test'
-

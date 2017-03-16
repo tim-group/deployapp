@@ -1,7 +1,6 @@
 # N.B. This Gemfile is _just_ for travis, see .travis.yml
 source "https://rubygems.org"
 
-
 group :test do
   gem "rake", "10.0.3"
   gem "rspec", "3.5"
@@ -13,5 +12,4 @@ group :test do
   gem 'facter'
   gem "mcollective-client"
   gem "fpm", "0.3.9"
-
 end
