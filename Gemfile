@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 group :test do
   gem "rake", "10.0.3"
-  gem "rspec", "2.13.0"
+  gem "rspec", "3.5.0"
   gem "rdoc"
   gem "ci_reporter", "1.7.3"
   gem "stomp", "1.2.2"
@@ -12,4 +12,6 @@ group :test do
   gem "net-ssh", "2.9.1"
   gem "net-scp"
   gem 'facter'
+  gem "mcollective-test"
+
 end
