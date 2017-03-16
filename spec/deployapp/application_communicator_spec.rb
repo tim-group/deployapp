@@ -32,11 +32,11 @@ describe DeployApp::ApplicationCommunicator do
                                                                   :status_retriever => mock_status_retriever,
                                                                   :service_wrapper => mock_service_wrapper)
 
-    mock_status_retriever.stub(:retrieve).with("http://127.0.0.1:").and_return(@status_present,
+    allow(mock_status_retriever).to receive(:retrieve).with("http://127.0.0.1:").and_return(@status_present,
                                                                                @status_not_present,
                                                                                @status_not_present,
                                                                                @status_not_present)
-    mock_service_wrapper.should_receive(:stop_service).with("myservice")
+    expect(mock_service_wrapper).to receive(:stop_service).with("myservice")
     service_communicator.stop
   end
 
@@ -51,9 +51,9 @@ describe DeployApp::ApplicationCommunicator do
                                                                   :status_retriever => mock_status_retriever,
                                                                   :service_wrapper => mock_service_wrapper)
 
-    mock_status_retriever.stub(:retrieve).with("http://127.0.0.1:").and_return(@status_present_not_stoppable)
-    mock_service_wrapper.should_not_receive(:stop_service).with("myservice")
-    expect {  service_communicator.stop }.to raise_error
+    allow(mock_status_retriever).to receive(:retrieve).with("http://127.0.0.1:").and_return(@status_present_not_stoppable)
+    expect(mock_service_wrapper).to_not receive(:stop_service).with("myservice")
+    expect {  service_communicator.stop }.to raise_error(RuntimeError)
   end
 
   it 'can perform a restart' do
