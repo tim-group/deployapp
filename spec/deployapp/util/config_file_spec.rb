@@ -8,6 +8,6 @@ describe DeployApp::Util::ConfigFile do
     config_file.write(config)
     config_file.close
     parser =  DeployApp::Util::ConfigFile.new('build/test.config.properties')
-    parser.port.should eq('2003')
+    expect(parser.port).to eql '2003'
   end
 end

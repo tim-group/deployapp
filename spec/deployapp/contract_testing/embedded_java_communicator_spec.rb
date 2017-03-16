@@ -21,7 +21,7 @@ describe DeployApp::EmbeddedJavaCommunicator do
       @communicator.start
       fail 'expected unable-to-launch exception'
     rescue Exception => e
-      e.message.should match(/Unable to start process in a reasonable amount of time/)
+      expect(e.message).to match(/Unable to start process in a reasonable amount of time/)
     end
   end
 end
