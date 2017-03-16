@@ -12,6 +12,7 @@ class DeployApp::ApplicationInstance
     @artifact_resolver = args[:artifact_resolver]
     @application_communicator = args[:application_communicator]
     @participation_service = args[:participation_service] or fail "Please provide a participation service"
+    @application_with_group = "#{@application_instance_config.application} #{@application_instance_config.group}"
   end
 
   def status
@@ -32,7 +33,7 @@ class DeployApp::ApplicationInstance
       :stoppable     => status.stoppable?
     }
 
-    logger.info(return_status)
+    logger.info("Status: #{return_status}")
     return_status
   end
 
@@ -75,9 +76,14 @@ class DeployApp::ApplicationInstance
   end
 
   def restart
+    logger.info("restarting #{@application_with_group}")
     if @application_communicator.get_status.present?
+      logger.info("stopping #{@application_with_group}")
       @application_communicator.stop
+    else
+      logger.info("not stopping the application as it is already stopped")
     end
+    logger.info("starting #{@application_with_group}")
     @application_communicator.start
   end
 
