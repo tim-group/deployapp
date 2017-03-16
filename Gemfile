@@ -1,5 +1,4 @@
 # N.B. This Gemfile is _just_ for travis, see .travis.yml
-ruby '1.9.3'
 source "https://rubygems.org"
 
 
