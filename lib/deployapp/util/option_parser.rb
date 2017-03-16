@@ -111,8 +111,8 @@ class DeployApp::Util::OptionParser
       opts.on("-n", "--disable-participation", "disables load balancer participation for the given instance") do
         @commands << DisableParticipationRequest.new
       end
-      opts.on("-rr", '--rolling-restart', 'disable participation, stop, start and enable participation for instance') do
-        @commands << RollingRestartRequest
+      opts.on("-o", '--rolling-restart', 'disable participation, stop, start and enable participation for instance') do
+        @commands << RollingRestartRequest.new
       end
     end
   end
