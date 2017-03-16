@@ -306,7 +306,7 @@ describe DeployApp::ApplicationInstance do
 
     status = DeployApp::Status.new(true)
     status.add("health", "healthy")
-    stub_communicator.stub(:get_status).with.and_return(status)
+    allow(stub_communicator).to receive(:get_status).and_return(status)
 
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config => default_app_instance_config,
