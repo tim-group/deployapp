@@ -104,6 +104,15 @@ module MCollective
         end
       end
 
+      action "rolling_restart" do
+        spec = request[:spec] || request
+
+        process_instance do |instance|
+          logger.debug("recieved message to do a rolling restart for spec #{spec}")
+          instance.rolling_restart
+        end
+      end
+
       action "stop" do
         spec = request[:spec] || request
 
