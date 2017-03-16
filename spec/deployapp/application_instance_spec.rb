@@ -1,7 +1,6 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib")
 $: << File.join(File.dirname(__FILE__), "..", "../test")
 
-require 'test/unit'
 require 'fileutils'
 require 'deployapp/participation_service/memory'
 require 'deployapp/application_instance_configuration'
