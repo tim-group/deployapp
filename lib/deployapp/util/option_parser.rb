@@ -62,6 +62,17 @@ class DeployApp::Util::OptionParser
     end
   end
 
+  class RollingRestartRequest < Base
+    def required
+      [:environment, :application, :group]
+    end
+
+    def execute(options)
+      print "Commencing rolling restart\n\n"
+      application_instance(options).rolling_restart
+    end
+  end
+
   def initialize
     @options = {}
     @commands = []
@@ -72,6 +83,7 @@ class DeployApp::Util::OptionParser
             manage --environment=staging --application=JavaHttpRef --group=blue --enable-participation
             manage --environment=staging --application=JavaHttpRef --group=blue --disable-participation
             manage --environment=staging --application=JavaHttpRef --group=blue --version=2.21.0 --install
+            manage --environment=staging --application=JavaHttpRef --group=blue --rolling-restart
 
         "
 
@@ -98,6 +110,9 @@ class DeployApp::Util::OptionParser
       end
       opts.on("-n", "--disable-participation", "disables load balancer participation for the given instance") do
         @commands << DisableParticipationRequest.new
+      end
+      opts.on("-rr", '--rolling-restart', 'disable participation, stop, start and enable participation for instance') do
+        @commands << RollingRestartRequest
       end
     end
   end
