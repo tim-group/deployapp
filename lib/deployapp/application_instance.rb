@@ -88,8 +88,9 @@ class DeployApp::ApplicationInstance
   end
 
   def rolling_restart
-    disable_participation
+    participating = @participation_service.participating?
+    disable_participation if participating
     restart
-    enable_participation
+    enable_participation if participating
   end
 end

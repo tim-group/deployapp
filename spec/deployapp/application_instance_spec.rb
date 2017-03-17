@@ -270,16 +270,38 @@ describe DeployApp::ApplicationInstance do
     communicator = double
     app_present(true, communicator)
 
+    participation_service = double
+    allow(participation_service).to receive(:participating?).and_return(true)
+
     application_instance = DeployApp::ApplicationInstance.new(
       :application_instance_config => default_app_instance_config,
       :artifact_resolver => default_stub_resolver,
       :application_communicator => communicator,
-      :participation_service => memory_participation_service
+      :participation_service => participation_service
     )
     expect(application_instance).to receive(:disable_participation)
     expect(application_instance).to receive(:restart)
     expect(application_instance).to receive(:enable_participation)
 
+    application_instance.rolling_restart
+  end
+
+  it 'rolling restarts a running instance safely respecting participating' do
+    communicator = double
+    app_present(true, communicator)
+
+    non_participation_service = double
+    allow(non_participation_service).to receive(:participating?).and_return(false)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config => default_app_instance_config,
+      :artifact_resolver => default_stub_resolver,
+      :application_communicator => communicator,
+      :participation_service => non_participation_service
+    )
+    expect(application_instance).not_to receive(:disable_participation)
+    expect(application_instance).to receive(:restart)
+    expect(application_instance).not_to receive(:enable_participation)
     application_instance.rolling_restart
   end
 
