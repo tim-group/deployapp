@@ -118,7 +118,7 @@ module MCollective
 
         process_instance do |instance|
           logger.debug("recieved message to stop instance for spec #{spec}")
-          instance.stop
+          reply.data = { :status => instance.stop }
         end
       end
 
@@ -127,7 +127,7 @@ module MCollective
 
         process_instance do |instance|
           logger.debug("recieved message to kill instance for spec #{spec}")
-          instance.kill
+          reply.data = { :status => instance.kill }
         end
       end
 

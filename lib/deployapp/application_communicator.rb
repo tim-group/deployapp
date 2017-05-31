@@ -65,7 +65,7 @@ class DeployApp::ApplicationCommunicator
 
   def wait_until_stopped
     @stop_timeout.times do
-      return if !get_status.present?
+      return 'stopped' if !get_status.present?
       sleep 1
     end
     fail "Gave up trying to stop instance"
