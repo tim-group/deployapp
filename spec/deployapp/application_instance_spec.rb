@@ -27,9 +27,40 @@ describe DeployApp::ApplicationInstance do
     application_instance_config
   end
 
+  def artifactresolver_app_instance_config
+    application_instance_config = DeployApp::ApplicationInstanceConfiguration.new
+    application_instance_config.application("MyArtifact")
+    application_instance_config.group("blue")
+    application_instance_config.artifactresolver("productstore")
+    application_instance_config
+  end
+
+
   def default_stub_resolver
     DeployApp::Stub::StubArtifactResolver.new
   end
+
+  it 'is wired with the correct artifact resolver' do
+    stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => false)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+      :application_instance_config => artifactresolver_app_instance_config,
+      :application_communicator => stub_communicator,
+      :participation_service => memory_participation_service
+    )
+
+    expected_status = {
+      :application => "MyArtifact",
+      :group => "blue",
+      :version => nil,
+      :present => false,
+      :participating => false
+    }
+
+    expect(application_instance.status).to include_hash(expected_status)
+    expect(application_instance.artifact_resolver.class.name).to eql("DeployApp::ArtifactResolvers::ProductStoreArtifactResolver")
+  end
+
 
   it 'test_generates_status_report_not_running' do
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => false)

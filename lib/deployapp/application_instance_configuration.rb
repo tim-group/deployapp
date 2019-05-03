@@ -30,6 +30,11 @@ class DeployApp::ApplicationInstanceConfiguration
     @type
   end
 
+  def artifactresolver(artifactresolver = @artifactresolver)
+    @artifactresolver = artifactresolver
+    @artifactresolver
+  end
+
   def additional_jvm_args(additional_jvm_args = @additional_jvm_args)
     @additional_jvm_args = additional_jvm_args
     @additional_jvm_args

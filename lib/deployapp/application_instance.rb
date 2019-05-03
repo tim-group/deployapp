@@ -9,7 +9,21 @@ class DeployApp::ApplicationInstance
 
   def initialize(args)
     @application_instance_config = args[:application_instance_config]
-    @artifact_resolver = args[:artifact_resolver]
+
+    if args[:artifact_resolver].nil?
+      artifacts_dir = @application_instance_config.artifacts_dir
+      latest_jar = @application_instance_config.latest_jar
+      artifact_resolver_type =
+
+      @artifact_resolver = DeployApp::ArtifactResolvers::ProductStoreArtifactResolver.new(
+        :artifacts_dir    => artifacts_dir,
+        :latest_jar       => latest_jar,
+        :ssh_key_location => @application_instance_config.ssh_key_location
+      )
+    else
+      @artifact_resolver = args[:artifact_resolver]
+    end
+
     @application_communicator = args[:application_communicator]
     @participation_service = args[:participation_service] or fail "Please provide a participation service"
     @application_with_group = "#{@application_instance_config.application} #{@application_instance_config.group}"
