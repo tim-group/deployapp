@@ -14,7 +14,7 @@ class DeployApp::ApplicationInstance
       artifacts_dir = @application_instance_config.artifacts_dir
       latest_jar = @application_instance_config.latest_jar
 
-      if (@application_instance_config.artifactresolver.eql?('docker'))
+      if @application_instance_config.artifactresolver.eql?('docker')
         @artifact_resolver = DeployApp::ArtifactResolvers::DockerArtifactResolver.new({})
       else
         @artifact_resolver = DeployApp::ArtifactResolvers::ProductStoreArtifactResolver.new(
