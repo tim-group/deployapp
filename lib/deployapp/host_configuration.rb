@@ -2,6 +2,7 @@ require 'deployapp/namespace'
 require 'deployapp/application_instance_configuration'
 require 'deployapp/application_instance'
 require 'deployapp/artifact_resolvers/product_store_artifact_resolver'
+require 'deployapp/artifact_resolvers/docker_artifact_resolver'
 require 'deployapp/application_communicator'
 require 'deployapp/participation_service/tatin'
 

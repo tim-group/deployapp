@@ -1,7 +1,7 @@
 require 'deployapp/namespace.rb'
 
 class DeployApp::ApplicationInstanceConfiguration
-  attr_reader :home, :config_filename, :artifacts_dir, :latest_jar
+  attr_reader :home, :config_filename, :artifacts_dir, :latest_jar, :artifactresolver
 
   def initialize(args = {})
     @app_base_dir = args[:app_base_dir]
