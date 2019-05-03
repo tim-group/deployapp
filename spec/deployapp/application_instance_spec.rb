@@ -35,7 +35,6 @@ describe DeployApp::ApplicationInstance do
     application_instance_config
   end
 
-
   def default_stub_resolver
     DeployApp::Stub::StubArtifactResolver.new
   end
@@ -60,7 +59,6 @@ describe DeployApp::ApplicationInstance do
     expect(application_instance.status).to include_hash(expected_status)
     expect(application_instance.artifact_resolver.class.name).to eql("DeployApp::ArtifactResolvers::ProductStoreArtifactResolver")
   end
-
 
   it 'test_generates_status_report_not_running' do
     stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => false)
