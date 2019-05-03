@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'deployapp/artifact_resolvers/namespace'
 require 'deployapp/artifact_resolvers/product_store_artifact_resolver'
-require 'deployapp/artifact_resolvers/debian_package_artifact_resolver'
 require 'deployapp/util/log'
 
 class PackageNotFound < Exception
@@ -16,9 +15,6 @@ class DeployApp::ArtifactResolvers::CompositeArtifactResolver
         :artifacts_dir    => args[:artifacts_dir],
         :latest_jar       => args[:latest_jar],
         :ssh_key_location => args[:ssh_key_location]
-      ),
-      DeployApp::ArtifactResolvers::DebianPackageArtifactResolver.new(
-        :latest_jar       => args[:latest_jar]
       )]
   end
 
