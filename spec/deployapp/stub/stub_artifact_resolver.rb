@@ -12,7 +12,13 @@ class DeployApp::Stub::StubArtifactResolver
     @coord = coord
   end
 
+  def clean_old_artifacts
+    @clean_old_artifacts_called = true
+  end
+
   def was_last_coord?(coord)
     @coord.equal_to(coord)
   end
+
+  attr_reader :clean_old_artifacts_called
 end

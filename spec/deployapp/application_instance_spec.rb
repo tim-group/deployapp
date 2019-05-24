@@ -380,12 +380,27 @@ describe DeployApp::ApplicationInstance do
     allow(stub_communicator).to receive(:get_status).and_return(status)
 
     application_instance = DeployApp::ApplicationInstance.new(
-      :application_instance_config => default_app_instance_config,
-      :artifact_resolver => default_stub_resolver,
-      :application_communicator => stub_communicator,
-      :participation_service => memory_participation_service
+        :application_instance_config => default_app_instance_config,
+        :artifact_resolver => default_stub_resolver,
+        :application_communicator => stub_communicator,
+        :participation_service => memory_participation_service
     )
 
     expect(application_instance.status).to include_hash(:health => "healthy")
+  end
+
+  it 'cleans old artifacts' do
+    stub_resolver = default_stub_resolver
+    stub_communicator = DeployApp::Stub::StubApplicationCommunicator.new(:present => true)
+
+    application_instance = DeployApp::ApplicationInstance.new(
+        :application_instance_config => default_app_instance_config,
+        :artifact_resolver => stub_resolver,
+        :application_communicator => stub_communicator,
+        :participation_service => memory_participation_service
+    )
+
+    application_instance.update_to_version(5)
+    expect(stub_resolver.clean_old_artifacts_called).to eql(true)
   end
 end
