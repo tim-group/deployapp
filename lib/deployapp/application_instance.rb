@@ -1,6 +1,8 @@
 require 'deployapp/namespace'
 require 'deployapp/coord'
 require 'deployapp/util/log'
+require 'deployapp/artifact_resolvers/product_store_artifact_resolver'
+require 'deployapp/artifact_resolvers/docker_artifact_resolver'
 
 class DeployApp::ApplicationInstance
   include DeployApp::Util::Log
@@ -57,6 +59,7 @@ class DeployApp::ApplicationInstance
   def get_artifact(version)
     coords = DeployApp::Coord.new(:name => @application_instance_config.application, :type => "jar", :version => version)
     @artifact_resolver.resolve(coords) || fail("unable to resolve #{coords.string}")
+    @artifact_resolver.clean_old_artifacts
   end
 
   def update_to_version(version)
