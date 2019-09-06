@@ -28,7 +28,8 @@ class DeployApp::ArtifactResolvers::DockerArtifactResolver
   end
 
   def clean_old_artifacts
-    cmd "/usr/bin/docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc -e MINIMUM_IMAGES_TO_SAVE=3 repo.net.local:8080/timgroup/docker-gc"
+    cmd "/usr/bin/docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc \
+          -e MINIMUM_IMAGES_TO_SAVE=3 repo.net.local:8080/timgroup/docker-gc"
   end
 
   def cmd(cmd, include_newlines = false)
