@@ -23,11 +23,12 @@ class DeployApp::ArtifactResolvers::DockerArtifactResolver
 
   def resolve(coords)
     cmd "/usr/bin/docker pull repo.net.local:8080/timgroup/#{coords.name.downcase}:#{coords.version}"
-    cmd "/usr/bin/docker tag repo.net.local:8080/timgroup/#{coords.name.downcase}:#{coords.version} repo.net.local:8080/timgroup/#{coords.name.downcase}:current"
+    cmd "/usr/bin/docker tag repo.net.local:8080/timgroup/#{coords.name.downcase}:#{coords.version} \
+          repo.net.local:8080/timgroup/#{coords.name.downcase}:current"
   end
 
   def clean_old_artifacts
-    cmd "/usr/bin/docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc -e MINIMUM_IMAGES_TO_SAVE=3 repo.net.local:8080/docker-gc"
+    cmd "/usr/bin/docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc -e MINIMUM_IMAGES_TO_SAVE=3 repo.net.local:8080/timgroup/docker-gc"
   end
 
   def cmd(cmd, include_newlines = false)
