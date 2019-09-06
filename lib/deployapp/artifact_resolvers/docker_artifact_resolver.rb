@@ -22,8 +22,8 @@ class DeployApp::ArtifactResolvers::DockerArtifactResolver
   end
 
   def resolve(coords)
-    cmd "/usr/bin/docker pull repo.net.local:8080/#{coords.name.downcase}:#{coords.version}"
-    cmd "/usr/bin/docker tag repo.net.local:8080/#{coords.name.downcase}:#{coords.version} repo.net.local:8080/#{coords.name.downcase}:current"
+    cmd "/usr/bin/docker pull repo.net.local:8080/timgroup/#{coords.name.downcase}:#{coords.version}"
+    cmd "/usr/bin/docker tag repo.net.local:8080/timgroup/#{coords.name.downcase}:#{coords.version} repo.net.local:8080/timgroup/#{coords.name.downcase}:current"
   end
 
   def clean_old_artifacts
