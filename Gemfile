@@ -12,4 +12,5 @@ group :test do
   gem 'facter'
   gem "mcollective-client"
   gem "fpm", "0.3.9"
+  gem "json", "2.2.0"
 end
